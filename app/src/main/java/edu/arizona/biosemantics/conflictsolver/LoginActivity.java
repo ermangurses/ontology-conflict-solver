@@ -32,7 +32,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        if(SharedPrefManager.getInstance(this).isLoggedIn()){
+        if(SharedPreferencesManager.getInstance(this).isLoggedIn()){
             finish();
             startActivity(new Intent(this, ProfileActivity.class));
             return;
@@ -40,7 +40,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         editTextUsername = (EditText) findViewById(R.id.editTextUsername);
         editTextPassword = (EditText) findViewById(R.id.editTextPassword);
-        buttonLogin = (Button) findViewById(R.id.buttonLogin);
+        buttonLogin      = (Button  ) findViewById(R.id.buttonLogin);
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Please wait...");
@@ -65,7 +65,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         try {
                             JSONObject obj = new JSONObject(response);
                             if(!obj.getBoolean("error")){
-                                SharedPrefManager.getInstance(getApplicationContext())
+                                SharedPreferencesManager.getInstance(getApplicationContext())
                                         .userLogin(
                                                 obj.getInt("id"),
                                                 obj.getString("username"),

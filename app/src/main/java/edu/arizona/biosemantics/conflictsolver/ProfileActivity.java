@@ -19,7 +19,7 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        if(!SharedPrefManager.getInstance(this).isLoggedIn()){
+        if(!SharedPreferencesManager.getInstance(this).isLoggedIn()){
             finish();
             startActivity(new Intent(this, LoginActivity.class));
         }
@@ -28,8 +28,8 @@ public class ProfileActivity extends AppCompatActivity {
         textViewUserEmail = (TextView) findViewById(R.id.textViewUseremail);
 
 
-        textViewUserEmail.setText(SharedPrefManager.getInstance(this).getUserEmail());
-        textViewUsername.setText(SharedPrefManager.getInstance(this).getUsername());
+        textViewUserEmail.setText(SharedPreferencesManager.getInstance(this).getUserEmail());
+        textViewUsername.setText(SharedPreferencesManager.getInstance(this).getUsername());
     }
 
     @Override
@@ -42,7 +42,7 @@ public class ProfileActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
             case R.id.menuLogout:
-                SharedPrefManager.getInstance(this).logout();
+                SharedPreferencesManager.getInstance(this).logout();
                 finish();
                 startActivity(new Intent(this, LoginActivity.class));
                 break;

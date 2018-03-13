@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         * If so, jump to profile
         */
 
-        if(SharedPrefManager.getInstance(this).isLoggedIn()){
+        if(SharedPreferencesManager.getInstance(this).isLoggedIn()){
             finish();
             startActivity(new Intent(this, ProfileActivity.class));
             return;
@@ -75,8 +75,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         try {
 
                             JSONObject jsonObject = new JSONObject(response);
-                            Toast.makeText(getApplicationContext(), "The user were registered" +
-                                    " succesfully!!!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(),
+                                    jsonObject.getString("message"),
+                                    Toast.LENGTH_LONG).show();
+
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -87,7 +89,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         progressDialog.hide();
-                        Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), error.getMessage(),
+                                Toast.LENGTH_LONG).show();
                     }
                 }) {
             @Override
@@ -105,9 +108,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        if (view == buttonRegister)
+        if (view == buttonRegister) {
+
             registerUser();
-        if(view == textViewLogin)
+        }
+
+        if (view == textViewLogin) {
+
             startActivity(new Intent(this, LoginActivity.class));
+        }
     }
 }
