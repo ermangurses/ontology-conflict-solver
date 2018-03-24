@@ -17,18 +17,17 @@ public class ProfileActivity extends AppCompatActivity {
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_home);
+                    //startActivity(new Intent(ProfileActivity.this, ProfileActivity.class));
                     return true;
                 case R.id.navigation_dashboard:
-                    mTextMessage.setText(R.string.title_dashboard);
+                    startActivity(new Intent(ProfileActivity.this, DashboardActivity.class));
                     return true;
                 case R.id.navigation_notifications:
-                    mTextMessage.setText(R.string.title_notifications);
+                    startActivity(new Intent(ProfileActivity.this, NotificationsActivity.class));
                     return true;
             }
             return false;
