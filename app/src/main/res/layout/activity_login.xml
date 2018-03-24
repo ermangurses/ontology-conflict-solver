@@ -15,7 +15,8 @@
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
+        android:layout_centerVertical="false"
+        android:gravity="center_horizontal"
         android:orientation="vertical">
 
         <TextView
