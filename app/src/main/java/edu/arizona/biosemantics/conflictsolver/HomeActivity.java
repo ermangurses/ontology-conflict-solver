@@ -10,29 +10,11 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ProfileActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity {
 
 
     private TextView mTextMessage;
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    //startActivity(new Intent(ProfileActivity.this, ProfileActivity.class));
-                    return true;
-                case R.id.navigation_dashboard:
-                    startActivity(new Intent(ProfileActivity.this, DashboardActivity.class));
-                    return true;
-                case R.id.navigation_notifications:
-                    startActivity(new Intent(ProfileActivity.this, NotificationsActivity.class));
-                    return true;
-            }
-            return false;
-        }
-    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,8 +26,33 @@ public class ProfileActivity extends AppCompatActivity {
         }
         mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+
+        // Set active the selected navigation icon in the new activity
+        Menu menu = navigation.getMenu();
+        MenuItem menuItem = menu.getItem(0);
+        menuItem.setChecked(true);
+
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
+
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.navigation_home:
+                    //startActivity(new Intent(HomeActivity.this, HomeActivity.class));
+                    return true;
+                case R.id.navigation_dashboard:
+                    startActivity(new Intent(HomeActivity.this, DashboardActivity.class));
+                    return true;
+                case R.id.navigation_notifications:
+                    startActivity(new Intent(HomeActivity.this, NotificationsActivity.class));
+                    return true;
+            }
+            return false;
+        }
+    };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
