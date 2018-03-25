@@ -46,12 +46,15 @@ public class NotificationsActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case  R.id.navigation_home:
                     startActivity(new Intent(NotificationsActivity.this, HomeActivity.class));
+                    finish();
                     return true;
                 case R.id.navigation_dashboard:
                     startActivity(new Intent(NotificationsActivity.this, DashboardActivity.class));
+                    finish();
                     return true;
                 case R.id.navigation_notifications:
-                    //startActivity(new Intent(NotificationsActivity.this, NotificationsActivity.class));
+                    startActivity(new Intent(NotificationsActivity.this, NotificationsActivity.class));
+                    finish();
                     return true;
             }
             return false;

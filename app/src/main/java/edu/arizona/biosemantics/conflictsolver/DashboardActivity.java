@@ -44,12 +44,15 @@ public class DashboardActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     startActivity(new Intent(DashboardActivity.this, HomeActivity.class));
+                    finish();
                     return true;
                 case R.id.navigation_dashboard:
-                    //startActivity(new Intent(DashboardActivity.this, DashboardActivity.class));
+                    startActivity(new Intent(DashboardActivity.this, DashboardActivity.class));
+                    finish();
                     return true;
                 case R.id.navigation_notifications:
                     startActivity(new Intent(DashboardActivity.this, NotificationsActivity.class));
+                    finish();
                     return true;
             }
             return false;

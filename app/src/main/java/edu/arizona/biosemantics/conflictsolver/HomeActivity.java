@@ -41,13 +41,16 @@ public class HomeActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    //startActivity(new Intent(HomeActivity.this, HomeActivity.class));
+                    startActivity(new Intent(HomeActivity.this, HomeActivity.class));
+                    finish();
                     return true;
                 case R.id.navigation_dashboard:
                     startActivity(new Intent(HomeActivity.this, DashboardActivity.class));
+                    finish();
                     return true;
                 case R.id.navigation_notifications:
                     startActivity(new Intent(HomeActivity.this, NotificationsActivity.class));
+                    finish();
                     return true;
             }
             return false;
