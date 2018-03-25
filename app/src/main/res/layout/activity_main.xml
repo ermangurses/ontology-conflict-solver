@@ -54,6 +54,30 @@
             android:hint="@string/Email_Hint"
             android:inputType="textEmailAddress" />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/FirstName" />
+
+        <EditText
+            android:id="@+id/editTextFirstName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/FirstName_Hint"
+            android:inputType="textPersonName" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/LastName" />
+
+        <EditText
+            android:id="@+id/editTextLastName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/LastName_Hint"
+            android:inputType="textPersonName" />
+
         <Button
             android:id="@+id/buttonRegister"
             android:layout_width="match_parent"
@@ -71,4 +95,3 @@
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
 
 </RelativeLayout>
-

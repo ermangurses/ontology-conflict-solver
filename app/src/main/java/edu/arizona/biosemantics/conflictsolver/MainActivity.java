@@ -24,7 +24,8 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private EditText editTextUsername, editTextEmail, editTextPassword;
+    private EditText editTextUsername, editTextEmail, editTextPassword, editTextFirstName,
+            editTextLastName;
     private Button buttonRegister;
     private ProgressDialog progressDialog;
 
@@ -46,21 +47,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return;
         }
 
-        editTextEmail    = (EditText) findViewById(R.id.editTextEmail);
-        editTextUsername = (EditText) findViewById(R.id.editTextUsername);
-        editTextPassword = (EditText) findViewById(R.id.editTextPassword);
-        textViewLogin    = (TextView) findViewById(R.id.textViewLogin);
-        buttonRegister   = (  Button) findViewById(R.id.buttonRegister);
-        progressDialog   = new ProgressDialog(this);
+        editTextEmail     = (EditText) findViewById(R.id.editTextEmail);
+        editTextUsername  = (EditText) findViewById(R.id.editTextUsername);
+        editTextPassword  = (EditText) findViewById(R.id.editTextPassword);
+        editTextFirstName = (EditText) findViewById(R.id.editTextFirstName);
+        editTextLastName  = (EditText) findViewById(R.id.editTextLastName);
+
+        textViewLogin     = (TextView) findViewById(R.id.textViewLogin);
+        buttonRegister    = (  Button) findViewById(R.id.buttonRegister);
+        progressDialog    = new ProgressDialog(this);
 
         buttonRegister.setOnClickListener(this);
         textViewLogin.setOnClickListener(this);
     }
 
     private void registerUser() {
-        final String email = editTextEmail.getText().toString().trim();
-        final String username = editTextUsername.getText().toString().trim();
-        final String password = editTextPassword.getText().toString().trim();
+        final String username  = editTextUsername.getText().toString().trim();
+        final String password  = editTextPassword.getText().toString().trim();
+        final String firstname = editTextFirstName.getText().toString().trim();
+        final String lastname  = editTextLastName.getText().toString().trim();
+        final String email     = editTextEmail.getText().toString().trim();
+
 
         progressDialog.setMessage("Registering user...");
         progressDialog.show();
@@ -97,8 +104,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 params.put("username", username);
-                params.put("email", email);
                 params.put("password", password);
+                params.put("firstname",firstname);
+                params.put("lastname", lastname);
+                params.put("email", email);
                 return params;
             }
         };

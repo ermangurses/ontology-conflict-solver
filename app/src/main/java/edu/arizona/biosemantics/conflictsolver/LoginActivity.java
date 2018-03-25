@@ -67,7 +67,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             if(!obj.getBoolean("error")){
                                 SharedPreferencesManager.getInstance(getApplicationContext())
                                         .userLogin(
-                                                obj.getInt("id"),
+                                                obj.getInt("expertId"),
                                                 obj.getString("username"),
                                                 obj.getString("email")
                                         );

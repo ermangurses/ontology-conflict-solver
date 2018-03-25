@@ -12,4 +12,8 @@
     <string name="RegisterUser">Register User</string>
     <string name="AskUser">Already Registered? \n Click Here to Login</string>
     <string name="Login">Login</string>
+    <string name="FirstName">First Name</string>
+    <string name="FirstName_Hint">Enter First Name</string>
+    <string name="LastName">Last Name</string>
+    <string name="LastName_Hint">Enter Last Name</string>
 </resources>
