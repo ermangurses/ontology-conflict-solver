@@ -13,18 +13,22 @@ import android.widget.Toast;
 public class HomeActivity extends AppCompatActivity {
 
 
-    private TextView mTextMessage;
+    private TextView welcoming;
+    private String welcomingString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
+        setContentView(R.layout.activity_home);
 
         if(!SharedPreferencesManager.getInstance(this).isLoggedIn()){
             finish();
             startActivity(new Intent(this, LoginActivity.class));
         }
-        mTextMessage = (TextView) findViewById(R.id.message);
+        welcoming = (TextView) findViewById(R.id.welcoming);
+        welcomingString = "Welcome  " + SharedPreferencesManager.getInstance(this).getUsername() + "!";
+        welcoming.setText(welcomingString);
+
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
 
         // Set active the selected navigation icon in the new activity
