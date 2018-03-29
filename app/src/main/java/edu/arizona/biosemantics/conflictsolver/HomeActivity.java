@@ -14,7 +14,7 @@ public class HomeActivity extends AppCompatActivity {
 
 
     private TextView welcoming;
-    private String welcomingString;
+    private String   welcomingString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
