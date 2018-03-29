@@ -16,4 +16,10 @@
     <string name="FirstName_Hint">Enter First Name</string>
     <string name="LastName">Last Name</string>
     <string name="LastName_Hint">Enter Last Name</string>
+    <string name="Option1_Hint">Option 1</string>
+    <string name="Option2_Hint">Option 2</string>
+    <string name="Option3_Hint">Option 3</string>
+    <string name="Option4_Hint">Option 4</string>
+    <string name="Option5_Hint">Option 5</string>
+    <string name="Example_Sentence">This is the example sentence that is used in this application to solve conflicts</string>
 </resources>
