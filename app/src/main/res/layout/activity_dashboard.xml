@@ -13,72 +13,69 @@
     tools:context="edu.arizona.biosemantics.conflictsolver.DashboardActivity">
 
 
+    <LinearLayout
+        android:id="@+id/linearVertical1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/linearHorizontal2"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="16dp">
+
         <LinearLayout
-            android:id="@+id/linearVertical1"
+            android:id="@+id/linearHorizontal1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="visible">
 
-            <LinearLayout
-                android:id="@+id/linearHorizontal1"
+            <TextView
+                android:id="@+id/textView1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:visibility="visible">
-
-                <TextView
-                    android:id="@+id/textView1"
-                    android:layout_width="match_parent"
-                    android:layout_height="90dp"
-                    android:layout_weight="1"
-                    android:text="The Word"
-                    android:textAlignment="center"
-                    android:textSize="30sp"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linearLayoutXML"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"></LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linearHorizontal2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:clipChildren="false"
-                android:gravity="bottom"
-                android:isScrollContainer="false"
-                android:keepScreenOn="true"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/button1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@android:color/holo_blue_dark"
-                    android:elevation="0dp"
-                    android:fadingEdge="horizontal"
-                    android:text="Submit" />
-            </LinearLayout>
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="The Word"
+                android:textAlignment="center"
+                android:textSize="30sp"
+                android:textStyle="bold" />
 
         </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutXML"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></RelativeLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearHorizontal2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/navigation">
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/holo_blue_dark"
+            android:elevation="0dp"
+            android:fadingEdge="horizontal"
+            android:text="Submit" />
+    </LinearLayout>
+
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="0dp"
-        android:layout_marginStart="0dp"
         android:background="?android:attr/windowBackground"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:menu="@menu/navigation" />
-
 
 </android.support.constraint.ConstraintLayout>

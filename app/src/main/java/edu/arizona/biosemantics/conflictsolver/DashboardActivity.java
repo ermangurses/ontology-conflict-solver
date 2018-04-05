@@ -1,17 +1,21 @@
 package edu.arizona.biosemantics.conflictsolver;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,8 +27,11 @@ public class DashboardActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
@@ -35,52 +42,70 @@ public class DashboardActivity extends AppCompatActivity {
         mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
 
-        // Set active the selected navigation icon in the new activity
+        ////////////////////////////////////////////////////////////////////
+        ////Set active the selected navigation icon in the new activity/////
+        ////////////////////////////////////////////////////////////////////
         Menu menu = navigation.getMenu();
         MenuItem menuItem = menu.getItem(1);
         menuItem.setChecked(true);
-
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        LinearLayout linearLayoutXML =(LinearLayout)findViewById(R.id.linearLayoutXML);
 
-        LinearLayout linearVertical1 =(LinearLayout)findViewById(R.id.linearVertical1);
-        LinearLayout linearHorizontal1 =(LinearLayout)findViewById(R.id.linearHorizontal1);
-        LinearLayout linearHorizontal2 =(LinearLayout)findViewById(R.id.linearHorizontal2);
+        RadioGroup radioGroup = new RadioGroup(getApplicationContext());
+        RelativeLayout relativeLayoutXML =(RelativeLayout)findViewById(R.id.relativeLayoutXML);
+
+        //LinearLayout linearVertical1 =(LinearLayout)findViewById(R.id.linearVertical1);
+        //LinearLayout linearHorizontal1 =(LinearLayout)findViewById(R.id.linearHorizontal1);
+        //LinearLayout linearHorizontal2 =(LinearLayout)findViewById(R.id.linearHorizontal2);
 
 
         TextView textView1 = (TextView)findViewById(R.id.textView1);
         Button button1 =(Button)findViewById(R.id.button1);
 
 
-        for(int i = 0; i < 3; i++) {
+        ScrollView scrollView = new ScrollView(this);
+        scrollView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT));
+
+        ////////////////////////////////////////////////////////////////////
+        ////////Adding linearLayoutProgVertical layout to scrollView////////
+        ////////////////////////////////////////////////////////////////////
+        LinearLayout linearLayoutProgVertical = new LinearLayout(this);
+        linearLayoutProgVertical.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT));
+        linearLayoutProgVertical.setOrientation(LinearLayout.VERTICAL);
+        scrollView.addView(linearLayoutProgVertical);
 
 
-            LinearLayout linearLayoutP1 = new LinearLayout(this);
-            linearLayoutP1.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT));
-            linearLayoutP1.setOrientation(LinearLayout.HORIZONTAL);
+        // Creating linearLayoutPHorizontal layout
+        RadioGroup.LayoutParams layoutParams = new RadioGroup.LayoutParams(
+                RadioGroup.LayoutParams.MATCH_PARENT,
+                RadioGroup.LayoutParams.MATCH_PARENT);
+        layoutParams.setMargins(10, 10, 10, 10);
+        radioGroup.setOrientation(LinearLayout.VERTICAL);
+        radioGroup.setLayoutParams(layoutParams);
+
+        for(int i = 0; i < 6; i++) {
 
             RadioButton radioButton = new RadioButton(this);
-            radioButton.setText("Option "+i);
-            linearLayoutP1.addView(radioButton);
+            radioButton.setText("Option "+i );
+            radioButton.setId(i);
 
-            ImageView imageView = new ImageView(this);
-            imageView.setImageResource(R.mipmap.ic_launcher_round);
-            linearLayoutP1.addView(imageView);
 
-            linearLayoutXML.addView(linearLayoutP1);
+            TextView textview = new TextView(this);
+            textview.setText(R.string.Example_Sentence);
+            textview.setId(i);
 
-            LinearLayout linearLayoutP2 = new LinearLayout(this);
-            linearLayoutP2.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT));
-            linearLayoutP2.setOrientation(LinearLayout.HORIZONTAL);
 
-            TextView textView = new TextView(this);
-            textView.setText("This is the example sentence that is used in this application to solve conflicts");
-            linearLayoutP2.addView(textView);
 
-            linearLayoutXML.addView(linearLayoutP2);
+            radioButton.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.rsz_1rsz_1rsz_branch,0);
+            //radioButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,0,0);
+            radioButton.setCompoundDrawablePadding(320);
+            radioGroup.addView(radioButton);
+            radioGroup.addView(textview);
 
         }
+        linearLayoutProgVertical.addView(radioGroup);
+        relativeLayoutXML.addView(scrollView);
+
     }
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
