@@ -83,7 +83,8 @@ public class DashboardActivity extends AppCompatActivity {
         radioGroup.setOrientation(LinearLayout.VERTICAL);
         radioGroup.setLayoutParams(layoutParams);
 
-        for(int i = 0; i < 6; i++) {
+        int i;
+        for(i = 0; i < 6; i++) {
 
             RadioButton radioButton = new RadioButton(this);
             radioButton.setText("Option "+i );
@@ -103,6 +104,20 @@ public class DashboardActivity extends AppCompatActivity {
             radioGroup.addView(textview);
 
         }
+        RadioButton radioButton = new RadioButton(this);
+        radioButton.setText("Add yours "+i );
+        radioButton.setId(++i);
+
+
+        TextView textview = new TextView(this);
+        textview.setText(R.string.Example_Sentence);
+        textview.setId(++i);
+        radioButton.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.rsz_1rsz_1rsz_branch,0);
+        //radioButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,0,0);
+        radioButton.setCompoundDrawablePadding(320);
+        radioGroup.addView(radioButton);
+        radioGroup.addView(textview);
+
         linearLayoutProgVertical.addView(radioGroup);
         relativeLayoutXML.addView(scrollView);
 
