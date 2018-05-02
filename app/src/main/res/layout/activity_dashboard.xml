@@ -63,7 +63,8 @@
         android:soundEffectsEnabled="true"
         android:splitMotionEvents="true"
         app:layout_constraintBottom_toTopOf="@+id/navigation"
-        tools:layout_editor_absoluteX="16dp">
+        tools:layout_editor_absoluteX="16dp"
+        tools:ignore="MissingConstraints">
 
 
         <EditText
