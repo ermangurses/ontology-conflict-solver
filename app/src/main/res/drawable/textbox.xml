@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:shape="rectangle" >
-
     <corners
-        android:bottomLeftRadius="15dp"
-        android:bottomRightRadius="15dp"
+        android:bottomLeftRadius="25dp"
+        android:bottomRightRadius="25dp"
         android:radius="30dp"
-        android:topLeftRadius="15dp"
-        android:topRightRadius="15dp" />
+        android:topLeftRadius="25dp"
+        android:topRightRadius="25dp" />
 
     <solid android:color="#cccccc" />
 
     <padding
         android:bottom="0dp"
-        android:left="3dp"
-        android:right="3dp"
+        android:left="2dp"
+        android:right="2dp"
         android:top="0dp" />
 
     <size
