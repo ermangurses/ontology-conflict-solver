@@ -9,7 +9,6 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -60,7 +59,7 @@ public class DashboardActivity extends AppCompatActivity {
 
 
         TextView textView1 = (TextView)findViewById(R.id.textView1);
-        Button button1 =(Button)findViewById(R.id.button1);
+        //Button button1 =(Button)findViewById(R.id.button1);
 
 
         ScrollView scrollView = new ScrollView(this);
