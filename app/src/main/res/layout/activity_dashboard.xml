@@ -10,8 +10,7 @@
     android:paddingLeft="15dp"
     android:paddingRight="15dp"
     android:paddingTop="2dp"
-    tools:context="edu.arizona.biosemantics.conflictsolver.DashboardActivity"
-    tools:layout_editor_absoluteY="5dp">
+    tools:context="edu.arizona.biosemantics.conflictsolver.DashboardActivity">
 
     <LinearLayout
         android:id="@+id/linearVertical1"
