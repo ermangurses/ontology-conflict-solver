@@ -21,5 +21,7 @@
     <string name="Option3_Hint">Option 3</string>
     <string name="Option4_Hint">Option 4</string>
     <string name="Option5_Hint">Option 5</string>
-    <string name="Example_Sentence">This is the example sentence that is used in this application to solve conflicts</string>
+    <string name="Example_Sentence1">This is the example sentence that is used in this application to solve conflicts</string>
+    <string name="Example_Sentence2">Which of the following category does the word belong?"</string>
+
 </resources>
