@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,6 +35,11 @@ public class DashboardActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
+
+
 
         if(!SharedPreferencesManager.getInstance(this).isLoggedIn()){
             finish();
