@@ -91,7 +91,7 @@ public class DashboardActivity extends AppCompatActivity {
 
 
             TextView textview = new TextView(this);
-            textview.setText(R.string.Example_Sentence);
+            textview.setText(R.string.Example_Sentence1);
             textview.setId(i);
 
 
@@ -109,7 +109,7 @@ public class DashboardActivity extends AppCompatActivity {
 
 
         TextView textview = new TextView(this);
-        textview.setText(R.string.Example_Sentence);
+        textview.setText(R.string.Example_Sentence1);
         textview.setId(++i);
         radioButton.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.rsz_1rsz_1rsz_branch,0);
         //radioButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,0,0);
