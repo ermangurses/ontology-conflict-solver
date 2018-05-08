@@ -131,8 +131,6 @@ public class DashboardActivity extends AppCompatActivity {
                     finish();
                     return true;
                 case R.id.navigation_dashboard:
-                    startActivity(new Intent(DashboardActivity.this, DashboardActivity.class));
-                    finish();
                     return true;
                 case R.id.navigation_notifications:
                     startActivity(new Intent(DashboardActivity.this, NotificationsActivity.class));
