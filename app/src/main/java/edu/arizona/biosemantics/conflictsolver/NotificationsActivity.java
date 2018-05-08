@@ -53,8 +53,6 @@ public class NotificationsActivity extends AppCompatActivity {
                     finish();
                     return true;
                 case R.id.navigation_notifications:
-                    startActivity(new Intent(NotificationsActivity.this, NotificationsActivity.class));
-                    finish();
                     return true;
             }
             return false;
