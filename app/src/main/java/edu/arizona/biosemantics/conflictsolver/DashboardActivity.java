@@ -85,6 +85,7 @@ public class DashboardActivity extends AppCompatActivity {
         RadioGroup.LayoutParams layoutParams = new RadioGroup.LayoutParams(
                 RadioGroup.LayoutParams.MATCH_PARENT,
                 RadioGroup.LayoutParams.MATCH_PARENT);
+
         layoutParams.setMargins(10, 10, 10, 10);
         radioGroup.setOrientation(LinearLayout.VERTICAL);
         radioGroup.setLayoutParams(layoutParams);
@@ -104,7 +105,6 @@ public class DashboardActivity extends AppCompatActivity {
 
 
             radioButton.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.rsz_1rsz_1rsz_branch,0);
-            //radioButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,0,0);
             radioButton.setCompoundDrawablePadding(320);
             radioGroup.addView(radioButton);
             radioGroup.addView(textview);
@@ -118,8 +118,6 @@ public class DashboardActivity extends AppCompatActivity {
         EditText editText = new EditText(this);
         editText.setHint(R.string.Example_Sentence3);
         editText.setId(++i);
-        radioButton.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.rsz_1rsz_1rsz_branch,0);
-        //radioButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,0,0);
         radioButton.setCompoundDrawablePadding(320);
         radioGroup.addView(radioButton);
         radioGroup.addView(editText);
