@@ -1,10 +1,8 @@
 package edu.arizona.biosemantics.conflictsolver;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -28,7 +26,7 @@ public class DashboardActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+    //@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -60,10 +58,6 @@ public class DashboardActivity extends AppCompatActivity {
         RadioGroup radioGroup = new RadioGroup(getApplicationContext());
         RelativeLayout relativeLayoutXML =(RelativeLayout)findViewById(R.id.relativeLayoutXML);
 
-        //LinearLayout linearVertical1 =(LinearLayout)findViewById(R.id.linearVertical1);
-        //LinearLayout linearHorizontal1 =(LinearLayout)findViewById(R.id.linearHorizontal1);
-        //LinearLayout linearHorizontal2 =(LinearLayout)findViewById(R.id.linearHorizontal2);
-
 
         TextView textView1 = (TextView)findViewById(R.id.textView1);
         //Button button1 =(Button)findViewById(R.id.button1);
@@ -91,7 +85,7 @@ public class DashboardActivity extends AppCompatActivity {
         radioGroup.setLayoutParams(layoutParams);
 
         int i;
-        for(i = 0; i < 6; i++) {
+        for(i = 0; i < 6; ++i) {
 
             RadioButton radioButton = new RadioButton(this);
             radioButton.setText("Option "+i );
