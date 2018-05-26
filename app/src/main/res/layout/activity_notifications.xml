@@ -9,7 +9,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="edu.arizona.biosemantics.conflictsolver.NotificationsActivity">
+    tools:context="edu.arizona.biosemantics.conflictsolver.TasksActivity">
     <LinearLayout
         android:id="@+id/linearVertical1"
         android:layout_width="match_parent"
