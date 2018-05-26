@@ -51,7 +51,7 @@ public class HomeActivity extends AppCompatActivity {
                     finish();
                     return true;
                 case R.id.navigation_notifications:
-                    startActivity(new Intent(HomeActivity.this, NotificationsActivity.class));
+                    startActivity(new Intent(HomeActivity.this, TasksActivity.class));
                     finish();
                     return true;
             }
