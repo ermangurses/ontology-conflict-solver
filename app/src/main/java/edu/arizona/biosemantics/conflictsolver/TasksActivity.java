@@ -101,7 +101,7 @@ public class TasksActivity extends AppCompatActivity {
                     finish();
                     return true;
                 case R.id.navigation_dashboard:
-                    startActivity(new Intent(TasksActivity.this, DashboardActivity.class));
+                    startActivity(new Intent(TasksActivity.this, DecisionActivity.class));
                     finish();
                     return true;
                 case R.id.navigation_notifications:

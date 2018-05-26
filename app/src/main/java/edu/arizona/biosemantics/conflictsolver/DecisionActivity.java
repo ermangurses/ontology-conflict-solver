@@ -22,7 +22,7 @@ import android.widget.Toast;
  * Created by egurses on 3/13/18.
  */
 
-public class DashboardActivity extends AppCompatActivity {
+public class DecisionActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
 
@@ -32,7 +32,7 @@ public class DashboardActivity extends AppCompatActivity {
 
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dashboard);
+        setContentView(R.layout.activity_decision);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
@@ -126,13 +126,13 @@ public class DashboardActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    startActivity(new Intent(DashboardActivity.this, HomeActivity.class));
+                    startActivity(new Intent(DecisionActivity.this, HomeActivity.class));
                     finish();
                     return true;
                 case R.id.navigation_dashboard:
                     return true;
                 case R.id.navigation_notifications:
-                    startActivity(new Intent(DashboardActivity.this, TasksActivity.class));
+                    startActivity(new Intent(DecisionActivity.this, TasksActivity.class));
                     finish();
                     return true;
             }

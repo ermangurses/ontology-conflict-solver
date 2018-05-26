@@ -47,7 +47,7 @@ public class HomeActivity extends AppCompatActivity {
                 case R.id.navigation_home:
                     return true;
                 case R.id.navigation_dashboard:
-                    startActivity(new Intent(HomeActivity.this, DashboardActivity.class));
+                    startActivity(new Intent(HomeActivity.this, DecisionActivity.class));
                     finish();
                     return true;
                 case R.id.navigation_notifications:
