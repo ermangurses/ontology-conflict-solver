@@ -153,7 +153,6 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
                 params.put("username", username);
                 return params;
             }
-
         };
 
         RequestHandler.getInstance(this).addToRequestQueue(stringRequest);
