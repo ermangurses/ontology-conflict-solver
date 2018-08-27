@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -34,18 +33,17 @@ import java.util.Vector;
 
 public class TasksActivity extends AppCompatActivity implements View.OnClickListener{
 
-    private TextView mTextMessage;
     private ProgressDialog mProgressDialog;
-    //private static HashMap<String, String> hashMap = new HashMap<String, String>();
     private static Vector<String>  mUsernameArr = new Vector<String>();
     private static Vector<String>  mTermArr = new Vector<String>();
     private static boolean startedFlag = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task);
 
-
+        // Make sure getTasks() is run only once
         if(!startedFlag){
             getTasks();
         }
@@ -54,8 +52,6 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
             finish();
             startActivity(new Intent(this, LoginActivity.class));
         }
-
-        mTextMessage = (TextView) findViewById(R.id.message);
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
 
