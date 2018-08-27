@@ -11,7 +11,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="edu.arizona.biosemantics.conflictsolver.TasksActivity">
     <LinearLayout
-        android:id="@+id/linearVertical1"
+        android:id="@+id/linearVertical"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
