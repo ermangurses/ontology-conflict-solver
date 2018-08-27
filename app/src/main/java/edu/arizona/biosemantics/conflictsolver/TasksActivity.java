@@ -17,7 +17,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -27,8 +26,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Vector;
 
 /**
  * Created by egurses on 3/13/18.
@@ -37,20 +35,26 @@ import java.util.Map;
 public class TasksActivity extends AppCompatActivity implements View.OnClickListener{
 
     private TextView mTextMessage;
-    private ProgressDialog progressDialog;
-    private String term;
-    private String username;
-    private static HashMap<String, String> hashMap = new HashMap<String, String>();
-
+    private ProgressDialog mProgressDialog;
+    //private static HashMap<String, String> hashMap = new HashMap<String, String>();
+    private static Vector<String>  mUsernameArr = new Vector<String>();
+    private static Vector<String>  mTermArr = new Vector<String>();
+    private static boolean startedFlag = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task);
 
+
+        if(!startedFlag){
+            getTasks();
+        }
+
         if(!SharedPreferencesManager.getInstance(this).isLoggedIn()){
             finish();
             startActivity(new Intent(this, LoginActivity.class));
         }
+
         mTextMessage = (TextView) findViewById(R.id.message);
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
@@ -60,12 +64,11 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
         MenuItem menuItem = menu.getItem(2);
         menuItem.setChecked(true);
 
+        // Add the listener to the navigation
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-
-
+        // Take relativeLayoutXML from interface using by id
         RelativeLayout relativeLayoutXML =(RelativeLayout)findViewById(R.id.relativeLayoutXML);
-
 
         ScrollView scrollView = new ScrollView(this);
         scrollView.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
@@ -78,15 +81,13 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
         linearLayoutProgVertical.setOrientation(LinearLayout.VERTICAL);
         scrollView.addView(linearLayoutProgVertical);
 
+
         int i = 0;
-
-        getTasks();
-
-        for (Map.Entry<String, String> entry : hashMap.entrySet()) {
-            System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
+        for (int ii = 0; ii < mUsernameArr.size(); ii++) {
+            System.out.println("Key = " + mUsernameArr.get(ii) + ", Value = " + mTermArr.get(ii));
 
                 Button button = new Button(this);
-                String srt ="A conflict " + "<em>" + (entry.getKey().toString()) + "</em>" + " from " + entry.getValue().toString();
+                String srt ="A conflict " + "<em>" + ( mUsernameArr.get(ii)) + "</em>" + " from " + mTermArr.get(ii);
                 button.setText(Html.fromHtml(srt));
                 button.setTextColor(0xFFFF0000);
                 button.setLeft(10);
@@ -94,14 +95,15 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
                 i++;
                 button.setOnClickListener(this);
                 linearLayoutProgVertical.addView(button);
-
-            }
-        for (Map.Entry<String, String> entry : hashMap.entrySet()) {
-            System.out.println("Key ++++++ " + entry.getKey() + ", Value +++++ " + entry.getValue());
         }
-
         relativeLayoutXML.addView(scrollView);
+    }
 
+    protected void onDestroy() {
+        super.onDestroy();
+        if (isFinishing()) {
+            startedFlag = true;
+        }
     }
 
     private void getTasks(){
@@ -113,25 +115,29 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
                     @Override
 
                     public void onResponse(String response) {
+                        String mTerm;
+                        String mUsername;
 
-                        try
-                        {
+                        try{
                             JSONObject root = new JSONObject(response);
                             JSONArray task_data = root.getJSONArray("task_data");
 
                             for (int i = 0; i < task_data.length(); i++) {
 
                                 JSONObject jsonObject = task_data.getJSONObject(i);
-                                term = jsonObject.getString("term");
-                                username = jsonObject.getString("username");
-                                hashMap.put(term,username);
+
+                                mTerm = jsonObject.getString("term");
+                                mUsername = jsonObject.getString("username");
+                                mUsernameArr.addElement(mUsername);
+                                mTermArr.addElement(mTerm);
                             }
                         }
-                        catch (JSONException e)
-                        {
+                        catch (JSONException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
                         }
+
+
                     }
                 },
                 new Response.ErrorListener() {
@@ -145,15 +151,7 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
                         ).show();
                     }
                 }
-        ){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                params.put("term", term);
-                params.put("username", username);
-                return params;
-            }
-        };
+        );
 
         RequestHandler.getInstance(this).addToRequestQueue(stringRequest);
 
