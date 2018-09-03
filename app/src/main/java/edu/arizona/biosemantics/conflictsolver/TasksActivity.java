@@ -34,8 +34,13 @@ import java.util.Vector;
 public class TasksActivity extends AppCompatActivity implements View.OnClickListener{
 
     private ProgressDialog mProgressDialog;
-    private static Vector<String>  mUsernameArr = new Vector<String>();
+
+    private static Vector<Integer>  mTermIdArr = new Vector<Integer>();
     private static Vector<String>  mTermArr = new Vector<String>();
+
+    private static Vector<Integer>  mConflictIdArr = new Vector<Integer>();
+    private static Vector<String>  mUsernameArr = new Vector<String>();
+
     private static boolean startedFlag = false;
 
     @Override
@@ -78,17 +83,15 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
         scrollView.addView(linearLayoutProgVertical);
 
 
-        int i = 0;
         for (int ii = 0; ii < mUsernameArr.size(); ii++) {
             System.out.println("Key = " + mUsernameArr.get(ii) + ", Value = " + mTermArr.get(ii));
 
                 Button button = new Button(this);
-                String srt ="A conflict " + "<em>" + ( mUsernameArr.get(ii)) + "</em>" + " from " + mTermArr.get(ii);
+                String srt ="A conflict " + "<em>" + ( mUsernameArr.get(ii)) + "</em>" + " from " + mTermArr.get(ii) + mConflictIdArr.get(ii);
                 button.setText(Html.fromHtml(srt));
                 button.setTextColor(0xFFFF0000);
                 button.setLeft(10);
-                button.setId(i);
-                i++;
+                button.setId(mConflictIdArr.get(ii));
                 button.setOnClickListener(this);
                 linearLayoutProgVertical.addView(button);
         }
@@ -111,7 +114,9 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
                     @Override
 
                     public void onResponse(String response) {
+                        String mTermId;
                         String mTerm;
+                        String mConflictId;
                         String mUsername;
 
                         try{
@@ -122,18 +127,22 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
 
                                 JSONObject jsonObject = task_data.getJSONObject(i);
 
+                                mTermId = jsonObject.getString("termId");
                                 mTerm = jsonObject.getString("term");
+                                mConflictId = jsonObject.getString("conflictId");
                                 mUsername = jsonObject.getString("username");
+
                                 mUsernameArr.addElement(mUsername);
                                 mTermArr.addElement(mTerm);
+
+                                mConflictIdArr.addElement(Integer.parseInt(mConflictId));
+                                mTermIdArr.addElement(Integer.parseInt(mTermId));
                             }
                         }
                         catch (JSONException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
                         }
-
-
                     }
                 },
                 new Response.ErrorListener() {
@@ -148,9 +157,7 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
                     }
                 }
         );
-
         RequestHandler.getInstance(this).addToRequestQueue(stringRequest);
-
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -194,9 +201,10 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
         return true;
     }
 
+    // Navigate user to the Decision Activity
     @Override
     public void onClick(View v) {
 
-        Toast.makeText( getApplicationContext(),"Hello there "+v.getId(), Toast.LENGTH_SHORT).show();
+        Toast.makeText( getApplicationContext(),"Conflict ID is "+v.getId(), Toast.LENGTH_SHORT).show();
     }
 }
