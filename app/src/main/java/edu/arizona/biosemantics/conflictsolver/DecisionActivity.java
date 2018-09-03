@@ -59,10 +59,6 @@ public class DecisionActivity extends AppCompatActivity {
         RelativeLayout relativeLayoutXML =(RelativeLayout)findViewById(R.id.relativeLayoutXML);
 
 
-        TextView textView1 = (TextView)findViewById(R.id.textView1);
-        //Button button1 =(Button)findViewById(R.id.button1);
-
-
         ScrollView scrollView = new ScrollView(this);
         scrollView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT));
 
@@ -120,6 +116,7 @@ public class DecisionActivity extends AppCompatActivity {
         relativeLayoutXML.addView(scrollView);
 
     }
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
