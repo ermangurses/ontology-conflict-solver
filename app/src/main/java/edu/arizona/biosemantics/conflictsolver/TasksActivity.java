@@ -49,24 +49,32 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_task);
 
         // Make sure getTasks() is run only once
-        if(!startedFlag){
+        if (!startedFlag) {
             getTasks();
         }
 
-        if(!SharedPreferencesManager.getInstance(this).isLoggedIn()){
+        if (!SharedPreferencesManager.getInstance(this).isLoggedIn()) {
             finish();
             startActivity(new Intent(this, LoginActivity.class));
         }
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        setNavigation();
+        setLayout();
+    }
+
+    private void setNavigation(){
 
         // Set active the selected navigation icon in the new activity
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         Menu menu = navigation.getMenu();
         MenuItem menuItem = menu.getItem(2);
         menuItem.setChecked(true);
-
         // Add the listener to the navigation
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+    }
+
+    private void setLayout(){
 
         // Take relativeLayoutXML from interface using by id
         RelativeLayout relativeLayoutXML =(RelativeLayout)findViewById(R.id.relativeLayoutXML);
@@ -83,15 +91,18 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
         scrollView.addView(linearLayoutProgVertical);
 
 
-        for (int ii = 0; ii < mUsernameArr.size(); ii++) {
-            System.out.println("Key = " + mUsernameArr.get(ii) + ", Value = " + mTermArr.get(ii));
+        for (int i = 0; i < mUsernameArr.size(); i++) {
+            System.out.println("Key = " + mUsernameArr.get(i) + ", Value = " + mTermArr.get(i));
 
                 Button button = new Button(this);
-                String srt ="A conflict " + "<em>" + ( mUsernameArr.get(ii)) + "</em>" + " from " + mTermArr.get(ii) + mConflictIdArr.get(ii);
+                String srt ="A conflict " + "<em>" + ( mUsernameArr.get(i)) + "</em>" + " from " + mTermArr.get(i) + mConflictIdArr.get(i);
+
                 button.setText(Html.fromHtml(srt));
                 button.setTextColor(0xFFFF0000);
                 button.setLeft(10);
-                button.setId(mConflictIdArr.get(ii));
+
+                button.setId(mConflictIdArr.get(i));
+
                 button.setOnClickListener(this);
                 linearLayoutProgVertical.addView(button);
         }
@@ -201,10 +212,12 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
         return true;
     }
 
-    // Navigate user to the Decision Activity
+    // Navigate the user to the DecisionActivity
     @Override
     public void onClick(View v) {
 
         Toast.makeText( getApplicationContext(),"Conflict ID is "+v.getId(), Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(TasksActivity.this, DecisionActivity.class));
+        finish();
     }
 }
