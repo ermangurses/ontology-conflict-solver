@@ -30,19 +30,20 @@ public class DecisionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_decision);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
 
-
-
         if(!SharedPreferencesManager.getInstance(this).isLoggedIn()){
             finish();
             startActivity(new Intent(this, LoginActivity.class));
         }
+
+        Toast.makeText(this, "ConflictId " + getIntent().getStringExtra("ConflictId"), Toast.LENGTH_LONG).show();
+
+
         mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
 
