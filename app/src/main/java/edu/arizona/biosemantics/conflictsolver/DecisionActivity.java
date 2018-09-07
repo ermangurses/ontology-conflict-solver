@@ -24,7 +24,6 @@ import android.widget.Toast;
 
 public class DecisionActivity extends AppCompatActivity {
 
-    private TextView mTextMessage;
 
     //@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
@@ -40,21 +39,7 @@ public class DecisionActivity extends AppCompatActivity {
             finish();
             startActivity(new Intent(this, LoginActivity.class));
         }
-
-        Toast.makeText(this, "ConflictId " + getIntent().getStringExtra("ConflictId"), Toast.LENGTH_LONG).show();
-
-
-        mTextMessage = (TextView) findViewById(R.id.message);
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-
-        ////////////////////////////////////////////////////////////////////
-        ////Set active the selected navigation icon in the new activity/////
-        ////////////////////////////////////////////////////////////////////
-        Menu menu = navigation.getMenu();
-        MenuItem menuItem = menu.getItem(1);
-        menuItem.setChecked(true);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
+        setNavigation();
 
         RadioGroup radioGroup = new RadioGroup(getApplicationContext());
         RelativeLayout relativeLayoutXML =(RelativeLayout)findViewById(R.id.relativeLayoutXML);
@@ -95,7 +80,7 @@ public class DecisionActivity extends AppCompatActivity {
 
 
 
-            radioButton.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.rsz_1rsz_1rsz_branch,0);
+            radioButton.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.branch,0);
             radioButton.setCompoundDrawablePadding(320);
             radioGroup.addView(radioButton);
             radioGroup.addView(textview);
@@ -115,6 +100,20 @@ public class DecisionActivity extends AppCompatActivity {
 
         linearLayoutProgVertical.addView(radioGroup);
         relativeLayoutXML.addView(scrollView);
+
+    }
+
+
+    private void setNavigation(){
+
+        ////////////////////////////////////////////////////////////////////
+        ////Set active the selected navigation icon in the new activity/////
+        ////////////////////////////////////////////////////////////////////
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        Menu menu = navigation.getMenu();
+        MenuItem menuItem = menu.getItem(1);
+        menuItem.setChecked(true);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
     }
 
