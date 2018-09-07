@@ -13,7 +13,6 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
-import android.widget.RelativeLayout.LayoutParams;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,20 +38,27 @@ public class DecisionActivity extends AppCompatActivity {
             finish();
             startActivity(new Intent(this, LoginActivity.class));
         }
+
+        // Call the navigation method
         setNavigation();
+        setLayout();
+
+
+    }
+
+    private void setLayout(){
 
         RadioGroup radioGroup = new RadioGroup(getApplicationContext());
         RelativeLayout relativeLayoutXML =(RelativeLayout)findViewById(R.id.relativeLayoutXML);
 
-
         ScrollView scrollView = new ScrollView(this);
-        scrollView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT));
+        scrollView.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
 
         ////////////////////////////////////////////////////////////////////
         ////////Adding linearLayoutProgVertical layout to scrollView////////
         ////////////////////////////////////////////////////////////////////
         LinearLayout linearLayoutProgVertical = new LinearLayout(this);
-        linearLayoutProgVertical.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT));
+        linearLayoutProgVertical.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         linearLayoutProgVertical.setOrientation(LinearLayout.VERTICAL);
         scrollView.addView(linearLayoutProgVertical);
 
@@ -86,6 +92,7 @@ public class DecisionActivity extends AppCompatActivity {
             radioGroup.addView(textview);
 
         }
+        // After the loop add the Non-of-Above option
         RadioButton radioButton = new RadioButton(this);
         radioButton.setText("Non of above");
         radioButton.setId(++i);
@@ -102,7 +109,6 @@ public class DecisionActivity extends AppCompatActivity {
         relativeLayoutXML.addView(scrollView);
 
     }
-
 
     private void setNavigation(){
 
