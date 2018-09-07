@@ -125,6 +125,7 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
                     @Override
 
                     public void onResponse(String response) {
+
                         String mTermId;
                         String mTerm;
                         String mConflictId;
@@ -216,8 +217,21 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
 
-        Toast.makeText( getApplicationContext(),"Conflict ID is "+v.getId(), Toast.LENGTH_SHORT).show();
-        startActivity(new Intent(TasksActivity.this, DecisionActivity.class));
+
+        int index = mConflictIdArr.indexOf(v.getId());
+        mTermIdArr.get(index);
+        mTermArr.get(index);
+        mUsernameArr.get(index);
+
+        Toast.makeText( getApplicationContext(),"Conflict ID is "+ v.getId(), Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(TasksActivity.this, DecisionActivity.class);
+
+        intent.putExtra("ConflictId", (String.valueOf( v.getId() )) );
+        intent.putExtra("TermId", (String.valueOf( mTermIdArr.get(index) )) );
+        intent.putExtra("Term", (String.valueOf(  mTermArr.get(index) )) );
+        intent.putExtra("Username", (String.valueOf(  mUsernameArr.get(index) )) );
+
+        startActivity(intent);
         finish();
     }
 }
