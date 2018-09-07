@@ -6,4 +6,6 @@ public class Constants {
     public  static final  String URL_REGISTER = BASE_URL + "Register/RegisterExpert.php";
     public  static final  String URL_LOGIN    = BASE_URL + "Login/LoginExpert.php";
     public  static final  String URL_GETTASKS  = BASE_URL + "DailyOperations/GetTasks.php";
+    public  static final  String URL_GETOPTIONS  = BASE_URL + "DailyOperations/GetOptions.php";
+
 }
