@@ -17,6 +17,15 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Created by egurses on 3/13/18.
  */
@@ -41,9 +50,9 @@ public class DecisionActivity extends AppCompatActivity {
 
         // Call the navigation method
         setNavigation();
+
+        // Call the layout method
         setLayout();
-
-
     }
 
     private void setLayout(){
@@ -121,6 +130,62 @@ public class DecisionActivity extends AppCompatActivity {
         menuItem.setChecked(true);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
+    }
+
+    private void getOptions(){
+
+        StringRequest stringRequest = new StringRequest(
+                Request.Method.GET,
+                Constants.URL_GETOPTIONS,
+                new Response.Listener<String>() {
+                    @Override
+
+                    public void onResponse(String response) {
+
+                        String mTermId;
+                        String mTerm;
+                        String mConflictId;
+                        String mUsername;
+
+                        try{
+                            JSONObject root = new JSONObject(response);
+                            JSONArray task_data = root.getJSONArray("task_data");
+
+                            for (int i = 0; i < task_data.length(); i++) {
+
+                                JSONObject jsonObject = task_data.getJSONObject(i);
+
+                                mTermId = jsonObject.getString("termId");
+                                mTerm = jsonObject.getString("term");
+                                mConflictId = jsonObject.getString("conflictId");
+                                mUsername = jsonObject.getString("username");
+
+                               // mUsernameArr.addElement(mUsername);
+                               // mTermArr.addElement(mTerm);
+
+                               // mConflictIdArr.addElement(Integer.parseInt(mConflictId));
+                               // mTermIdArr.addElement(Integer.parseInt(mTermId));
+                            }
+                        }
+                        catch (JSONException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                        Toast.makeText(
+                                getApplicationContext(),
+                                error.getMessage(),
+                                Toast.LENGTH_LONG
+                        ).show();
+                    }
+                }
+        );
+        RequestHandler.getInstance(this).addToRequestQueue(stringRequest);
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
