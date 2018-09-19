@@ -48,18 +48,24 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task);
 
-        // Make sure getTasks() is run only once
-        if (!startedFlag) {
-            getTasks();
-        }
-
         if (!SharedPreferencesManager.getInstance(this).isLoggedIn()) {
             finish();
             startActivity(new Intent(this, LoginActivity.class));
         }
 
+        // Make sure getTasks() is run only once
+        // and setLayout is called when the user return to the TaskActivity
+        if (!startedFlag) {
+
+            getTasks();
+
+        }else{
+
+            setLayout();
+        }
+
         setNavigation();
-        setLayout();
+        //setLayout();
     }
 
     private void setNavigation(){
@@ -92,19 +98,18 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
 
 
         for (int i = 0; i < mUsernameArr.size(); i++) {
-            System.out.println("Key = " + mUsernameArr.get(i) + ", Value = " + mTermArr.get(i));
+            Button button = new Button(this);
+            String srt ="A conflict " + "<em>" + ( mTermArr.get(i)) + "</em>" + " from " + mUsernameArr.get(i) +" "+ mConflictIdArr.get(i);
 
-                Button button = new Button(this);
-                String srt ="A conflict " + "<em>" + ( mUsernameArr.get(i)) + "</em>" + " from " + mTermArr.get(i) + mConflictIdArr.get(i);
+            button.setText(Html.fromHtml(srt));
+            button.setTextColor(0xFFFF0000);
+            button.setLeft(10);
 
-                button.setText(Html.fromHtml(srt));
-                button.setTextColor(0xFFFF0000);
-                button.setLeft(10);
+            // Set the button Id as the same conflict Id
+            button.setId(mConflictIdArr.get(i));
 
-                button.setId(mConflictIdArr.get(i));
-
-                button.setOnClickListener(this);
-                linearLayoutProgVertical.addView(button);
+            button.setOnClickListener(this);
+            linearLayoutProgVertical.addView(button);
         }
         relativeLayoutXML.addView(scrollView);
     }
@@ -119,8 +124,8 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
     private void getTasks(){
 
         StringRequest stringRequest = new StringRequest(
-                Request.Method.GET,
-                Constants.URL_GETTASKS,
+                Request.Method.GET,                     // Get Method
+                Constants.URL_GETTASKS,                 // The URL
                 new Response.Listener<String>() {
                     @Override
 
@@ -132,24 +137,34 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
                         String mUsername;
 
                         try{
+                            // Get the response from server
                             JSONObject root = new JSONObject(response);
+
+                            // Place the response to the JSONArray
                             JSONArray task_data = root.getJSONArray("task_data");
 
-                            for (int i = 0; i < task_data.length(); i++) {
+                            for (int i = 0; i < task_data.length(); ++i) {
 
+                                // Get single JSON object from array
                                 JSONObject jsonObject = task_data.getJSONObject(i);
 
-                                mTermId = jsonObject.getString("termId");
-                                mTerm = jsonObject.getString("term");
+                                // Get the items from the object
+                                mTermId     = jsonObject.getString("termId");
+                                mTerm       = jsonObject.getString("term");
                                 mConflictId = jsonObject.getString("conflictId");
-                                mUsername = jsonObject.getString("username");
+                                mUsername   = jsonObject.getString("username");
 
-                                mUsernameArr.addElement(mUsername);
+                                // Put the items to the arrays
+                                mTermIdArr.addElement(Integer.parseInt(mTermId));
                                 mTermArr.addElement(mTerm);
 
                                 mConflictIdArr.addElement(Integer.parseInt(mConflictId));
-                                mTermIdArr.addElement(Integer.parseInt(mTermId));
+                                mUsernameArr.addElement(mUsername);
                             }
+
+                            // Call setLayout() after the data in the arrays
+                            setLayout();
+
                         }
                         catch (JSONException e) {
                             // TODO Auto-generated catch block
@@ -161,11 +176,9 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void onErrorResponse(VolleyError error) {
 
-                        Toast.makeText(
-                                getApplicationContext(),
-                                error.getMessage(),
-                                Toast.LENGTH_LONG
-                        ).show();
+                        Toast.makeText(getApplicationContext(),
+                                "Oops error!",
+                                Toast.LENGTH_LONG).show();
                     }
                 }
         );
@@ -226,12 +239,14 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
         Toast.makeText( getApplicationContext(),"Conflict ID is "+ v.getId(), Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(TasksActivity.this, DecisionActivity.class);
 
-        intent.putExtra("ConflictId", (String.valueOf( v.getId() )) );
-        intent.putExtra("TermId", (String.valueOf( mTermIdArr.get(index) )) );
-        intent.putExtra("Term", (String.valueOf(  mTermArr.get(index) )) );
-        intent.putExtra("Username", (String.valueOf(  mUsernameArr.get(index) )) );
+        // Send the data to Decision Activity
+        intent.putExtra("ConflictId", ( String.valueOf( v.getId() ) ) );
+        intent.putExtra("TermId", ( String.valueOf( mTermIdArr.get(index) ) ) );
+        intent.putExtra("Term", ( String.valueOf(  mTermArr.get(index) ) ) );
+        intent.putExtra("Username", ( String.valueOf(  mUsernameArr.get(index) ) ) );
 
         startActivity(intent);
+        startedFlag = true;
         finish();
     }
 }
