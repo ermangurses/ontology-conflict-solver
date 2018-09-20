@@ -26,11 +26,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Vector;
+
 /**
  * Created by egurses on 3/13/18.
  */
 
 public class DecisionActivity extends AppCompatActivity {
+
+
+    private static Vector<Integer> mOptionArr = new Vector<Integer>();
 
 
     //@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -48,9 +53,12 @@ public class DecisionActivity extends AppCompatActivity {
             startActivity(new Intent(this, LoginActivity.class));
         }
 
+
+        getIntent().getStringExtra("ConflictId");
+
         // Call the navigation method
         setNavigation();
-
+        getOptions();
         // Call the layout method
         setLayout();
     }
@@ -82,7 +90,7 @@ public class DecisionActivity extends AppCompatActivity {
         radioGroup.setLayoutParams(layoutParams);
 
         int i;
-        for(i = 0; i < 6; ++i) {
+        for(i = 0; i < mOptionArr.size(); ++i) {
 
             RadioButton radioButton = new RadioButton(this);
             radioButton.setText("Option "+i );
@@ -134,43 +142,40 @@ public class DecisionActivity extends AppCompatActivity {
 
     private void getOptions(){
 
+        Integer id = Integer.valueOf(getIntent().getStringExtra("TermId"));
+        String uri = String.format(Constants.URL_GETOPTIONS+"?ID=%1$s",id);
+        //System.out.print(uri);
+
         StringRequest stringRequest = new StringRequest(
                 Request.Method.GET,
-                Constants.URL_GETOPTIONS,
+                uri,
                 new Response.Listener<String>() {
-                    @Override
 
+
+                    @Override
                     public void onResponse(String response) {
 
-                        String mTermId;
-                        String mTerm;
-                        String mConflictId;
-                        String mUsername;
+                        String mOptionId;
 
                         try{
                             JSONObject root = new JSONObject(response);
-                            JSONArray task_data = root.getJSONArray("task_data");
+                            JSONArray options_data = root.getJSONArray("options_data");
 
-                            for (int i = 0; i < task_data.length(); i++) {
+                            for (int i = 0; i < options_data.length(); i++) {
+                                System.out.print(i);
+                                JSONObject jsonObject = options_data.getJSONObject(i);
 
-                                JSONObject jsonObject = task_data.getJSONObject(i);
+                                mOptionId = jsonObject.getString("optionId");
 
-                                mTermId = jsonObject.getString("termId");
-                                mTerm = jsonObject.getString("term");
-                                mConflictId = jsonObject.getString("conflictId");
-                                mUsername = jsonObject.getString("username");
+                                mOptionArr.addElement(Integer.parseInt(mOptionId));
 
-                               // mUsernameArr.addElement(mUsername);
-                               // mTermArr.addElement(mTerm);
-
-                               // mConflictIdArr.addElement(Integer.parseInt(mConflictId));
-                               // mTermIdArr.addElement(Integer.parseInt(mTermId));
                             }
                         }
                         catch (JSONException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
                         }
+
                     }
                 },
                 new Response.ErrorListener() {
