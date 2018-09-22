@@ -99,7 +99,7 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
 
         for (int i = 0; i < mUsernameArr.size(); i++) {
             Button button = new Button(this);
-            String srt ="A conflict " + "<em>" + ( mTermArr.get(i)) + "</em>" + " from " + mUsernameArr.get(i) +" "+ mConflictIdArr.get(i);
+            String srt ="A conflict for " + "<em>" + ( mTermArr.get(i)) + "</em>" + " from " + mUsernameArr.get(i) +" "+ mConflictIdArr.get(i)+" "+mTermIdArr.get(i);
 
             button.setText(Html.fromHtml(srt));
             button.setTextColor(0xFFFF0000);
