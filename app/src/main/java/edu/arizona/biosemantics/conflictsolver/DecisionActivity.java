@@ -37,6 +37,7 @@ public class DecisionActivity extends AppCompatActivity {
 
     private static Vector<String> mOptionArr = new Vector<String>();
 
+    private static boolean startedFlag = false;
 
     //@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
@@ -53,11 +54,19 @@ public class DecisionActivity extends AppCompatActivity {
             startActivity(new Intent(this, LoginActivity.class));
         }
 
+        if(!startedFlag){
+
+            // Call the getOptions method
+            getOptions();
+
+        } else {
+
+            // Call the layout method right after the data is fetched
+            setLayout();
+
+        }
         // Call the navigation method
         setNavigation();
-
-        // Call the getOptions method
-        getOptions();
     }
 
     private void setLayout(){
@@ -94,24 +103,20 @@ public class DecisionActivity extends AppCompatActivity {
             radioButton.setText(mOptionArr.elementAt(i) );
             radioButton.setId(i);
 
-
             TextView textview = new TextView(this);
             textview.setText(R.string.Example_Sentence1);
             textview.setId(i);
-
-
 
             radioButton.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.branch,0);
             radioButton.setCompoundDrawablePadding(320);
             radioGroup.addView(radioButton);
             radioGroup.addView(textview);
-
         }
+
         // After the loop add the Non-of-Above option
         RadioButton radioButton = new RadioButton(this);
         radioButton.setText("Non of above");
         radioButton.setId(++i);
-
 
         EditText editText = new EditText(this);
         editText.setHint(R.string.Example_Sentence3);
@@ -134,6 +139,13 @@ public class DecisionActivity extends AppCompatActivity {
         MenuItem menuItem = menu.getItem(1);
         menuItem.setChecked(true);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+    }
+
+    protected void onDestroy() {
+        super.onDestroy();
+        if (isFinishing()) {
+            startedFlag = true;
+        }
     }
 
     private void getOptions(){
@@ -164,7 +176,7 @@ public class DecisionActivity extends AppCompatActivity {
 
                                 mOption = jsonObject.getString("option_");
                                 mOptionArr.addElement(mOption);
-                                Toast.makeText( getApplicationContext(),mOption, Toast.LENGTH_SHORT).show();
+                                //Toast.makeText( getApplicationContext(),mOption, Toast.LENGTH_SHORT).show();
 
                             }
                             // Call the layout method right after the data is fetched
