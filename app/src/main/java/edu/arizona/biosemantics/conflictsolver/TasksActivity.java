@@ -35,11 +35,11 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
 
     private ProgressDialog mProgressDialog;
 
-    private static Vector<Integer>  mTermIdArr = new Vector<Integer>();
-    private static Vector<String>  mTermArr = new Vector<String>();
+    private static Vector<Integer>  termIdArr = new Vector<Integer>();
+    private static Vector<String>  termArr = new Vector<String>();
 
-    private static Vector<Integer>  mConflictIdArr = new Vector<Integer>();
-    private static Vector<String>  mUsernameArr = new Vector<String>();
+    private static Vector<Integer>  conflictIdArr = new Vector<Integer>();
+    private static Vector<String>  usernameArr = new Vector<String>();
 
     private static boolean startedFlag = false;
 
@@ -65,7 +65,6 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
         }
 
         setNavigation();
-        //setLayout();
     }
 
     private void setNavigation(){
@@ -97,16 +96,17 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
         scrollView.addView(linearLayoutProgVertical);
 
 
-        for (int i = 0; i < mUsernameArr.size(); i++) {
+        for (int i = 0; i < usernameArr.size(); i++) {
+
             Button button = new Button(this);
-            String srt ="A conflict for " + "<em>" + ( mTermArr.get(i)) + "</em>" + " from " + mUsernameArr.get(i) +" "+ mConflictIdArr.get(i)+" "+mTermIdArr.get(i);
+            String srt ="A conflict for " + "<em>" + ( termArr.get(i)) + "</em>" + " from " + usernameArr.get(i) +" "+ conflictIdArr.get(i)+" "+termIdArr.get(i);
 
             button.setText(Html.fromHtml(srt));
             button.setTextColor(0xFFFF0000);
             button.setLeft(10);
 
             // Set the button Id as the same conflict Id
-            button.setId(mConflictIdArr.get(i));
+            button.setId(conflictIdArr.get(i));
 
             button.setOnClickListener(this);
             linearLayoutProgVertical.addView(button);
@@ -155,11 +155,11 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
                                 mUsername   = jsonObject.getString("username");
 
                                 // Put the items to the arrays
-                                mTermIdArr.addElement(Integer.parseInt(mTermId));
-                                mTermArr.addElement(mTerm);
+                                termIdArr.addElement(Integer.parseInt(mTermId));
+                                termArr.addElement(mTerm);
 
-                                mConflictIdArr.addElement(Integer.parseInt(mConflictId));
-                                mUsernameArr.addElement(mUsername);
+                                conflictIdArr.addElement(Integer.parseInt(mConflictId));
+                                usernameArr.addElement(mUsername);
                             }
 
                             // Call setLayout() after the data in the arrays
@@ -231,19 +231,19 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
 
 
-        int index = mConflictIdArr.indexOf(v.getId());
-        mTermIdArr.get(index);
-        mTermArr.get(index);
-        mUsernameArr.get(index);
+        int index = conflictIdArr.indexOf(v.getId());
+        termIdArr.get(index);
+        termArr.get(index);
+        usernameArr.get(index);
 
         Toast.makeText( getApplicationContext(),"Conflict ID is "+ v.getId(), Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(TasksActivity.this, DecisionActivity.class);
 
         // Send the data to Decision Activity
         intent.putExtra("ConflictId", ( String.valueOf( v.getId() ) ) );
-        intent.putExtra("TermId", ( String.valueOf( mTermIdArr.get(index) ) ) );
-        intent.putExtra("Term", ( String.valueOf(  mTermArr.get(index) ) ) );
-        intent.putExtra("Username", ( String.valueOf(  mUsernameArr.get(index) ) ) );
+        intent.putExtra("TermId", ( String.valueOf( termIdArr.get(index) ) ) );
+        intent.putExtra("Term", ( String.valueOf(  termArr.get(index) ) ) );
+        intent.putExtra("Username", ( String.valueOf(  usernameArr.get(index) ) ) );
 
         startActivity(intent);
         startedFlag = true;
