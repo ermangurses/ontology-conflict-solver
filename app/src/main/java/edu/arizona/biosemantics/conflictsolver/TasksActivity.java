@@ -35,13 +35,11 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
 
     private ProgressDialog mProgressDialog;
 
-    private static Vector<Integer>  termIdArr = new Vector<Integer>();
-    private static Vector<String>  termArr = new Vector<String>();
-
+    private static Vector<Integer>  termIdArr     = new Vector<Integer>();
+    private static Vector<String>   termArr       = new Vector<String>();
     private static Vector<Integer>  conflictIdArr = new Vector<Integer>();
-    private static Vector<String>  usernameArr = new Vector<String>();
-
-    private static boolean startedFlag = false;
+    private static Vector<String>   usernameArr   = new Vector<String>();
+    private static boolean          startedFlag   = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -230,13 +228,12 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
 
-
         int index = conflictIdArr.indexOf(v.getId());
         termIdArr.get(index);
         termArr.get(index);
         usernameArr.get(index);
 
-        Toast.makeText( getApplicationContext(),"Conflict ID is "+ v.getId(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText( getApplicationContext(),"Conflict ID is "+ v.getId(), Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(TasksActivity.this, DecisionActivity.class);
 
         // Send the data to Decision Activity
