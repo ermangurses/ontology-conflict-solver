@@ -35,7 +35,7 @@ import java.util.Vector;
 public class DecisionActivity extends AppCompatActivity {
 
 
-    private static Vector<Integer> mOptionArr = new Vector<Integer>();
+    private static Vector<String> mOptionArr = new Vector<String>();
 
 
     //@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -53,14 +53,11 @@ public class DecisionActivity extends AppCompatActivity {
             startActivity(new Intent(this, LoginActivity.class));
         }
 
-
-        getIntent().getStringExtra("ConflictId");
-
         // Call the navigation method
         setNavigation();
+
+        // Call the getOptions method
         getOptions();
-        // Call the layout method
-        setLayout();
     }
 
     private void setLayout(){
@@ -92,8 +89,9 @@ public class DecisionActivity extends AppCompatActivity {
         int i;
         for(i = 0; i < mOptionArr.size(); ++i) {
 
+
             RadioButton radioButton = new RadioButton(this);
-            radioButton.setText("Option "+i );
+            radioButton.setText(mOptionArr.elementAt(i) );
             radioButton.setId(i);
 
 
@@ -124,7 +122,6 @@ public class DecisionActivity extends AppCompatActivity {
 
         linearLayoutProgVertical.addView(radioGroup);
         relativeLayoutXML.addView(scrollView);
-
     }
 
     private void setNavigation(){
@@ -137,14 +134,13 @@ public class DecisionActivity extends AppCompatActivity {
         MenuItem menuItem = menu.getItem(1);
         menuItem.setChecked(true);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
     }
 
     private void getOptions(){
 
         Integer id = Integer.valueOf(getIntent().getStringExtra("TermId"));
         String uri = String.format(Constants.URL_GETOPTIONS+"?ID=%1$s",id);
-        //System.out.print(uri);
+        System.out.print(uri);
 
         StringRequest stringRequest = new StringRequest(
                 Request.Method.GET,
@@ -155,21 +151,24 @@ public class DecisionActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
 
-                        String mOptionId;
+                        String mOption;
 
                         try{
                             JSONObject root = new JSONObject(response);
                             JSONArray options_data = root.getJSONArray("options_data");
 
+
                             for (int i = 0; i < options_data.length(); i++) {
                                 System.out.print(i);
                                 JSONObject jsonObject = options_data.getJSONObject(i);
 
-                                mOptionId = jsonObject.getString("optionId");
-
-                                mOptionArr.addElement(Integer.parseInt(mOptionId));
+                                mOption = jsonObject.getString("option_");
+                                mOptionArr.addElement(mOption);
+                                Toast.makeText( getApplicationContext(),mOption, Toast.LENGTH_SHORT).show();
 
                             }
+                            // Call the layout method right after the data is fetched
+                            setLayout();
                         }
                         catch (JSONException e) {
                             // TODO Auto-generated catch block
