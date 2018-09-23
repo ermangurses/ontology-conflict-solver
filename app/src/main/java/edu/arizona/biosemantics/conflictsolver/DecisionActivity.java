@@ -35,7 +35,7 @@ import java.util.Vector;
 public class DecisionActivity extends AppCompatActivity {
 
 
-    private static Vector<String> mOptionArr = new Vector<String>();
+    private  Vector<String> optionArr = new Vector<String>();
 
     private static boolean startedFlag = false;
 
@@ -54,18 +54,10 @@ public class DecisionActivity extends AppCompatActivity {
             startActivity(new Intent(this, LoginActivity.class));
         }
 
-        if(!startedFlag){
+        // Call the getOptions method
+        getOptions();
 
-            // Call the getOptions method
-            getOptions();
-
-        } else {
-
-            // Call the layout method right after the data is fetched
-            setLayout();
-
-        }
-        // Call the navigation method
+        // Call the setNavigation method
         setNavigation();
     }
 
@@ -96,11 +88,11 @@ public class DecisionActivity extends AppCompatActivity {
         radioGroup.setLayoutParams(layoutParams);
 
         int i;
-        for(i = 0; i < mOptionArr.size(); ++i) {
+        for(i = 0; i < optionArr.size(); ++i) {
 
 
             RadioButton radioButton = new RadioButton(this);
-            radioButton.setText(mOptionArr.elementAt(i) );
+            radioButton.setText(optionArr.elementAt(i) );
             radioButton.setId(i);
 
             TextView textview = new TextView(this);
@@ -141,13 +133,6 @@ public class DecisionActivity extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
-    protected void onDestroy() {
-        super.onDestroy();
-        if (isFinishing()) {
-            startedFlag = true;
-        }
-    }
-
     private void getOptions(){
 
         Integer id = Integer.valueOf(getIntent().getStringExtra("TermId"));
@@ -159,7 +144,6 @@ public class DecisionActivity extends AppCompatActivity {
                 uri,
                 new Response.Listener<String>() {
 
-
                     @Override
                     public void onResponse(String response) {
 
@@ -169,13 +153,12 @@ public class DecisionActivity extends AppCompatActivity {
                             JSONObject root = new JSONObject(response);
                             JSONArray options_data = root.getJSONArray("options_data");
 
-
                             for (int i = 0; i < options_data.length(); i++) {
                                 System.out.print(i);
                                 JSONObject jsonObject = options_data.getJSONObject(i);
 
                                 mOption = jsonObject.getString("option_");
-                                mOptionArr.addElement(mOption);
+                                optionArr.addElement(mOption);
                                 //Toast.makeText( getApplicationContext(),mOption, Toast.LENGTH_SHORT).show();
 
                             }
