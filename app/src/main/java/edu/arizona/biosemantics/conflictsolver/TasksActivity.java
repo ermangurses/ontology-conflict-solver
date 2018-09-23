@@ -39,6 +39,7 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
     private static Vector<String>   termArr       = new Vector<String>();
     private static Vector<Integer>  conflictIdArr = new Vector<Integer>();
     private static Vector<String>   usernameArr   = new Vector<String>();
+    private static Vector<String>   sentenceArr   = new Vector<String>();
     private static boolean          startedFlag   = false;
 
     @Override
@@ -133,6 +134,7 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
                         String mTerm;
                         String mConflictId;
                         String mUsername;
+                        String mSentence;
 
                         try{
                             // Get the response from server
@@ -151,6 +153,8 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
                                 mTerm       = jsonObject.getString("term");
                                 mConflictId = jsonObject.getString("conflictId");
                                 mUsername   = jsonObject.getString("username");
+                                mSentence   = jsonObject.getString("sentence");
+
 
                                 // Put the items to the arrays
                                 termIdArr.addElement(Integer.parseInt(mTermId));
@@ -158,6 +162,8 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
 
                                 conflictIdArr.addElement(Integer.parseInt(mConflictId));
                                 usernameArr.addElement(mUsername);
+                                sentenceArr.addElement(mSentence);
+
                             }
 
                             // Call setLayout() after the data in the arrays
@@ -241,6 +247,7 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
         intent.putExtra("TermId", ( String.valueOf( termIdArr.get(index) ) ) );
         intent.putExtra("Term", ( String.valueOf(  termArr.get(index) ) ) );
         intent.putExtra("Username", ( String.valueOf(  usernameArr.get(index) ) ) );
+        intent.putExtra("Sentence", ( String.valueOf(  sentenceArr.get(index) ) ) );
 
         startActivity(intent);
         startedFlag = true;
