@@ -36,6 +36,9 @@ public class DecisionActivity extends AppCompatActivity {
 
 
     private  Vector<String> optionArr = new Vector<String>();
+    private String term;
+    private String sentence;
+
 
     private static boolean startedFlag = false;
 
@@ -63,6 +66,16 @@ public class DecisionActivity extends AppCompatActivity {
 
     private void setLayout(){
 
+        // Set the header for the confusing term
+        TextView textviewTerm = (TextView) findViewById(R.id.term);
+        textviewTerm.setText(term);
+
+        // Set the header for the confusing term
+        TextView textviewSentence = (TextView) findViewById(R.id.sentence);
+        textviewSentence.setText(sentence);
+
+
+
         RadioGroup radioGroup = new RadioGroup(getApplicationContext());
         RelativeLayout relativeLayoutXML =(RelativeLayout)findViewById(R.id.relativeLayoutXML);
 
@@ -89,7 +102,6 @@ public class DecisionActivity extends AppCompatActivity {
 
         int i;
         for(i = 0; i < optionArr.size(); ++i) {
-
 
             RadioButton radioButton = new RadioButton(this);
             radioButton.setText(optionArr.elementAt(i) );
@@ -160,8 +172,11 @@ public class DecisionActivity extends AppCompatActivity {
                                 mOption = jsonObject.getString("option_");
                                 optionArr.addElement(mOption);
                                 //Toast.makeText( getApplicationContext(),mOption, Toast.LENGTH_SHORT).show();
-
                             }
+
+                            term = getIntent().getStringExtra("Term");
+                            sentence = getIntent().getStringExtra("Sentence");
+
                             // Call the layout method right after the data is fetched
                             setLayout();
                         }
