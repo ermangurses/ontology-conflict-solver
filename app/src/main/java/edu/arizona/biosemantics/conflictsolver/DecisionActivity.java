@@ -135,6 +135,24 @@ public class DecisionActivity extends AppCompatActivity {
 
         linearLayoutProgVertical.addView(radioGroup);
         relativeLayoutXML.addView(scrollView);
+
+
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // This will get the radiobutton that has changed in its check state
+                RadioButton checkedRadioButton = (RadioButton)group.findViewById(checkedId);
+                // This puts the value (true/false) into the variable
+                boolean isChecked = checkedRadioButton.isChecked();
+                // If the radiobutton that has changed in check state is now checked...
+                if (isChecked)
+                {
+                    // Changes the textview's text to "Checked: example radiobutton text"
+                    Toast.makeText( getApplicationContext(),checkedRadioButton.getText(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
     }
 
     private void setNavigation(){
