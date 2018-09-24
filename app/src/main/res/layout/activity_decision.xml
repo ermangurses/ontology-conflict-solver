@@ -31,17 +31,16 @@
             android:visibility="visible">
 
             <TextView
-                android:id="@+id/textView1"
+                android:id="@+id/term"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
-                android:text="@string/The_Word"
                 android:textAlignment="center"
                 android:textSize="25sp"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/sentence"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="0"
