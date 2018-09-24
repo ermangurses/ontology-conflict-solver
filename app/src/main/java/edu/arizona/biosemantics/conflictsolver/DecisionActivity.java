@@ -36,6 +36,8 @@ public class DecisionActivity extends AppCompatActivity {
 
 
     private  Vector<String> optionArr = new Vector<String>();
+    private  Vector<String> definitionArr = new Vector<String>();
+
     private String term;
     private String sentence;
 
@@ -108,7 +110,9 @@ public class DecisionActivity extends AppCompatActivity {
             radioButton.setId(i);
 
             TextView textview = new TextView(this);
-            textview.setText(R.string.Example_Sentence1);
+            //textview.setText(R.string.Example_Sentence1);
+            textview.setText(definitionArr.elementAt(i));
+
             textview.setId(i);
 
             radioButton.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.branch,0);
@@ -160,6 +164,7 @@ public class DecisionActivity extends AppCompatActivity {
                     public void onResponse(String response) {
 
                         String mOption;
+                        String mDefinition;
 
                         try{
                             JSONObject root = new JSONObject(response);
@@ -169,8 +174,15 @@ public class DecisionActivity extends AppCompatActivity {
                                 System.out.print(i);
                                 JSONObject jsonObject = options_data.getJSONObject(i);
 
+
                                 mOption = jsonObject.getString("option_");
                                 optionArr.addElement(mOption);
+
+
+                                mDefinition = jsonObject.getString("definition");
+                                definitionArr.addElement(mDefinition);
+
+
                                 //Toast.makeText( getApplicationContext(),mOption, Toast.LENGTH_SHORT).show();
                             }
 
