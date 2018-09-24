@@ -214,6 +214,30 @@ public class DecisionActivity extends AppCompatActivity {
         RequestHandler.getInstance(this).addToRequestQueue(stringRequest);
     }
 
+    /*private void getOptionImages(){
+
+        Integer id = Integer.valueOf(getIntent().getStringExtra("TermId"));
+        String uri = String.format(Constants.URL_GETOPTIONS+"?ID=%1$s",id);
+        System.out.print(uri);
+
+        ImageRequest imageRequest = new ImageRequest(
+                uri,
+                new Response.Listener<Bitmap>() {
+
+                    @Override
+                    public void onResponse(Bitmap response) {
+
+
+                    }
+                }, 0, 0, ImageView.ScaleType.CENTER_CROP, null, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        RequestHandler.getInstance(this).addToRequestQueue(imageRequest);
+    }*/
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
