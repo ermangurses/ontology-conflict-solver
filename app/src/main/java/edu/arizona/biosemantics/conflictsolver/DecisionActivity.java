@@ -1,5 +1,6 @@
 package edu.arizona.biosemantics.conflictsolver;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,6 +9,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -17,6 +20,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -26,7 +30,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
+
+import static android.view.View.*;
 
 /**
  * Created by egurses on 3/13/18.
@@ -38,11 +46,20 @@ public class DecisionActivity extends AppCompatActivity {
     private  Vector<String> optionArr = new Vector<String>();
     private  Vector<String> definitionArr = new Vector<String>();
 
-    private String term;
-    private String sentence;
+    private String mTerm;
+    private String mSentence;
+    private String mOption;
+    private String mDefinition;
+    private String mChoice;
 
+    private EditText editTextWrittenComment;
 
     private static boolean startedFlag = false;
+
+    private ProgressDialog progressDialog;
+
+
+    String termId;
 
     //@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
@@ -59,6 +76,10 @@ public class DecisionActivity extends AppCompatActivity {
             startActivity(new Intent(this, LoginActivity.class));
         }
 
+        termId = getIntent().getStringExtra("TermId");
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Submiting the answer...");
+
         // Call the getOptions method
         getOptions();
 
@@ -69,14 +90,23 @@ public class DecisionActivity extends AppCompatActivity {
     private void setLayout(){
 
         // Set the header for the confusing term
-        TextView textviewTerm = (TextView) findViewById(R.id.term);
-        textviewTerm.setText(term);
+        final TextView textviewTerm = (TextView) findViewById(R.id.term);
+        textviewTerm.setText(mTerm);
 
         // Set the header for the confusing term
-        TextView textviewSentence = (TextView) findViewById(R.id.sentence);
-        textviewSentence.setText(sentence);
+        final TextView textviewSentence = (TextView) findViewById(R.id.sentence);
+        textviewSentence.setText(mSentence);
+
+        editTextWrittenComment = (EditText) findViewById(R.id.editText);
 
 
+        // Set listener for SUBMIT button
+        final Button button = findViewById(R.id.submit);
+        button.setOnClickListener(new OnClickListener() {
+            public void onClick(View v){
+                submitDecision();
+            }
+        });
 
         RadioGroup radioGroup = new RadioGroup(getApplicationContext());
         RelativeLayout relativeLayoutXML =(RelativeLayout)findViewById(R.id.relativeLayoutXML);
@@ -136,7 +166,7 @@ public class DecisionActivity extends AppCompatActivity {
         linearLayoutProgVertical.addView(radioGroup);
         relativeLayoutXML.addView(scrollView);
 
-
+        // Set listener for radio group
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
 
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -147,8 +177,11 @@ public class DecisionActivity extends AppCompatActivity {
                 // If the radiobutton that has changed in check state is now checked...
                 if (isChecked)
                 {
+                    mChoice = (String) checkedRadioButton.getText();
+
                     // Changes the textview's text to "Checked: example radiobutton text"
                     Toast.makeText( getApplicationContext(),checkedRadioButton.getText(), Toast.LENGTH_SHORT).show();
+
                 }
             }
         });
@@ -181,8 +214,6 @@ public class DecisionActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
 
-                        String mOption;
-                        String mDefinition;
 
                         try{
                             JSONObject root = new JSONObject(response);
@@ -204,8 +235,8 @@ public class DecisionActivity extends AppCompatActivity {
                                 //Toast.makeText( getApplicationContext(),mOption, Toast.LENGTH_SHORT).show();
                             }
 
-                            term = getIntent().getStringExtra("Term");
-                            sentence = getIntent().getStringExtra("Sentence");
+                            mTerm = getIntent().getStringExtra("Term");
+                            mSentence = getIntent().getStringExtra("Sentence");
 
                             // Call the layout method right after the data is fetched
                             setLayout();
@@ -231,6 +262,59 @@ public class DecisionActivity extends AppCompatActivity {
         );
         RequestHandler.getInstance(this).addToRequestQueue(stringRequest);
     }
+
+    private void submitDecision() {
+
+
+        final String writtenComment = editTextWrittenComment.getText().toString().trim();
+        //final String voiceComment   = editTextVoiceComment.getText().toString().trim();
+
+
+        progressDialog.show();
+
+        // Inner Class for string request
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.URL_SUBMITDECISION,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        progressDialog.dismiss();
+
+                        try {
+
+                            JSONObject jsonObject = new JSONObject(response);
+                            //Toast.makeText(getApplicationContext(),
+                                    //jsonObject.getString("message"),
+                                    //Toast.LENGTH_LONG).show();
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        progressDialog.hide();
+                        Toast.makeText(getApplicationContext(), error.getMessage(),
+                                Toast.LENGTH_LONG).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+
+
+                params.put("termId", termId);
+                params.put("choice", mChoice);
+                params.put("writtenComment",writtenComment);
+                return params;
+            }
+        };
+
+        RequestHandler.getInstance(this).addToRequestQueue(stringRequest);
+    }
+
 
     /*private void getOptionImages(){
 
@@ -297,5 +381,3 @@ public class DecisionActivity extends AppCompatActivity {
         return true;
     }
 }
-
-
