@@ -44,7 +44,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="0"
-                android:text="@string/Example_Sentence1"
                 android:textAlignment="center"
                 android:textSize="12sp"
                 android:textStyle="bold" />
@@ -102,7 +101,7 @@
             android:textColorLink="@android:color/holo_blue_light" />
 
         <Button
-            android:id="@+id/button1"
+            android:id="@+id/submit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
