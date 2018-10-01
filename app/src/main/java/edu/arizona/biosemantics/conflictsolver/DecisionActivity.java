@@ -34,8 +34,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
-import static android.view.View.*;
-
 /**
  * Created by egurses on 3/13/18.
  */
@@ -100,25 +98,9 @@ public class DecisionActivity extends AppCompatActivity {
 
         editTextWrittenComment = (EditText) findViewById(R.id.editText);
 
-
         // Set listener for SUBMIT button
-        final Button button = findViewById(R.id.submit);
-        button.setOnClickListener(new OnClickListener() {
-            public void onClick(View v){
-
-                if(mIsChecked){
-                    submitDecision();
-                    startActivity(new Intent(DecisionActivity.this, TasksActivity.class));
-
-                } else {
-
-                    Toast.makeText( getApplicationContext(),
-                            "Please select one of the options",
-                            Toast.LENGTH_SHORT).show();
-                }
-
-            }
-        });
+        Button button = findViewById(R.id.submit);
+        setButtonListener (button);
 
         RadioGroup radioGroup = new RadioGroup(getApplicationContext());
         RelativeLayout relativeLayoutXML =(RelativeLayout)findViewById(R.id.relativeLayoutXML);
@@ -181,6 +163,28 @@ public class DecisionActivity extends AppCompatActivity {
 
         linearLayoutProgVertical.addView(radioGroup);
         relativeLayoutXML.addView(scrollView);
+
+        setRadioGroupListener(radioGroup);
+
+    }
+    private void setButtonListener (Button button) {
+
+        button.setOnClickListener(new Button.OnClickListener() {
+            public void onClick(View v) {
+                if (mIsChecked) {
+                    submitDecision();
+                    startActivity(new Intent(DecisionActivity.this, TasksActivity.class));
+
+                } else {
+                    Toast.makeText(getApplicationContext(),
+                            "Please select one of the options",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void setRadioGroupListener (RadioGroup radioGroup){
 
         // Set listener for radio group
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
