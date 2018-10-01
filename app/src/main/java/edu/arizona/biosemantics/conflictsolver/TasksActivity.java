@@ -84,13 +84,17 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
         RelativeLayout relativeLayoutXML =(RelativeLayout)findViewById(R.id.relativeLayoutXML);
 
         ScrollView scrollView = new ScrollView(this);
-        scrollView.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+        scrollView.setLayoutParams(new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.MATCH_PARENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT));
 
         ////////////////////////////////////////////////////////////////////
         ////////Adding linearLayoutProgVertical layout to scrollView////////
         ////////////////////////////////////////////////////////////////////
         LinearLayout linearLayoutProgVertical = new LinearLayout(this);
-        linearLayoutProgVertical.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+        linearLayoutProgVertical.setLayoutParams(new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+
         linearLayoutProgVertical.setOrientation(LinearLayout.VERTICAL);
         scrollView.addView(linearLayoutProgVertical);
 
