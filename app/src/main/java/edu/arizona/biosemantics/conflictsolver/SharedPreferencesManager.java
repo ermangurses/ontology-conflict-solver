@@ -11,8 +11,8 @@ public class SharedPreferencesManager {
 
     private static final String SHARED_PREF_NAME  = "mysharedpref12";
     private static final String KEY_USERNAME      = "username";
-    private static final String KEY_USER_EMAIL    = "useremail";
-    private static final String KEY_USER_ID       = "userid";
+    private static final String KEY_USER_EMAIL    = "email";
+    private static final String KEY_USER_ID       = "expertId";
 
 
     private SharedPreferencesManager(Context context) {
@@ -63,7 +63,12 @@ public class SharedPreferencesManager {
         return true; 
     }
 
+    public int getExpertId(){
 
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        return sharedPreferences.getInt(KEY_USER_ID, 0);
+
+    }
     public String getUsername(){
 
         SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
