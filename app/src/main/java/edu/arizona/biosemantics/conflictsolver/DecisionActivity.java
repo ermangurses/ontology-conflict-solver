@@ -53,6 +53,7 @@ public class DecisionActivity extends AppCompatActivity {
     private String mTermId;
     private String mConflictId;
     private String mExpertId;
+    private boolean mIsChecked;
 
     private EditText editTextWrittenComment;
     private ProgressDialog progressDialog;
@@ -72,9 +73,10 @@ public class DecisionActivity extends AppCompatActivity {
             startActivity(new Intent(this, LoginActivity.class));
         }
 
-        mTermId     = getIntent().getStringExtra("TermId");
-        mConflictId = getIntent().getStringExtra("ConflictId");
-        mExpertId = String.valueOf(SharedPreferencesManager.getInstance(this).getExpertId());
+        mIsChecked   = false;
+        mTermId      = getIntent().getStringExtra("TermId");
+        mConflictId  = getIntent().getStringExtra("ConflictId");
+        mExpertId    = String.valueOf(SharedPreferencesManager.getInstance(this).getExpertId());
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Submiting the answer...");
@@ -103,8 +105,18 @@ public class DecisionActivity extends AppCompatActivity {
         final Button button = findViewById(R.id.submit);
         button.setOnClickListener(new OnClickListener() {
             public void onClick(View v){
-                submitDecision();
-                startActivity(new Intent(DecisionActivity.this, TasksActivity.class));
+
+                if(mIsChecked){
+                    submitDecision();
+                    startActivity(new Intent(DecisionActivity.this, TasksActivity.class));
+
+                } else {
+
+                    Toast.makeText( getApplicationContext(),
+                            "Please select one of the options",
+                            Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
@@ -177,9 +189,9 @@ public class DecisionActivity extends AppCompatActivity {
                 // This will get the radiobutton that has changed in its check state
                 RadioButton checkedRadioButton = (RadioButton)group.findViewById(checkedId);
                 // This puts the value (true/false) into the variable
-                boolean isChecked = checkedRadioButton.isChecked();
+                mIsChecked = checkedRadioButton.isChecked();
                 // If the radiobutton that has changed in check state is now checked...
-                if (isChecked) {
+                if (mIsChecked) {
                     mChoice = (String) checkedRadioButton.getText();
                     // Changes the textview's text to "Checked: example radiobutton text"
                 }
