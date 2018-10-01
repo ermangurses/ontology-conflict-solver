@@ -42,8 +42,7 @@ import static android.view.View.*;
 
 public class DecisionActivity extends AppCompatActivity {
 
-
-    private  Vector<String> optionArr = new Vector<String>();
+    private  Vector<String> optionArr     = new Vector<String>();
     private  Vector<String> definitionArr = new Vector<String>();
 
     private String mTerm;
@@ -51,15 +50,12 @@ public class DecisionActivity extends AppCompatActivity {
     private String mOption;
     private String mDefinition;
     private String mChoice;
+    private String mTermId;
+    private String mConflictId;
+    private String mExpertId;
 
     private EditText editTextWrittenComment;
-
-    private static boolean startedFlag = false;
-
     private ProgressDialog progressDialog;
-
-
-    String termId;
 
     //@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
@@ -76,7 +72,10 @@ public class DecisionActivity extends AppCompatActivity {
             startActivity(new Intent(this, LoginActivity.class));
         }
 
-        termId = getIntent().getStringExtra("TermId");
+        mTermId     = getIntent().getStringExtra("TermId");
+        mConflictId = getIntent().getStringExtra("ConflictId");
+        mExpertId = String.valueOf(SharedPreferencesManager.getInstance(this).getExpertId());
+
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Submiting the answer...");
 
@@ -105,6 +104,7 @@ public class DecisionActivity extends AppCompatActivity {
         button.setOnClickListener(new OnClickListener() {
             public void onClick(View v){
                 submitDecision();
+                startActivity(new Intent(DecisionActivity.this, TasksActivity.class));
             }
         });
 
@@ -112,13 +112,17 @@ public class DecisionActivity extends AppCompatActivity {
         RelativeLayout relativeLayoutXML =(RelativeLayout)findViewById(R.id.relativeLayoutXML);
 
         ScrollView scrollView = new ScrollView(this);
-        scrollView.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+        scrollView.setLayoutParams(new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.MATCH_PARENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT));
 
         ////////////////////////////////////////////////////////////////////
         ////////Adding linearLayoutProgVertical layout to scrollView////////
         ////////////////////////////////////////////////////////////////////
         LinearLayout linearLayoutProgVertical = new LinearLayout(this);
-        linearLayoutProgVertical.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+        linearLayoutProgVertical.setLayoutParams(new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.MATCH_PARENT,
+                RelativeLayout.LayoutParams.MATCH_PARENT));
         linearLayoutProgVertical.setOrientation(LinearLayout.VERTICAL);
         scrollView.addView(linearLayoutProgVertical);
 
@@ -175,13 +179,9 @@ public class DecisionActivity extends AppCompatActivity {
                 // This puts the value (true/false) into the variable
                 boolean isChecked = checkedRadioButton.isChecked();
                 // If the radiobutton that has changed in check state is now checked...
-                if (isChecked)
-                {
+                if (isChecked) {
                     mChoice = (String) checkedRadioButton.getText();
-
                     // Changes the textview's text to "Checked: example radiobutton text"
-                    Toast.makeText( getApplicationContext(),checkedRadioButton.getText(), Toast.LENGTH_SHORT).show();
-
                 }
             }
         });
@@ -214,24 +214,19 @@ public class DecisionActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
 
-
                         try{
                             JSONObject root = new JSONObject(response);
                             JSONArray options_data = root.getJSONArray("options_data");
 
                             for (int i = 0; i < options_data.length(); i++) {
-                                System.out.print(i);
-                                JSONObject jsonObject = options_data.getJSONObject(i);
 
+                                JSONObject jsonObject = options_data.getJSONObject(i);
 
                                 mOption = jsonObject.getString("option_");
                                 optionArr.addElement(mOption);
 
-
                                 mDefinition = jsonObject.getString("definition");
                                 definitionArr.addElement(mDefinition);
-
-
                                 //Toast.makeText( getApplicationContext(),mOption, Toast.LENGTH_SHORT).show();
                             }
 
@@ -273,7 +268,7 @@ public class DecisionActivity extends AppCompatActivity {
         progressDialog.show();
 
         // Inner Class for string request
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.URL_SUBMITDECISION,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.URL_PROCESSDECISION,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -282,10 +277,9 @@ public class DecisionActivity extends AppCompatActivity {
                         try {
 
                             JSONObject jsonObject = new JSONObject(response);
-                            //Toast.makeText(getApplicationContext(),
-                                    //jsonObject.getString("message"),
-                                    //Toast.LENGTH_LONG).show();
-
+                            Toast.makeText(getApplicationContext(),
+                                    jsonObject.getString("message"),
+                                    Toast.LENGTH_LONG).show();
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -304,8 +298,8 @@ public class DecisionActivity extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
 
-
-                params.put("termId", termId);
+                params.put("expertId", mExpertId);
+                params.put("conflictId", mConflictId);
                 params.put("choice", mChoice);
                 params.put("writtenComment",writtenComment);
                 return params;
