@@ -172,8 +172,11 @@ public class DecisionActivity extends AppCompatActivity {
         button.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
                 if (mIsChecked) {
+
                     submitDecision();
-                    startActivity(new Intent(DecisionActivity.this, TasksActivity.class));
+                    Intent intent = new Intent(DecisionActivity.this, TasksActivity.class);
+                    intent.putExtra("solvedFlag", true );
+                    startActivity(intent);
 
                 } else {
                     Toast.makeText(getApplicationContext(),
