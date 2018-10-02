@@ -40,7 +40,7 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
     private static Vector<Integer>  conflictIdArr = new Vector<Integer>();
     private static Vector<String>   usernameArr   = new Vector<String>();
     private static Vector<String>   sentenceArr   = new Vector<String>();
-    private static Vector<String>   isSolvedArr   = new Vector<String>();
+    private static Vector<Integer>   isSolvedArr   = new Vector<Integer>();
 
     private static boolean          startedFlag   = false;
 
@@ -108,17 +108,18 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
 
             button.setText(Html.fromHtml(srt));
 
-            String str = "1";
-            if(isSolvedArr.get(i).compareTo(str) == 0){
+            // Color buttons GREEN if it is solved
+            // otherwise RED
+            if(isSolvedArr.get(i) == 1){
 
                 button.setTextColor(0xFF00AA55);
 
             } else {
 
+
                 button.setTextColor(0xFFCC0000);
 
             }
-
 
             button.setLeft(10);
 
@@ -127,10 +128,13 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
 
             button.setOnClickListener(this);
             linearLayoutProgVertical.addView(button);
+
+
         }
         relativeLayoutXML.addView(scrollView);
     }
 
+    // Make sure mark the flag true before exit the activity
     protected void onDestroy() {
         super.onDestroy();
         if (isFinishing()) {
@@ -183,7 +187,7 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
                                 conflictIdArr.addElement(Integer.parseInt(conflictId));
                                 usernameArr.addElement(username);
                                 sentenceArr.addElement(sentence);
-                                isSolvedArr.addElement(isSolved);
+                                isSolvedArr.addElement(Integer.parseInt(isSolved));
 
                             }
 
@@ -256,6 +260,9 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
 
         int index = conflictIdArr.indexOf(v.getId());
+
+        isSolvedArr.set(index,1);
+
         termIdArr.get(index);
         termArr.get(index);
         usernameArr.get(index);
