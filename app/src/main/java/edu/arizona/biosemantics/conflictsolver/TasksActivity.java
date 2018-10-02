@@ -40,10 +40,11 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
     private static Vector<Integer>  conflictIdArr = new Vector<Integer>();
     private static Vector<String>   usernameArr   = new Vector<String>();
     private static Vector<String>   sentenceArr   = new Vector<String>();
-    private static Vector<Integer>   isSolvedArr   = new Vector<Integer>();
-
+    private static Vector<Integer>  isSolvedArr   = new Vector<Integer>();
     private static boolean          startedFlag   = false;
 
+
+    private static int mIndex;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +55,8 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
             startActivity(new Intent(this, LoginActivity.class));
         }
 
+        trackConflict();
+
         // Make sure getTasks() is run only once
         // and setLayout is called when the user return to the TaskActivity
         if (!startedFlag) {
@@ -63,9 +66,23 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
         }else{
 
             setLayout();
+
         }
 
         setNavigation();
+    }
+    private void trackConflict(){
+
+        boolean solvedFlag = false;
+        Bundle extras = getIntent().getExtras();
+
+        if(extras!=null){
+            solvedFlag = extras.getBoolean("solvedFlag");
+        }
+
+        if(solvedFlag){
+            isSolvedArr.set(mIndex, 1);
+        }
     }
 
     private void setNavigation(){
@@ -259,23 +276,21 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
 
-        int index = conflictIdArr.indexOf(v.getId());
+        mIndex = conflictIdArr.indexOf(v.getId());
 
-        isSolvedArr.set(index,1);
-
-        termIdArr.get(index);
-        termArr.get(index);
-        usernameArr.get(index);
+        termIdArr.get(mIndex);
+        termArr.get(mIndex);
+        usernameArr.get(mIndex);
 
         //Toast.makeText( getApplicationContext(),"Conflict ID is "+ v.getId(), Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(TasksActivity.this, DecisionActivity.class);
 
         // Send the data to Decision Activity
         intent.putExtra("ConflictId", ( String.valueOf( v.getId() ) ) );
-        intent.putExtra("TermId", ( String.valueOf( termIdArr.get(index) ) ) );
-        intent.putExtra("Term", ( String.valueOf(  termArr.get(index) ) ) );
-        intent.putExtra("Username", ( String.valueOf(  usernameArr.get(index) ) ) );
-        intent.putExtra("Sentence", ( String.valueOf(  sentenceArr.get(index) ) ) );
+        intent.putExtra("TermId", ( String.valueOf( termIdArr.get(mIndex) ) ) );
+        intent.putExtra("Term", ( String.valueOf(  termArr.get(mIndex) ) ) );
+        intent.putExtra("Username", ( String.valueOf(  usernameArr.get(mIndex) ) ) );
+        intent.putExtra("Sentence", ( String.valueOf(  sentenceArr.get(mIndex) ) ) );
 
         startActivity(intent);
         startedFlag = true;
