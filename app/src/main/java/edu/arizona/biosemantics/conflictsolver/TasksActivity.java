@@ -40,6 +40,8 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
     private static Vector<Integer>  conflictIdArr = new Vector<Integer>();
     private static Vector<String>   usernameArr   = new Vector<String>();
     private static Vector<String>   sentenceArr   = new Vector<String>();
+    private static Vector<String>   isSolvedArr   = new Vector<String>();
+
     private static boolean          startedFlag   = false;
 
     @Override
@@ -102,10 +104,22 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
         for (int i = 0; i < usernameArr.size(); i++) {
 
             Button button = new Button(this);
-            String srt ="A conflict for " + "<em>" + ( termArr.get(i)) + "</em>" + " from " + usernameArr.get(i) +" "+ conflictIdArr.get(i)+" "+termIdArr.get(i);
+            String srt ="A conflict for " + "<em>" + ( termArr.get(i)) + "</em>" + " from " + usernameArr.get(i) +" "+ conflictIdArr.get(i)+" "+termIdArr.get(i)+" "+isSolvedArr.get(i);
 
             button.setText(Html.fromHtml(srt));
-            button.setTextColor(0xFFFF0000);
+
+            String str = "1";
+            if(isSolvedArr.get(i).compareTo(str) == 0){
+
+                button.setTextColor(0xFF00AA55);
+
+            } else {
+
+                button.setTextColor(0xFFCC0000);
+
+            }
+
+
             button.setLeft(10);
 
             // Set the button Id as the same conflict Id
@@ -134,11 +148,12 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
 
                     public void onResponse(String response) {
 
-                        String mTermId;
-                        String mTerm;
-                        String mConflictId;
-                        String mUsername;
-                        String mSentence;
+                        String termId;
+                        String term;
+                        String conflictId;
+                        String username;
+                        String sentence;
+                        String isSolved;
 
                         try{
                             // Get the response from server
@@ -153,20 +168,22 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
                                 JSONObject jsonObject = task_data.getJSONObject(i);
 
                                 // Get the items from the object
-                                mTermId     = jsonObject.getString("termId");
-                                mTerm       = jsonObject.getString("term");
-                                mConflictId = jsonObject.getString("conflictId");
-                                mUsername   = jsonObject.getString("username");
-                                mSentence   = jsonObject.getString("sentence");
+                                termId     = jsonObject.getString("termId");
+                                term       = jsonObject.getString("term");
+                                conflictId = jsonObject.getString("conflictId");
+                                username   = jsonObject.getString("username");
+                                sentence   = jsonObject.getString("sentence");
+                                isSolved   = jsonObject.getString("isSolved");
 
 
                                 // Put the items to the arrays
-                                termIdArr.addElement(Integer.parseInt(mTermId));
-                                termArr.addElement(mTerm);
+                                termIdArr.addElement(Integer.parseInt(termId));
+                                termArr.addElement(term);
 
-                                conflictIdArr.addElement(Integer.parseInt(mConflictId));
-                                usernameArr.addElement(mUsername);
-                                sentenceArr.addElement(mSentence);
+                                conflictIdArr.addElement(Integer.parseInt(conflictId));
+                                usernameArr.addElement(username);
+                                sentenceArr.addElement(sentence);
+                                isSolvedArr.addElement(isSolved);
 
                             }
 
