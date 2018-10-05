@@ -2,16 +2,19 @@ package edu.arizona.biosemantics.conflictsolver;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -42,6 +45,8 @@ public class DecisionActivity extends AppCompatActivity {
 
     private  Vector<String> optionArr     = new Vector<String>();
     private  Vector<String> definitionArr = new Vector<String>();
+    private  Vector<ImageView> imageViews = new Vector<ImageView>();
+
 
     private String mTerm;
     private String mSentence;
@@ -108,7 +113,7 @@ public class DecisionActivity extends AppCompatActivity {
         ScrollView scrollView = new ScrollView(this);
         scrollView.setLayoutParams(new RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.MATCH_PARENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT));
+                RelativeLayout.LayoutParams.MATCH_PARENT));
 
         ////////////////////////////////////////////////////////////////////
         ////////Adding linearLayoutProgVertical layout to scrollView////////
@@ -126,7 +131,7 @@ public class DecisionActivity extends AppCompatActivity {
                 RadioGroup.LayoutParams.MATCH_PARENT,
                 RadioGroup.LayoutParams.MATCH_PARENT);
 
-        layoutParams.setMargins(10, 10, 10, 10);
+        layoutParams.setMargins(30, 10, 0, 10);
         radioGroup.setOrientation(LinearLayout.VERTICAL);
         radioGroup.setLayoutParams(layoutParams);
 
@@ -135,18 +140,32 @@ public class DecisionActivity extends AppCompatActivity {
 
             RadioButton radioButton = new RadioButton(this);
             radioButton.setText(optionArr.elementAt(i) );
+            radioButton.setTextSize(16);
             radioButton.setId(i);
 
             TextView textview = new TextView(this);
             //textview.setText(R.string.Example_Sentence1);
             textview.setText(definitionArr.elementAt(i));
-
             textview.setId(i);
 
-            radioButton.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.branch,0);
-            radioButton.setCompoundDrawablePadding(320);
+
+            ImageView image = new ImageView(this);
+
+
+            image.setImageResource(R.drawable.branch);
+
+
+            Drawable dr = image.getDrawable().getCurrent();
+
+
+            dr.setBounds(0, 0, dr.getIntrinsicWidth(), dr.getIntrinsicHeight());
+
+            radioButton.setCompoundDrawables( dr, null, null, null);
             radioGroup.addView(radioButton);
             radioGroup.addView(textview);
+            radioButton.setCompoundDrawablePadding(50);
+
+            radioGroup.setGravity(Gravity.FILL_HORIZONTAL);
         }
 
         // After the loop add the Non-of-Above option
