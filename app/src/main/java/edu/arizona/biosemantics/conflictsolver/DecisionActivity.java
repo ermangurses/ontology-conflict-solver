@@ -37,6 +37,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
+
+
 /**
  * Created by egurses on 3/13/18.
  */
@@ -61,11 +63,14 @@ public class DecisionActivity extends AppCompatActivity {
     private EditText editTextWrittenComment;
     private ProgressDialog progressDialog;
 
+    private ImageView imageView;
+
     //@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_decision);
 
         ActionBar actionBar = getSupportActionBar();
@@ -131,7 +136,7 @@ public class DecisionActivity extends AppCompatActivity {
                 RadioGroup.LayoutParams.MATCH_PARENT,
                 RadioGroup.LayoutParams.MATCH_PARENT);
 
-        layoutParams.setMargins(30, 10, 0, 10);
+        layoutParams.setMargins(40, 10, 0, 10);
         radioGroup.setOrientation(LinearLayout.VERTICAL);
         radioGroup.setLayoutParams(layoutParams);
 
@@ -144,26 +149,21 @@ public class DecisionActivity extends AppCompatActivity {
             radioButton.setId(i);
 
             TextView textview = new TextView(this);
-            //textview.setText(R.string.Example_Sentence1);
             textview.setText(definitionArr.elementAt(i));
             textview.setId(i);
 
 
             ImageView image = new ImageView(this);
-
-
             image.setImageResource(R.drawable.branch);
+            Drawable drawable = image.getDrawable().getCurrent();
+            drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
 
 
-            Drawable dr = image.getDrawable().getCurrent();
 
-
-            dr.setBounds(0, 0, dr.getIntrinsicWidth(), dr.getIntrinsicHeight());
-
-            radioButton.setCompoundDrawables( dr, null, null, null);
+            radioButton.setCompoundDrawables( drawable, null, null, null);
             radioGroup.addView(radioButton);
             radioGroup.addView(textview);
-            radioButton.setCompoundDrawablePadding(50);
+            radioButton.setCompoundDrawablePadding(60);
 
             radioGroup.setGravity(Gravity.FILL_HORIZONTAL);
         }
@@ -176,6 +176,7 @@ public class DecisionActivity extends AppCompatActivity {
         EditText editText = new EditText(this);
         editText.setHint(R.string.Example_Sentence3);
         editText.setId(++i);
+
         radioButton.setCompoundDrawablePadding(320);
         radioGroup.addView(radioButton);
         radioGroup.addView(editText);
@@ -186,6 +187,8 @@ public class DecisionActivity extends AppCompatActivity {
         setRadioGroupListener(radioGroup);
 
     }
+
+
     private void setButtonListener (Button button) {
 
         button.setOnClickListener(new Button.OnClickListener() {
