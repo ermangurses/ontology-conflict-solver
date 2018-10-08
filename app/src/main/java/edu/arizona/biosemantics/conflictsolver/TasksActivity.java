@@ -42,9 +42,8 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
     private static Vector<String>   sentenceArr   = new Vector<String>();
     private static Vector<Integer>  isSolvedArr   = new Vector<Integer>();
     private static boolean          startedFlag   = false;
-
-
     private static int mIndex;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
