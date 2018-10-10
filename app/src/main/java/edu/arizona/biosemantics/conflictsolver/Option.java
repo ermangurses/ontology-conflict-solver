@@ -2,26 +2,16 @@ package edu.arizona.biosemantics.conflictsolver;
 
 public class Option {
 
-    private int optionId;
     private String term;
+    private String option;
     private String definition;
     private String imageLink;
 
-    public Option(int id, String term, String definition, String imageLink) {
-        this.optionId = id;
-        this.term = term;
-        this.definition = definition;
-        this.imageLink = imageLink;
-    }
-
-    public int getId() {
-
-        return optionId;
-    }
-
-    public void setId(int optionId) {
-
-        this.optionId = optionId;
+    public Option(String term, String option, String definition, String imageLink) {
+        this.term        = term;
+        this.option      = option;
+        this.definition  = definition;
+        this.imageLink   = imageLink;
     }
 
     public String getTerm() {
@@ -32,6 +22,16 @@ public class Option {
     public void setTerm(String term) {
 
         this.term = term;
+    }
+
+    public String getOption() {
+
+        return option;
+    }
+
+    public void setOption(String option) {
+
+        this.option = option;
     }
 
     public String getDefinition() {
