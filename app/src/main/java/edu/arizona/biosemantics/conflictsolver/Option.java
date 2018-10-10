@@ -1,49 +1,56 @@
-package edu.arizona.biosemantics.adaptertestapplication;
+package edu.arizona.biosemantics.conflictsolver;
 
-public class Movie {
+public class Option {
 
-    private int id;
-    private String movieName;
+    private int optionId;
+    private String term;
+    private String definition;
     private String imageLink;
-    private String movieGenre;
 
-    public Movie(int id, String movieName, String imageLink, String movieGenre) {
-        this.id = id;
-        this.movieName = movieName;
+    public Option(int id, String term, String definition, String imageLink) {
+        this.optionId = id;
+        this.term = term;
+        this.definition = definition;
         this.imageLink = imageLink;
-        this.movieGenre = movieGenre;
     }
 
     public int getId() {
-        return id;
+
+        return optionId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setId(int optionId) {
+
+        this.optionId = optionId;
     }
 
-    public String getMovieName() {
-        return movieName;
+    public String getTerm() {
+
+        return term;
     }
 
-    public void setMovieName(String movieName) {
-        this.movieName = movieName;
+    public void setTerm(String term) {
+
+        this.term = term;
+    }
+
+    public String getDefinition() {
+
+        return definition;
+    }
+
+    public void setDefinition(String definition) {
+
+        this.term = definition;
     }
 
     public String getImageLink() {
+
         return imageLink;
     }
 
     public void setImageLink(String imageLink) {
+
         this.imageLink = imageLink;
     }
-
-    public String getMovieGenre() {
-        return movieGenre;
-    }
-
-    public void setMovieGenre(String movieGenre) {
-        this.movieGenre = movieGenre;
-    }
-
 }
