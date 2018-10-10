@@ -2,7 +2,8 @@ package edu.arizona.biosemantics.conflictsolver;
 
 public class Option {
 
-    private String term;
+    private static String term;
+    private static String sentence;
     private String option;
     private String definition;
     private String imageLink;
@@ -22,6 +23,15 @@ public class Option {
     public void setTerm(String term) {
 
         this.term = term;
+    }
+    public String getSentence() {
+
+        return sentence;
+    }
+
+    public void setSentence(String sentence) {
+
+        this.sentence = sentence;
     }
 
     public String getOption() {
