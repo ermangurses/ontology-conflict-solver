@@ -1,18 +1,32 @@
 package edu.arizona.biosemantics.conflictsolver;
 
-public class Option {
+import java.util.Vector;
 
-    private static String term;
-    private static String sentence;
-    private String option;
-    private String definition;
-    private String imageLink;
+public class TermOptions {
 
-    public Option(String term, String option, String definition, String imageLink) {
-        this.term        = term;
-        this.option      = option;
-        this.definition  = definition;
-        this.imageLink   = imageLink;
+    private  String term;
+    private  String sentence;
+
+    private Vector<String> optionArr     = new Vector<String>();
+    private Vector<String> definitionArr = new Vector<String>();
+    private Vector<String> imageLinkArr  = new Vector<String>();
+
+    public TermOptions(){
+
+        this.term       = "";
+        this.sentence   = "";
+        this.optionArr.addElement("");
+        this.definitionArr.addElement("");
+        this.imageLinkArr.addElement("");
+
+    };
+    public TermOptions(String term, String sentence, String option, String definition,
+                       String imageLink) {
+        this.term       = term;
+        this.sentence   = sentence;
+        this.optionArr.addElement(option);
+        this.definitionArr.addElement(definition);
+        this.imageLinkArr.addElement(imageLink);
     }
 
     public String getTerm() {
@@ -34,33 +48,33 @@ public class Option {
         this.sentence = sentence;
     }
 
-    public String getOption() {
+    public Vector<String> getOptions() {
 
-        return option;
+        return optionArr;
     }
 
-    public void setOption(String option) {
+    public void addOption(String option) {
 
-        this.option = option;
+        this.optionArr.addElement(option);
     }
 
-    public String getDefinition() {
+    public Vector<String> getDefinitions() {
 
-        return definition;
+        return this.definitionArr;
     }
 
-    public void setDefinition(String definition) {
+    public void addDefinition(String definition) {
 
-        this.term = definition;
+        this.definitionArr.addElement(definition);
     }
 
-    public String getImageLink() {
+    public Vector<String> getImageLinks() {
 
-        return imageLink;
+        return this.imageLinkArr;
     }
 
     public void setImageLink(String imageLink) {
 
-        this.imageLink = imageLink;
+        this.imageLinkArr.addElement(imageLink);
     }
 }
