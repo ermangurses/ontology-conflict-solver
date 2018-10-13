@@ -1,32 +1,29 @@
 package edu.arizona.biosemantics.conflictsolver;
 
-import java.util.Vector;
+import java.util.ArrayList;
 
 public class TermOptions {
 
     private  String term;
     private  String sentence;
 
-    private Vector<String> optionArr     = new Vector<String>();
-    private Vector<String> definitionArr = new Vector<String>();
-    private Vector<String> imageLinkArr  = new Vector<String>();
+    private ArrayList<String> optionArr     = new ArrayList<String>();
+    private ArrayList<String> definitionArr = new ArrayList<String>();
+    private ArrayList<String> imageLinkArr  = new ArrayList<String>();
 
+    private int size = 0;
     public TermOptions(){
 
         this.term       = "";
         this.sentence   = "";
-        this.optionArr.addElement("");
-        this.definitionArr.addElement("");
-        this.imageLinkArr.addElement("");
-
     };
     public TermOptions(String term, String sentence, String option, String definition,
                        String imageLink) {
         this.term       = term;
         this.sentence   = sentence;
-        this.optionArr.addElement(option);
-        this.definitionArr.addElement(definition);
-        this.imageLinkArr.addElement(imageLink);
+        this.optionArr. add(option);
+        this.definitionArr.add(definition);
+        this.imageLinkArr.add(imageLink);
     }
 
     public String getTerm() {
@@ -48,33 +45,39 @@ public class TermOptions {
         this.sentence = sentence;
     }
 
-    public Vector<String> getOptions() {
+    public ArrayList<String> getOptions() {
 
         return optionArr;
     }
 
     public void addOption(String option) {
 
-        this.optionArr.addElement(option);
+        this.optionArr.add(option);
     }
 
-    public Vector<String> getDefinitions() {
+    public ArrayList<String> getDefinitions() {
 
         return this.definitionArr;
     }
 
     public void addDefinition(String definition) {
 
-        this.definitionArr.addElement(definition);
+        this.definitionArr.add(definition);
     }
 
-    public Vector<String> getImageLinks() {
+    public ArrayList<String> getImageLinks() {
 
         return this.imageLinkArr;
     }
 
-    public void setImageLink(String imageLink) {
+    public void addImageLink(String imageLink) {
 
-        this.imageLinkArr.addElement(imageLink);
+        size++;
+        this.imageLinkArr.add(imageLink);
+    }
+
+    public int getSize(){
+
+        return size;
     }
 }
