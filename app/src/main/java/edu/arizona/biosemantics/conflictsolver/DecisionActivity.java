@@ -2,24 +2,19 @@ package edu.arizona.biosemantics.conflictsolver;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Gravity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,7 +30,6 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Vector;
 
 
 
@@ -45,17 +39,10 @@ import java.util.Vector;
 
 public class DecisionActivity extends AppCompatActivity {
 
-    private  Vector<String> optionArr     = new Vector<String>();
-    private  Vector<String> definitionArr = new Vector<String>();
-    private  Vector<ImageView> imageViews = new Vector<ImageView>();
+    private static final String TAG = "DecisionActivity";
 
-
-    private String mTerm;
-    private String mSentence;
-    private String mOption;
-    private String mDefinition;
     private String mChoice;
-    private String mTermId;
+
     private String mConflictId;
     private String mExpertId;
     private boolean mIsChecked;
@@ -63,7 +50,9 @@ public class DecisionActivity extends AppCompatActivity {
     private EditText editTextWrittenComment;
     private ProgressDialog progressDialog;
 
-    private ImageView imageView;
+
+    private TermOptions mTermOptions  = new TermOptions();
+
 
     //@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
@@ -81,8 +70,9 @@ public class DecisionActivity extends AppCompatActivity {
             startActivity(new Intent(this, LoginActivity.class));
         }
 
+
+
         mIsChecked   = false;
-        mTermId      = getIntent().getStringExtra("TermId");
         mConflictId  = getIntent().getStringExtra("ConflictId");
         mExpertId    = String.valueOf(SharedPreferencesManager.getInstance(this).getExpertId());
 
@@ -98,94 +88,35 @@ public class DecisionActivity extends AppCompatActivity {
 
     private void setLayout(){
 
+
         // Set the header for the confusing term
         final TextView textviewTerm = (TextView) findViewById(R.id.term);
-        textviewTerm.setText(mTerm);
+        textviewTerm.setText(mTermOptions.getTerm());
 
         // Set the header for the confusing term
         final TextView textviewSentence = (TextView) findViewById(R.id.sentence);
-        textviewSentence.setText(mSentence);
+        textviewSentence.setText(mTermOptions.getSentence());
 
-        editTextWrittenComment = (EditText) findViewById(R.id.editText);
+
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+
+        TermOptionsAdapter adapter = new TermOptionsAdapter(this,
+                mTermOptions.getImageLinks(),
+                mTermOptions.getOptions(),
+                mTermOptions.getDefinitions());
+
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+
 
         // Set listener for SUBMIT button
         Button button = findViewById(R.id.submit);
         setButtonListener (button);
-
-        RadioGroup radioGroup = new RadioGroup(getApplicationContext());
+        editTextWrittenComment = (EditText) findViewById(R.id.editText);
         RelativeLayout relativeLayoutXML =(RelativeLayout)findViewById(R.id.relativeLayoutXML);
-
-        ScrollView scrollView = new ScrollView(this);
-        scrollView.setLayoutParams(new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.MATCH_PARENT,
-                RelativeLayout.LayoutParams.MATCH_PARENT));
-
-        ////////////////////////////////////////////////////////////////////
-        ////////Adding linearLayoutProgVertical layout to scrollView////////
-        ////////////////////////////////////////////////////////////////////
-        LinearLayout linearLayoutProgVertical = new LinearLayout(this);
-        linearLayoutProgVertical.setLayoutParams(new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.MATCH_PARENT,
-                RelativeLayout.LayoutParams.MATCH_PARENT));
-        linearLayoutProgVertical.setOrientation(LinearLayout.VERTICAL);
-        scrollView.addView(linearLayoutProgVertical);
-
-
-        // Creating linearLayoutPHorizontal layout
-        RadioGroup.LayoutParams layoutParams = new RadioGroup.LayoutParams(
-                RadioGroup.LayoutParams.MATCH_PARENT,
-                RadioGroup.LayoutParams.MATCH_PARENT);
-
-        layoutParams.setMargins(40, 10, 0, 10);
-        radioGroup.setOrientation(LinearLayout.VERTICAL);
-        radioGroup.setLayoutParams(layoutParams);
-
-        int i;
-        for(i = 0; i < optionArr.size(); ++i) {
-
-            RadioButton radioButton = new RadioButton(this);
-            radioButton.setText(optionArr.elementAt(i) );
-            radioButton.setTextSize(16);
-            radioButton.setId(i);
-
-            TextView textview = new TextView(this);
-            textview.setText(definitionArr.elementAt(i));
-            textview.setId(i);
-
-
-            ImageView image = new ImageView(this);
-            image.setImageResource(R.drawable.branch);
-            Drawable drawable = image.getDrawable().getCurrent();
-            drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-
-
-
-            radioButton.setCompoundDrawables( drawable, null, null, null);
-            radioGroup.addView(radioButton);
-            radioGroup.addView(textview);
-            radioButton.setCompoundDrawablePadding(60);
-
-            radioGroup.setGravity(Gravity.FILL_HORIZONTAL);
-        }
-
-        // After the loop add the Non-of-Above option
-        RadioButton radioButton = new RadioButton(this);
-        radioButton.setText("Non of above");
-        radioButton.setId(++i);
-
         EditText editText = new EditText(this);
         editText.setHint(R.string.Example_Sentence3);
-        editText.setId(++i);
-
-        radioButton.setCompoundDrawablePadding(320);
-        radioGroup.addView(radioButton);
-        radioGroup.addView(editText);
-
-        linearLayoutProgVertical.addView(radioGroup);
-        relativeLayoutXML.addView(scrollView);
-
-        setRadioGroupListener(radioGroup);
-
     }
 
 
@@ -209,31 +140,9 @@ public class DecisionActivity extends AppCompatActivity {
         });
     }
 
-    private void setRadioGroupListener (RadioGroup radioGroup){
-
-        // Set listener for radio group
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                // This will get the radiobutton that has changed in its check state
-                RadioButton checkedRadioButton = (RadioButton)group.findViewById(checkedId);
-                // This puts the value (true/false) into the variable
-                mIsChecked = checkedRadioButton.isChecked();
-                // If the radiobutton that has changed in check state is now checked...
-                if (mIsChecked) {
-                    mChoice = (String) checkedRadioButton.getText();
-                    // Changes the textview's text to "Checked: example radiobutton text"
-                }
-            }
-        });
-
-    }
-
     private void setNavigation(){
 
-        ////////////////////////////////////////////////////////////////////
         ////Set active the selected navigation icon in the new activity/////
-        ////////////////////////////////////////////////////////////////////
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         Menu menu = navigation.getMenu();
         MenuItem menuItem = menu.getItem(1);
@@ -263,16 +172,14 @@ public class DecisionActivity extends AppCompatActivity {
 
                                 JSONObject jsonObject = options_data.getJSONObject(i);
 
-                                mOption = jsonObject.getString("option_");
-                                optionArr.addElement(mOption);
+                                mTermOptions.addOption(jsonObject.getString("option_"));
+                                mTermOptions.addDefinition(jsonObject.getString("definition"));
+                                mTermOptions.addImageLink(jsonObject.getString("image_link"));
 
-                                mDefinition = jsonObject.getString("definition");
-                                definitionArr.addElement(mDefinition);
-                                //Toast.makeText( getApplicationContext(),mOption, Toast.LENGTH_SHORT).show();
                             }
 
-                            mTerm = getIntent().getStringExtra("Term");
-                            mSentence = getIntent().getStringExtra("Sentence");
+                            mTermOptions.setTerm(getIntent().getStringExtra("Term"));
+                            mTermOptions.setSentence(getIntent().getStringExtra("Sentence"));
 
                             // Call the layout method right after the data is fetched
                             setLayout();
@@ -281,7 +188,6 @@ public class DecisionActivity extends AppCompatActivity {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
                         }
-
                     }
                 },
                 new Response.ErrorListener() {
@@ -350,30 +256,6 @@ public class DecisionActivity extends AppCompatActivity {
         RequestHandler.getInstance(this).addToRequestQueue(stringRequest);
     }
 
-
-    /*private void getOptionImages(){
-
-        Integer id = Integer.valueOf(getIntent().getStringExtra("TermId"));
-        String uri = String.format(Constants.URL_GETOPTIONS+"?ID=%1$s",id);
-        System.out.print(uri);
-
-        ImageRequest imageRequest = new ImageRequest(
-                uri,
-                new Response.Listener<Bitmap>() {
-
-                    @Override
-                    public void onResponse(Bitmap response) {
-
-
-                    }
-                }, 0, 0, ImageView.ScaleType.CENTER_CROP, null, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        });
-        RequestHandler.getInstance(this).addToRequestQueue(imageRequest);
-    }*/
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
