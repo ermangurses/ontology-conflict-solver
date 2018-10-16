@@ -16,19 +16,9 @@
     <string name="FirstName_Hint">Enter First Name</string>
     <string name="LastName">Last Name</string>
     <string name="LastName_Hint">Enter Last Name</string>
-    <string name="The_Word">awnlike</string>
-    <string name="Option1_Hint">Option 1</string>
-    <string name="Option2_Hint">Option 2</string>
-    <string name="Option3_Hint">Option 3</string>
-    <string name="Option4_Hint">Option 4</string>
-    <string name="Option5_Hint">Option 5</string>
-    <string name="Example_Sentence1">(Carex tetrastachya) apex acuminate with subulate tip or awnlike, awn of at least proximate staminate scales and sometimes proximal pistillate scales 0.1–0.9 (–2.4) mm, scabrous.</string>
-    <string name="Example_Sentence2">Which of the following category does the word belong?"</string>
-    <string name="Example_Sentence3">Enter Your Definition</string>
-    <string name="Example_Sentence4">Overall two- or three – dimensional form or aspect thereof, e.g., rounded, spheroid, folded, folding, incurling.</string>
-    <string name="Example_Sentence5">The organization of parts that conform a complex structure and may dictate the form at a macro or micro-morphological level. Differentiate this category from Arrangement, Shape, and Structure. Architecture emphasizes the composition of an organ (have or have not a part) and the position of its components in it, e.g. antherless, bimucronate; Arrangement emphasizes the placement of similar organs in space, e.g. clustered, alternate; Shape is the appearance,e.g. rounded. </string>
-    <string name="Example_Sentence6">Substantial properties as perceived by visual and tactile senses, e.g. bony, fleshy, leathery, papery, cartilaginous. Differentate this category from Pubescence, Relief, and Coating.</string>
-    <string name="Example_Sentence7">A shape quality inhering in a bearer by virtue of the bearer\'s being narrow, with the two opposite margins parallel. </string>
-    <string name="Example_Sentence8">bearing filaments</string>
+    <string name="Enter_Your_Definition_Hint">Enter Your Definition</string>
+    <string name="Submit_Edit_Text_Hint">Type or record comment</string>
+    <string name="Decision_Question">Which of the following category does the word belong?"</string>
+
 
 </resources>
