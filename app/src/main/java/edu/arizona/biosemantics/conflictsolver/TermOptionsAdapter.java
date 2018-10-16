@@ -39,7 +39,8 @@ import java.util.ArrayList;
      public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_listitem,parent,false);
         ViewHolder holder = new ViewHolder(view);
-        return holder;
+         SharedPreferencesManager.getInstance(mContext).setSelectedOption(-1);
+         return holder;
      }
 
      @Override
@@ -55,16 +56,10 @@ import java.util.ArrayList;
          // Set visible the selected position
          if(selectedPosition == position){
              holder.ok.setVisibility(View.VISIBLE);
+             SharedPreferencesManager.getInstance(mContext).setSelectedOption(position);
          } else {
              holder.ok.setVisibility(View.INVISIBLE);
          }
-
-         holder.ok.setOnClickListener(new View.OnClickListener(){
-             @Override
-             public void onClick(View v) {
-
-             }
-         });
 
          holder.parentLayout.setOnClickListener(new View.OnClickListener() {
              @Override
@@ -72,7 +67,7 @@ import java.util.ArrayList;
                  Log.d(TAG, "onClick: clicked on: " + mImageNames.get(position));
                  selectedPosition = position;
                  notifyDataSetChanged();
-                 Toast.makeText(mContext, mImageNames.get(position), Toast.LENGTH_SHORT).show();
+                 Toast.makeText(mContext, "You selected: "+mImageNames.get(position), Toast.LENGTH_SHORT).show();
              }
          });
      }
