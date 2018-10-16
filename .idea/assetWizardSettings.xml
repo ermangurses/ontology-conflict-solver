@@ -34,9 +34,10 @@
                                   <option name="values">
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
-                                      <entry key="imageAsset" value="$USER_HOME$/Desktop/greenOK.png" />
-                                      <entry key="outputName" value="OK" />
+                                      <entry key="imageAsset" value="$USER_HOME$/Desktop/none.png" />
+                                      <entry key="outputName" value="none" />
                                       <entry key="theme" value="CUSTOM" />
+                                      <entry key="themeColor" value="1b0be5" />
                                     </map>
                                   </option>
                                 </PersistentState>
