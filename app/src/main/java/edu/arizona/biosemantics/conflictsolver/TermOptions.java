@@ -21,7 +21,7 @@ public class TermOptions {
                        String imageLink) {
         this.term       = term;
         this.sentence   = sentence;
-        this.optionArr. add(option);
+        this.optionArr.add(option);
         this.definitionArr.add(definition);
         this.imageLinkArr.add(imageLink);
     }

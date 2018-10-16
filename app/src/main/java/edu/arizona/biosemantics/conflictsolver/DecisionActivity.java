@@ -41,8 +41,8 @@ public class DecisionActivity extends AppCompatActivity {
 
     private static final String TAG = "DecisionActivity";
 
-    private String mChoice;
-
+    private String mChoice="";
+    private int mPosition;
     private String mConflictId;
     private String mExpertId;
     private boolean mIsChecked;
@@ -70,9 +70,6 @@ public class DecisionActivity extends AppCompatActivity {
             startActivity(new Intent(this, LoginActivity.class));
         }
 
-
-
-        mIsChecked   = false;
         mConflictId  = getIntent().getStringExtra("ConflictId");
         mExpertId    = String.valueOf(SharedPreferencesManager.getInstance(this).getExpertId());
 
@@ -87,7 +84,6 @@ public class DecisionActivity extends AppCompatActivity {
     }
 
     private void setLayout(){
-
 
         // Set the header for the confusing term
         final TextView textviewTerm = (TextView) findViewById(R.id.term);
@@ -109,14 +105,14 @@ public class DecisionActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 
-
         // Set listener for SUBMIT button
         Button button = findViewById(R.id.submit);
         setButtonListener (button);
+
         editTextWrittenComment = (EditText) findViewById(R.id.editText);
         RelativeLayout relativeLayoutXML =(RelativeLayout)findViewById(R.id.relativeLayoutXML);
         EditText editText = new EditText(this);
-        editText.setHint(R.string.Example_Sentence3);
+        editText.setHint(R.string.Enter_Your_Definition_Hint);
     }
 
 
@@ -124,16 +120,22 @@ public class DecisionActivity extends AppCompatActivity {
 
         button.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
-                if (mIsChecked) {
 
+                mPosition = SharedPreferencesManager.getInstance(getApplicationContext()).
+                        getSelectedOption();
+
+                if (mPosition != -1) {
+
+                    mChoice = String.valueOf(mTermOptions.getOptions().get(mPosition));
                     submitDecision();
-                    Intent intent = new Intent(DecisionActivity.this, TasksActivity.class);
+                    Intent intent = new Intent(DecisionActivity.this,
+                            TasksActivity.class);
                     intent.putExtra("solvedFlag", true );
                     startActivity(intent);
 
                 } else {
-                    Toast.makeText(getApplicationContext(),
-                            "Please select one of the options",
+
+                    Toast.makeText(getApplicationContext(),"Please select one of the options ",
                             Toast.LENGTH_SHORT).show();
                 }
             }
@@ -142,7 +144,7 @@ public class DecisionActivity extends AppCompatActivity {
 
     private void setNavigation(){
 
-        ////Set active the selected navigation icon in the new activity/////
+        //Set active the selected navigation icon in the new activity
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         Menu menu = navigation.getMenu();
         MenuItem menuItem = menu.getItem(1);

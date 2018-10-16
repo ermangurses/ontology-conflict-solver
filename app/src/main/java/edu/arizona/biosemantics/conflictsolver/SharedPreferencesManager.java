@@ -9,11 +9,11 @@ public class SharedPreferencesManager {
     private static SharedPreferencesManager mInstance;
     private static Context mCtx;
 
-    private static final String SHARED_PREF_NAME  = "mysharedpref12";
+    private static final String SHARED_PREF_NAME  = "mysharedpref";
     private static final String KEY_USERNAME      = "username";
     private static final String KEY_USER_EMAIL    = "email";
     private static final String KEY_USER_ID       = "expertId";
-
+    private static final String POSITION          = "position";
 
     private SharedPreferencesManager(Context context) {
 
@@ -74,6 +74,18 @@ public class SharedPreferencesManager {
         SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         return sharedPreferences.getString(KEY_USERNAME, null);
 
+    }
+
+    public int getSelectedOption(){
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        return sharedPreferences.getInt(POSITION, -2);
+    }
+
+    public void setSelectedOption(int position){
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(POSITION, position);
+        editor.apply();
     }
 
     public String getUserEmail(){
