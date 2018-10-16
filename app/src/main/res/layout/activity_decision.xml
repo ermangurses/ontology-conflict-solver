@@ -53,7 +53,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="0"
                 android:background="@android:color/holo_green_light"
-                android:text="@string/Example_Sentence2"
+                android:text="@string/Decision_Question"
                 android:textAlignment="center"
                 android:textSize="12sp"
                 android:textStyle="bold" />
@@ -106,7 +106,7 @@
             android:background="@drawable/textbox"
             android:cursorVisible="true"
             android:drawableRight="@drawable/record"
-            android:hint="Type or record comment"
+            android:hint="@string/Submit_Edit_Text_Hint"
             android:inputType="textMultiLine"
             android:keepScreenOn="false"
             android:paddingRight="10dp"
