@@ -3,18 +3,20 @@ package edu.arizona.biosemantics.conflictsolver;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +25,10 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.devlomi.record_view.OnRecordClickListener;
+import com.devlomi.record_view.OnRecordListener;
+import com.devlomi.record_view.RecordButton;
+import com.devlomi.record_view.RecordView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,7 +36,6 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
-
 
 
 /**
@@ -42,16 +47,12 @@ public class DecisionActivity extends AppCompatActivity {
     private static final String TAG = "DecisionActivity";
 
     private String mChoice="";
-    private int mPosition;
+    private int    mPosition;
     private String mConflictId;
     private String mExpertId;
-    private boolean mIsChecked;
-
-    private EditText editTextWrittenComment;
-    private ProgressDialog progressDialog;
-
-
+    private EditText mEditTextWrittenComment;
     private TermOptions mTermOptions  = new TermOptions();
+    private ProgressDialog mProgressDialog;
 
 
     //@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -70,11 +71,13 @@ public class DecisionActivity extends AppCompatActivity {
             startActivity(new Intent(this, LoginActivity.class));
         }
 
+
+
         mConflictId  = getIntent().getStringExtra("ConflictId");
         mExpertId    = String.valueOf(SharedPreferencesManager.getInstance(this).getExpertId());
 
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Submiting the answer...");
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setMessage("Submiting the answer...");
 
         // Call the getOptions method
         getOptions();
@@ -85,17 +88,81 @@ public class DecisionActivity extends AppCompatActivity {
 
     private void setLayout(){
 
+        RecordView recordView = (RecordView) findViewById(R.id.record_view);
+        RecordButton recordButton = (RecordButton) findViewById(R.id.record_button);
+        mEditTextWrittenComment = (EditText) findViewById(R.id.editText);
+
+        recordButton.setRecordView(recordView);
+        recordView.setOnRecordListener(new OnRecordListener() {
+
+
+            @Override
+            public void onStart() {
+                //Start Recording..
+
+                mEditTextWrittenComment.setVisibility(View.INVISIBLE);
+                Toast toast = Toast.makeText(getApplicationContext(),"RECORD BUTTON CLICKED", Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toast.show();
+                Log.d("RecordView", "onStart");
+            }
+
+            @Override
+            public void onCancel() {
+
+                // Give delay to editTextWrittenComment for the animation
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        final Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                mEditTextWrittenComment.setVisibility(View.VISIBLE);
+                            }
+                        }, 1350);
+
+                    }
+                });
+                Log.d("RecordView", "onCancel");
+            }
+
+            @Override
+            public void onFinish(long recordTime) {
+                mEditTextWrittenComment.setVisibility(View.VISIBLE);
+                //String time = getHumanTimeText(recordTime);
+                Log.d("RecordView", "onFinish");
+                //Log.d("RecordTime", time);
+            }
+
+            @Override
+            public void onLessThanSecond() {
+                mEditTextWrittenComment.setVisibility(View.VISIBLE);
+                Log.d("RecordView", "onLessThanSecond");
+            }
+        });
+
+        recordButton.setOnRecordClickListener(new OnRecordClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Toast.makeText(getApplicationContext(), "RECORD BUTTON CLICKED", Toast.LENGTH_SHORT).show();
+                Log.d("RecordButton","RECORD BUTTON CLICKED");
+            }
+        });
+
         // Set the header for the confusing term
         final TextView textviewTerm = (TextView) findViewById(R.id.term);
         textviewTerm.setText(mTermOptions.getTerm());
+        textviewTerm.setTextColor(0xFFCC0000);
 
-        // Set the header for the confusing term
+        // Set the sentence for the confusing term
         final TextView textviewSentence = (TextView) findViewById(R.id.sentence);
         textviewSentence.setText(mTermOptions.getSentence());
 
-
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
+        // Send data to the adapter
         TermOptionsAdapter adapter = new TermOptionsAdapter(this,
                 mTermOptions.getImageLinks(),
                 mTermOptions.getOptions(),
@@ -104,17 +171,10 @@ public class DecisionActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-
         // Set listener for SUBMIT button
         Button button = findViewById(R.id.submit);
         setButtonListener (button);
-
-        editTextWrittenComment = (EditText) findViewById(R.id.editText);
-        RelativeLayout relativeLayoutXML =(RelativeLayout)findViewById(R.id.relativeLayoutXML);
-        EditText editText = new EditText(this);
-        editText.setHint(R.string.Enter_Your_Definition_Hint);
     }
-
 
     private void setButtonListener (Button button) {
 
@@ -177,7 +237,6 @@ public class DecisionActivity extends AppCompatActivity {
                                 mTermOptions.addOption(jsonObject.getString("option_"));
                                 mTermOptions.addDefinition(jsonObject.getString("definition"));
                                 mTermOptions.addImageLink(jsonObject.getString("image_link"));
-
                             }
 
                             mTermOptions.setTerm(getIntent().getStringExtra("Term"));
@@ -207,21 +266,20 @@ public class DecisionActivity extends AppCompatActivity {
         RequestHandler.getInstance(this).addToRequestQueue(stringRequest);
     }
 
+
+
     private void submitDecision() {
 
+        final String writtenComment = mEditTextWrittenComment.getText().toString().trim();
 
-        final String writtenComment = editTextWrittenComment.getText().toString().trim();
-        //final String voiceComment   = editTextVoiceComment.getText().toString().trim();
-
-
-        progressDialog.show();
+        mProgressDialog.show();
 
         // Inner Class for string request
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.URL_PROCESSDECISION,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        progressDialog.dismiss();
+                        mProgressDialog.dismiss();
 
                         try {
 
@@ -238,7 +296,7 @@ public class DecisionActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        progressDialog.hide();
+                        mProgressDialog.hide();
                         Toast.makeText(getApplicationContext(), error.getMessage(),
                                 Toast.LENGTH_LONG).show();
                     }
@@ -254,7 +312,6 @@ public class DecisionActivity extends AppCompatActivity {
                 return params;
             }
         };
-
         RequestHandler.getInstance(this).addToRequestQueue(stringRequest);
     }
 
