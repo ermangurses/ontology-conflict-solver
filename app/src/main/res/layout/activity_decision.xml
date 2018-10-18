@@ -6,10 +6,9 @@
     android:id="@+id/activity_dashboard"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:minHeight="250dp"
-    android:paddingBottom="16dp"
-    android:paddingLeft="5dp"
-    android:paddingRight="5dp"
+    android:paddingBottom="4dp"
+    android:paddingLeft="2dp"
+    android:paddingRight="2dp"
     android:paddingTop="2dp"
     tools:context="edu.arizona.biosemantics.conflictsolver.DecisionActivity">
 
@@ -52,18 +51,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="0"
-                android:background="@android:color/holo_green_light"
+                android:background="@android:color/holo_green_dark"
                 android:text="@string/Decision_Question"
                 android:textAlignment="center"
                 android:textSize="12sp"
+                android:textColor="#FFFFFF"
                 android:textStyle="bold" />
 
         </LinearLayout>
 
         <RelativeLayout
-            android:id="@+id/relativeLayout"
+            android:id="@+id/RL1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginBottom="5dp">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler_view"
@@ -72,10 +73,12 @@
                 android:layout_marginLeft="2dp"
                 android:layout_marginTop="6dp"
                 android:layout_marginRight="2dp"
+                android:layout_marginBottom="5dp"
                 android:scrollbars="vertical"
                 card_view:cardCornerRadius="4dp"
                 card_view:cardElevation="4dp"
                 card_view:cardUseCompatPadding="true">
+
             </android.support.v7.widget.RecyclerView>
 
         </RelativeLayout>
@@ -85,7 +88,7 @@
     <LinearLayout
         android:id="@+id/linearHorizontal2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="2dp"
         android:focusableInTouchMode="true"
@@ -97,24 +100,54 @@
         tools:layout_editor_absoluteX="16dp">
 
         <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="12">
+            android:layout_width="300dp"
+            android:layout_height="match_parent">
 
             <EditText
                 android:id="@+id/editText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="0dp"
                 android:layout_marginRight="2dp"
+                android:layout_weight="2"
                 android:background="@drawable/textbox"
                 android:cursorVisible="true"
+                android:fadingEdge="horizontal|vertical"
+                android:gravity="left|center_vertical"
                 android:hint="@string/Submit_Edit_Text_Hint"
                 android:inputType="textMultiLine"
                 android:keepScreenOn="false"
                 android:paddingRight="10dp"
                 android:selectAllOnFocus="false"
                 android:soundEffectsEnabled="true"
-                android:textColorLink="@android:color/holo_blue_light" />
+                android:textColor="#222222"
+                android:textColorLink="@color/cardview_dark_background" />
+
+            <com.devlomi.record_view.RecordView
+                android:id="@+id/record_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentBottom="true"
+                android:layout_marginRight="1dp"
+                android:layout_marginBottom="0dp"
+                android:layout_toLeftOf="@id/record_button"
+                app:counter_time_color="#ff0000"
+                app:slide_to_cancel_arrow="@drawable/recv_ic_arrow"
+                app:slide_to_cancel_arrow_color="#000000"
+                app:slide_to_cancel_bounds="8dp"
+                app:slide_to_cancel_margin_right="10dp"
+                app:slide_to_cancel_text="Slide To Cancel" />
+
+            <com.devlomi.record_view.RecordButton
+                android:id="@+id/record_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/recv_bg_mic"
+                android:scaleType="centerInside"
+                app:mic_icon="@drawable/recv_ic_mic_white" />
 
         </RelativeLayout>
 
@@ -122,21 +155,21 @@
             android:id="@+id/submit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right|end"
-            android:layout_weight="5"
+            android:layout_weight="1"
             android:background="@drawable/rectangle"
+            android:elevation="1dp"
             android:fadingEdge="horizontal"
-            android:foregroundGravity="right"
             android:text="SUBMIT"
             android:textSize="15sp" />
 
     </LinearLayout>
 
-
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="0dp"
+        android:layout_marginStart="0dp"
         android:background="?android:attr/windowBackground"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
