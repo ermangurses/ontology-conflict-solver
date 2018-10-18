@@ -96,32 +96,37 @@
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="16dp">
 
-
-        <EditText
-            android:id="@+id/editText"
-            android:layout_width="308dp"
+        <RelativeLayout
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginRight="2dp"
-            android:layout_weight="2"
-            android:background="@drawable/textbox"
-            android:cursorVisible="true"
-            android:drawableRight="@drawable/record"
-            android:hint="@string/Submit_Edit_Text_Hint"
-            android:inputType="textMultiLine"
-            android:keepScreenOn="false"
-            android:paddingRight="10dp"
-            android:selectAllOnFocus="false"
-            android:soundEffectsEnabled="true"
-            android:textColorLink="@android:color/holo_blue_light" />
+            android:layout_weight="12">
+
+            <EditText
+                android:id="@+id/editText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="2dp"
+                android:background="@drawable/textbox"
+                android:cursorVisible="true"
+                android:hint="@string/Submit_Edit_Text_Hint"
+                android:inputType="textMultiLine"
+                android:keepScreenOn="false"
+                android:paddingRight="10dp"
+                android:selectAllOnFocus="false"
+                android:soundEffectsEnabled="true"
+                android:textColorLink="@android:color/holo_blue_light" />
+
+        </RelativeLayout>
 
         <Button
             android:id="@+id/submit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_gravity="right|end"
+            android:layout_weight="5"
             android:background="@drawable/rectangle"
-            android:elevation="1dp"
             android:fadingEdge="horizontal"
+            android:foregroundGravity="right"
             android:text="SUBMIT"
             android:textSize="15sp" />
 
