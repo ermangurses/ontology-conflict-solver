@@ -30,8 +30,11 @@ import java.util.ArrayList;
 
     public TermOptionsAdapter(Context context, ArrayList<String> images, ArrayList<String> imageNames, ArrayList<String> definitions){
         mImageNames = imageNames;
+        mImageNames.add("None");
         mDefinitions = definitions;
+        mDefinitions.add("");
         mImages = images;
+        mImages.add("");
         mContext = context;
     }
      @NonNull
@@ -46,10 +49,10 @@ import java.util.ArrayList;
      @Override
      public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         Log.d(TAG,"onBindViewHolder: called");
-         Glide.with(mContext)
-                 .asBitmap()
-                 .load(mImages.get(position))
-                 .into(holder.image);
+        Glide.with(mContext)
+                .load(mImages.get(position))
+                .placeholder(R.drawable.none).into(holder.image);
+
          holder.imageName.setText(mImageNames.get(position));
          holder.definition.setText(mDefinitions.get(position));
 
