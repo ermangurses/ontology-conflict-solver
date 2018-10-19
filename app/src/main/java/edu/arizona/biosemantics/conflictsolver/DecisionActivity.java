@@ -88,6 +88,10 @@ public class DecisionActivity extends AppCompatActivity {
 
     private void setLayout(){
 
+        // Set listener for SUBMIT button
+        final Button button = findViewById(R.id.submit);
+        setButtonListener (button);
+
         RecordView recordView = (RecordView) findViewById(R.id.record_view);
         RecordButton recordButton = (RecordButton) findViewById(R.id.record_button);
         mEditTextWrittenComment = (EditText) findViewById(R.id.editText);
@@ -100,7 +104,9 @@ public class DecisionActivity extends AppCompatActivity {
             public void onStart() {
                 //Start Recording..
 
-                mEditTextWrittenComment.setVisibility(View.INVISIBLE);
+                mEditTextWrittenComment.setHint("");
+                mEditTextWrittenComment.setCursorVisible(false);
+                button.setVisibility(View.INVISIBLE);
                 Toast toast = Toast.makeText(getApplicationContext(),"RECORD BUTTON CLICKED", Toast.LENGTH_SHORT);
                 toast.setGravity(Gravity.CENTER, 0, 0);
                 toast.show();
@@ -110,6 +116,8 @@ public class DecisionActivity extends AppCompatActivity {
             @Override
             public void onCancel() {
 
+                button.setVisibility(View.VISIBLE);
+
                 // Give delay to editTextWrittenComment for the animation
                 runOnUiThread(new Runnable() {
                     @Override
@@ -118,7 +126,9 @@ public class DecisionActivity extends AppCompatActivity {
                         handler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                mEditTextWrittenComment.setVisibility(View.VISIBLE);
+                                mEditTextWrittenComment.setHint("Type or Record Comment");
+                                mEditTextWrittenComment.setCursorVisible(true);
+
                             }
                         }, 1350);
 
@@ -129,7 +139,12 @@ public class DecisionActivity extends AppCompatActivity {
 
             @Override
             public void onFinish(long recordTime) {
-                mEditTextWrittenComment.setVisibility(View.VISIBLE);
+
+                button.setVisibility(View.VISIBLE);
+                mEditTextWrittenComment.setHint("Type or Record Comment");
+                mEditTextWrittenComment.setCursorVisible(true);
+
+
                 //String time = getHumanTimeText(recordTime);
                 Log.d("RecordView", "onFinish");
                 //Log.d("RecordTime", time);
@@ -137,7 +152,10 @@ public class DecisionActivity extends AppCompatActivity {
 
             @Override
             public void onLessThanSecond() {
-                mEditTextWrittenComment.setVisibility(View.VISIBLE);
+
+                button.setVisibility(View.VISIBLE);
+                mEditTextWrittenComment.setHint("Type or Record Comment");
+                mEditTextWrittenComment.setCursorVisible(true);
                 Log.d("RecordView", "onLessThanSecond");
             }
         });
@@ -171,9 +189,7 @@ public class DecisionActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Set listener for SUBMIT button
-        Button button = findViewById(R.id.submit);
-        setButtonListener (button);
+
     }
 
     private void setButtonListener (Button button) {
