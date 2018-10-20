@@ -2,7 +2,9 @@ package edu.arizona.biosemantics.conflictsolver;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.media.MediaRecorder;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -10,8 +12,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,10 +34,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
-
 /**
  * Created by egurses on 3/13/18.
  */
@@ -53,6 +52,11 @@ public class DecisionActivity extends AppCompatActivity {
     private EditText mEditTextWrittenComment;
     private TermOptions mTermOptions  = new TermOptions();
     private ProgressDialog mProgressDialog;
+
+    // Voice recorder items
+    private String AudioSavePathInDevice = null;
+    private MediaRecorder mediaRecorder ;
+    private static final int RequestPermissionCode = 1;
 
 
     //@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -78,7 +82,9 @@ public class DecisionActivity extends AppCompatActivity {
 
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage("Submiting the answer...");
-
+        AudioSavePathInDevice =
+                Environment.getExternalStorageDirectory().getAbsolutePath() + "/" +
+                        "AudioRecording.3gp";
         // Call the getOptions method
         getOptions();
 
@@ -98,19 +104,30 @@ public class DecisionActivity extends AppCompatActivity {
 
         recordButton.setRecordView(recordView);
         recordView.setOnRecordListener(new OnRecordListener() {
-
-
             @Override
             public void onStart() {
-                //Start Recording..
+
+                    MediaRecorderReady();
+                    try {
+                        mediaRecorder.prepare();
+                        mediaRecorder.start();
+                    } catch (IllegalStateException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    } catch (IOException e) {
+
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                    //Toast.makeText(DecisionActivity.this, "Recording started",Toast.LENGTH_LONG).show();
 
                 mEditTextWrittenComment.setHint("");
                 mEditTextWrittenComment.setCursorVisible(false);
                 button.setVisibility(View.INVISIBLE);
-                Toast toast = Toast.makeText(getApplicationContext(),"RECORD BUTTON CLICKED", Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.CENTER, 0, 0);
-                toast.show();
-                Log.d("RecordView", "onStart");
+                //Toast toast = Toast.makeText(getApplicationContext(),"RECORD BUTTON CLICKED", Toast.LENGTH_SHORT);
+                //toast.setGravity(Gravity.CENTER, 0, 0);
+                //toast.show();
+
             }
 
             @Override
@@ -134,29 +151,32 @@ public class DecisionActivity extends AppCompatActivity {
 
                     }
                 });
-                Log.d("RecordView", "onCancel");
             }
 
             @Override
             public void onFinish(long recordTime) {
 
+                try {
+
+                    mediaRecorder.stop();
+
+                } catch (IllegalStateException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
                 button.setVisibility(View.VISIBLE);
                 mEditTextWrittenComment.setHint("Type or Record Comment");
                 mEditTextWrittenComment.setCursorVisible(true);
-
-
-                //String time = getHumanTimeText(recordTime);
-                Log.d("RecordView", "onFinish");
-                //Log.d("RecordTime", time);
+                //Toast.makeText(DecisionActivity.this, "Recording Completed",Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onLessThanSecond() {
 
+                mediaRecorder.reset();
                 button.setVisibility(View.VISIBLE);
                 mEditTextWrittenComment.setHint("Type or Record Comment");
                 mEditTextWrittenComment.setCursorVisible(true);
-                Log.d("RecordView", "onLessThanSecond");
             }
         });
 
@@ -164,8 +184,7 @@ public class DecisionActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Toast.makeText(getApplicationContext(), "RECORD BUTTON CLICKED", Toast.LENGTH_SHORT).show();
-                Log.d("RecordButton","RECORD BUTTON CLICKED");
+                //Toast.makeText(getApplicationContext(), "RECORD BUTTON CLICKED", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -188,8 +207,6 @@ public class DecisionActivity extends AppCompatActivity {
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-
     }
 
     private void setButtonListener (Button button) {
@@ -316,7 +333,8 @@ public class DecisionActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), error.getMessage(),
                                 Toast.LENGTH_LONG).show();
                     }
-                }) {
+                }
+        ){
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
@@ -331,6 +349,13 @@ public class DecisionActivity extends AppCompatActivity {
         RequestHandler.getInstance(this).addToRequestQueue(stringRequest);
     }
 
+    public void MediaRecorderReady(){
+        mediaRecorder=new MediaRecorder();
+        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        mediaRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
+        mediaRecorder.setOutputFile(AudioSavePathInDevice);
+    }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
