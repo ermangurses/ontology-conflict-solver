@@ -6,36 +6,36 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
-public class ImageSenderInfo implements Parcelable {
+public class FileSenderInfo implements Parcelable {
 
     @SerializedName("sender_name")
     private String sender;
     @SerializedName("sender_age")
     private int age;
 
-    public ImageSenderInfo() {}
+    public FileSenderInfo() {}
 
-    public ImageSenderInfo(String sender, int age) {
+    public FileSenderInfo(String sender, int age) {
 
         this.sender = sender;
         this.age = age;
     }
 
-    public final static Parcelable.Creator<ImageSenderInfo> CREATOR = new Creator<ImageSenderInfo>() {
+    public final static Parcelable.Creator<FileSenderInfo> CREATOR = new Creator<FileSenderInfo>() {
 
         @SuppressWarnings({
             "unchecked"
         })
-        public ImageSenderInfo createFromParcel(Parcel in) {
-            ImageSenderInfo instance = new ImageSenderInfo();
+        public FileSenderInfo createFromParcel(Parcel in) {
+            FileSenderInfo instance = new FileSenderInfo();
             instance.sender = ((String) in.readValue((String.class.getClassLoader())));
             instance.age = ((int) in.readValue((int.class.getClassLoader())));
             return instance;
         }
 
-        public ImageSenderInfo[] newArray(int size) {
+        public FileSenderInfo[] newArray(int size) {
 
-            return (new ImageSenderInfo[size]);
+            return (new FileSenderInfo[size]);
         }
 
     };
