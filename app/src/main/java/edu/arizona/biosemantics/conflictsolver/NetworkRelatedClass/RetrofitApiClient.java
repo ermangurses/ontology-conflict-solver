@@ -1,4 +1,4 @@
-package com.hellohasan.android_file_upload_tutorial.NetworkRelatedClass;
+package edu.arizona.biosemantics.conflictsolver.NetworkRelatedClass;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
