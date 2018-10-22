@@ -1,5 +1,5 @@
 
-package com.hellohasan.android_file_upload_tutorial.ModelClass;
+package edu.arizona.biosemantics.conflictsolver.ModelClass;
 
 import android.os.Parcel;
 import android.os.Parcelable;
