@@ -1,11 +1,8 @@
-package com.hellohasan.android_file_upload_tutorial.NetworkRelatedClass;
+package edu.arizona.biosemantics.conflictsolver.NetworkRelatedClass;
 
 import android.support.annotation.NonNull;
 
 import com.google.gson.Gson;
-import com.hellohasan.android_file_upload_tutorial.ModelClass.EventModel;
-import com.hellohasan.android_file_upload_tutorial.ModelClass.ImageSenderInfo;
-import com.hellohasan.android_file_upload_tutorial.ModelClass.ResponseModel;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 
@@ -13,6 +10,9 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 
+import edu.arizona.biosemantics.conflictsolver.ModelClass.EventModel;
+import edu.arizona.biosemantics.conflictsolver.ModelClass.FileSenderInfo;
+import edu.arizona.biosemantics.conflictsolver.ModelClass.ResponseModel;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -22,7 +22,7 @@ import retrofit2.Response;
 
 public class NetworkCall {
 
-    public static void fileUpload(String filePath, ImageSenderInfo imageSenderInfo) {
+    public static void fileUpload(String filePath, FileSenderInfo imageSenderInfo) {
 
         ApiInterface apiInterface = RetrofitApiClient.getClient().create(ApiInterface.class);
         Logger.addLogAdapter(new AndroidLogAdapter());
