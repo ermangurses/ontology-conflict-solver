@@ -1,7 +1,6 @@
-package com.hellohasan.android_file_upload_tutorial.NetworkRelatedClass;
+package edu.arizona.biosemantics.conflictsolver.NetworkRelatedClass;
 
-import com.hellohasan.android_file_upload_tutorial.ModelClass.ResponseModel;
-
+import edu.arizona.biosemantics.conflictsolver.ModelClass.ResponseModel;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
