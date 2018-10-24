@@ -1,13 +1,20 @@
 package edu.arizona.biosemantics.conflictsolver;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.media.MediaRecorder;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -37,6 +44,11 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
+import edu.arizona.biosemantics.conflictsolver.ModelClass.FileSenderInfo;
+import edu.arizona.biosemantics.conflictsolver.NetworkRelatedClass.NetworkCall;
+
+
 /**
  * Created by egurses on 3/13/18.
  */
@@ -57,6 +69,14 @@ public class DecisionActivity extends AppCompatActivity {
     private String AudioSavePathInDevice = null;
     private MediaRecorder mediaRecorder ;
     private static final int RequestPermissionCode = 1;
+
+    private String filePath;
+    private static final int PICK_PHOTO = 1958;
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    private static String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
+
 
 
     //@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -221,6 +241,12 @@ public class DecisionActivity extends AppCompatActivity {
 
                     mChoice = String.valueOf(mTermOptions.getOptions().get(mPosition));
                     submitDecision();
+
+
+                    String name = "";
+                    int age = 20;
+                    NetworkCall.fileUpload(AudioSavePathInDevice, new FileSenderInfo(name, age));
+
                     Intent intent = new Intent(DecisionActivity.this,
                             TasksActivity.class);
                     intent.putExtra("solvedFlag", true );
@@ -233,16 +259,6 @@ public class DecisionActivity extends AppCompatActivity {
                 }
             }
         });
-    }
-
-    private void setNavigation(){
-
-        //Set active the selected navigation icon in the new activity
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        Menu menu = navigation.getMenu();
-        MenuItem menuItem = menu.getItem(1);
-        menuItem.setChecked(true);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
     private void getOptions(){
@@ -349,6 +365,54 @@ public class DecisionActivity extends AppCompatActivity {
         RequestHandler.getInstance(this).addToRequestQueue(stringRequest);
     }
 
+    public void uploadButtonClicked(View view) {
+        String name = ""; //nameEditText.getText().toString();
+        int age = 10; //Integer.parseInt(ageEditText.getText().toString());
+        NetworkCall.fileUpload(filePath, new FileSenderInfo(name, age));
+    }
+
+    private String getPath(Uri uri) {
+        String[] projection = { MediaStore.Audio.Media.DATA };
+        Cursor cursor = managedQuery(uri, projection, null, null, null);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
+    }
+
+    /*@Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }*/
+
+    /**
+     * Checks if the app has permission to write to device storage
+     *
+     * If the app does not has permission then the user will be prompted to grant permissions
+     *
+     * @param activity
+     */
+    public static void verifyStoragePermissions(Activity activity) {
+        // Check if we have write permission
+        int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            // We don't have permission so prompt the user
+            ActivityCompat.requestPermissions(
+                    activity,
+                    PERMISSIONS_STORAGE,
+                    REQUEST_EXTERNAL_STORAGE
+            );
+        }
+    }
+
+
     public void MediaRecorderReady(){
         mediaRecorder=new MediaRecorder();
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
@@ -376,6 +440,17 @@ public class DecisionActivity extends AppCompatActivity {
             return false;
         }
     };
+
+
+    private void setNavigation(){
+
+        //Set active the selected navigation icon in the new activity
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        Menu menu = navigation.getMenu();
+        MenuItem menuItem = menu.getItem(1);
+        menuItem.setChecked(true);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
