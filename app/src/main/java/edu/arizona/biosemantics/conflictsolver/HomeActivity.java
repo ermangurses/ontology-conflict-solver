@@ -96,11 +96,7 @@ public class HomeActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     return true;
-                case R.id.navigation_dashboard:
-                    startActivity(new Intent(HomeActivity.this, DecisionActivity.class));
-                    finish();
-                    return true;
-                case R.id.navigation_notifications:
+                case R.id.navigation_tasks:
                     startActivity(new Intent(HomeActivity.this, TasksActivity.class));
                     finish();
                     return true;
