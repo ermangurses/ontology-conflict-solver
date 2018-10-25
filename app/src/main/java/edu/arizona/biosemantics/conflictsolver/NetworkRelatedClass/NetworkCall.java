@@ -22,7 +22,7 @@ import retrofit2.Response;
 
 public class NetworkCall {
 
-    public static void fileUpload(String filePath, FileSenderInfo imageSenderInfo) {
+    public static void fileUpload(String filePath, FileSenderInfo senderInfo) {
 
         ApiInterface apiInterface = RetrofitApiClient.getClient().create(ApiInterface.class);
         Logger.addLogAdapter(new AndroidLogAdapter());
@@ -35,7 +35,7 @@ public class NetworkCall {
         MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
 
         Gson gson = new Gson();
-        String patientData = gson.toJson(imageSenderInfo);
+        String patientData = gson.toJson(senderInfo);
 
         RequestBody description = RequestBody.create(okhttp3.MultipartBody.FORM, patientData);
 
