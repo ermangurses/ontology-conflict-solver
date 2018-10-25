@@ -344,9 +344,7 @@ public class DecisionActivity extends AppCompatActivity {
                     startActivity(new Intent(DecisionActivity.this, HomeActivity.class));
                     finish();
                     return true;
-                case R.id.navigation_dashboard:
-                    return true;
-                case R.id.navigation_notifications:
+                case R.id.navigation_tasks:
                     startActivity(new Intent(DecisionActivity.this, TasksActivity.class));
                     finish();
                     return true;
