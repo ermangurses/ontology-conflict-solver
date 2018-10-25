@@ -53,6 +53,7 @@ public class DecisionActivity extends AppCompatActivity {
     private String mConflictId;
     private String mExpertId;
     private String file_type = "audio";
+    private String mEditTextWrittenCommentContent;
     private int    mPosition;
     private EditText mEditTextWrittenComment;
     private TermOptions mTermOptions  = new TermOptions();
@@ -122,6 +123,8 @@ public class DecisionActivity extends AppCompatActivity {
                     }
                 mEditTextWrittenComment.setHint("");
                 mEditTextWrittenComment.setCursorVisible(false);
+                mEditTextWrittenCommentContent =  mEditTextWrittenComment.getText().toString();
+                mEditTextWrittenComment.setText("");
                 button.setVisibility(View.INVISIBLE);
                 //Toast toast = Toast.makeText(getApplicationContext(),"RECORD BUTTON CLICKED", Toast.LENGTH_SHORT);
                 //toast.setGravity(Gravity.CENTER, 0, 0);
@@ -143,6 +146,7 @@ public class DecisionActivity extends AppCompatActivity {
                             public void run() {
                                 mEditTextWrittenComment.setHint("Type or Record Comment");
                                 mEditTextWrittenComment.setCursorVisible(true);
+                                mEditTextWrittenComment.setText(mEditTextWrittenCommentContent);
 
                             }
                         }, 1350);
@@ -164,6 +168,8 @@ public class DecisionActivity extends AppCompatActivity {
                 button.setVisibility(View.VISIBLE);
                 mEditTextWrittenComment.setHint("Type or Record Comment");
                 mEditTextWrittenComment.setCursorVisible(true);
+                mEditTextWrittenComment.setText(mEditTextWrittenCommentContent);
+
             }
 
             @Override
@@ -173,6 +179,8 @@ public class DecisionActivity extends AppCompatActivity {
                 button.setVisibility(View.VISIBLE);
                 mEditTextWrittenComment.setHint("Type or Record Comment");
                 mEditTextWrittenComment.setCursorVisible(true);
+                mEditTextWrittenComment.setText(mEditTextWrittenCommentContent);
+
             }
         });
 
