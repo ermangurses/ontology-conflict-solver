@@ -8,17 +8,15 @@ import com.google.gson.annotations.SerializedName;
 
 public class FileSenderInfo implements Parcelable {
 
-    @SerializedName("sender_name")
-    private String sender;
-    @SerializedName("sender_age")
-    private int age;
+    @SerializedName("file_type")
+    private String file_type;
+
 
     public FileSenderInfo() {}
 
-    public FileSenderInfo(String sender, int age) {
+    public FileSenderInfo(String file_type) {
 
-        this.sender = sender;
-        this.age = age;
+        this.file_type = file_type;
     }
 
     public final static Parcelable.Creator<FileSenderInfo> CREATOR = new Creator<FileSenderInfo>() {
@@ -28,8 +26,7 @@ public class FileSenderInfo implements Parcelable {
         })
         public FileSenderInfo createFromParcel(Parcel in) {
             FileSenderInfo instance = new FileSenderInfo();
-            instance.sender = ((String) in.readValue((String.class.getClassLoader())));
-            instance.age = ((int) in.readValue((int.class.getClassLoader())));
+            instance.file_type = ((String) in.readValue((String.class.getClassLoader())));
             return instance;
         }
 
@@ -43,12 +40,10 @@ public class FileSenderInfo implements Parcelable {
 
     public void writeToParcel(Parcel dest, int flags) {
 
-        dest.writeValue(sender);
-        dest.writeValue(age);
+        dest.writeValue(file_type);
     }
 
     public int describeContents() {
-
 
         return  0;
     }
