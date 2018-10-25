@@ -8,7 +8,4 @@ public class Constants {
     public  static final String URL_GETTASKS        = BASE_URL + "DailyOperations/GetTasks.php";
     public  static final String URL_GETOPTIONS      = BASE_URL + "DailyOperations/GetOptions.php";
     public  static final String URL_PROCESSDECISION = BASE_URL + "DailyOperations/ProcessDecision.php";
-    public  static final String URL_IMAGES          = BASE_URL + "DailyOperations/Images/1.jpeg";
-
-
 }
