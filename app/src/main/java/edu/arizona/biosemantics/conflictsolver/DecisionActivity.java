@@ -1,20 +1,13 @@
 package edu.arizona.biosemantics.conflictsolver;
 
-import android.Manifest;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.media.MediaRecorder;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -32,7 +25,6 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.devlomi.record_view.OnRecordClickListener;
 import com.devlomi.record_view.OnRecordListener;
 import com.devlomi.record_view.RecordButton;
 import com.devlomi.record_view.RecordView;
@@ -58,25 +50,17 @@ public class DecisionActivity extends AppCompatActivity {
     private static final String TAG = "DecisionActivity";
 
     private String mChoice="";
-    private int    mPosition;
     private String mConflictId;
     private String mExpertId;
+    private String file_type = "audio";
+    private int    mPosition;
     private EditText mEditTextWrittenComment;
     private TermOptions mTermOptions  = new TermOptions();
     private ProgressDialog mProgressDialog;
 
     // Voice recorder items
     private String AudioSavePathInDevice = null;
-    private MediaRecorder mediaRecorder ;
-    private static final int RequestPermissionCode = 1;
-
-    private String filePath;
-    private static final int PICK_PHOTO = 1958;
-    private static final int REQUEST_EXTERNAL_STORAGE = 1;
-    private static String[] PERMISSIONS_STORAGE = {
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-    };
-
+    private MediaRecorder mediaRecorder;
 
 
     //@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -94,8 +78,6 @@ public class DecisionActivity extends AppCompatActivity {
             finish();
             startActivity(new Intent(this, LoginActivity.class));
         }
-
-
 
         mConflictId  = getIntent().getStringExtra("ConflictId");
         mExpertId    = String.valueOf(SharedPreferencesManager.getInstance(this).getExpertId());
@@ -135,19 +117,15 @@ public class DecisionActivity extends AppCompatActivity {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
                     } catch (IOException e) {
-
                         // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
-                    //Toast.makeText(DecisionActivity.this, "Recording started",Toast.LENGTH_LONG).show();
-
                 mEditTextWrittenComment.setHint("");
                 mEditTextWrittenComment.setCursorVisible(false);
                 button.setVisibility(View.INVISIBLE);
                 //Toast toast = Toast.makeText(getApplicationContext(),"RECORD BUTTON CLICKED", Toast.LENGTH_SHORT);
                 //toast.setGravity(Gravity.CENTER, 0, 0);
                 //toast.show();
-
             }
 
             @Override
@@ -168,7 +146,6 @@ public class DecisionActivity extends AppCompatActivity {
 
                             }
                         }, 1350);
-
                     }
                 });
             }
@@ -187,7 +164,6 @@ public class DecisionActivity extends AppCompatActivity {
                 button.setVisibility(View.VISIBLE);
                 mEditTextWrittenComment.setHint("Type or Record Comment");
                 mEditTextWrittenComment.setCursorVisible(true);
-                //Toast.makeText(DecisionActivity.this, "Recording Completed",Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -197,14 +173,6 @@ public class DecisionActivity extends AppCompatActivity {
                 button.setVisibility(View.VISIBLE);
                 mEditTextWrittenComment.setHint("Type or Record Comment");
                 mEditTextWrittenComment.setCursorVisible(true);
-            }
-        });
-
-        recordButton.setOnRecordClickListener(new OnRecordClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                //Toast.makeText(getApplicationContext(), "RECORD BUTTON CLICKED", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -242,13 +210,10 @@ public class DecisionActivity extends AppCompatActivity {
                     mChoice = String.valueOf(mTermOptions.getOptions().get(mPosition));
                     submitDecision();
 
+                    // Send the audio file to the server
+                    NetworkCall.fileUpload(AudioSavePathInDevice, new FileSenderInfo(file_type));
 
-                    String name = "";
-                    int age = 20;
-                    NetworkCall.fileUpload(AudioSavePathInDevice, new FileSenderInfo(name, age));
-
-                    Intent intent = new Intent(DecisionActivity.this,
-                            TasksActivity.class);
+                    Intent intent = new Intent(DecisionActivity.this, TasksActivity.class);
                     intent.putExtra("solvedFlag", true );
                     startActivity(intent);
 
@@ -265,7 +230,6 @@ public class DecisionActivity extends AppCompatActivity {
 
         Integer id = Integer.valueOf(getIntent().getStringExtra("TermId"));
         String uri = String.format(Constants.URL_GETOPTIONS+"?ID=%1$s",id);
-        System.out.print(uri);
 
         StringRequest stringRequest = new StringRequest(
                 Request.Method.GET,
@@ -315,8 +279,6 @@ public class DecisionActivity extends AppCompatActivity {
         RequestHandler.getInstance(this).addToRequestQueue(stringRequest);
     }
 
-
-
     private void submitDecision() {
 
         final String writtenComment = mEditTextWrittenComment.getText().toString().trim();
@@ -365,54 +327,6 @@ public class DecisionActivity extends AppCompatActivity {
         RequestHandler.getInstance(this).addToRequestQueue(stringRequest);
     }
 
-    public void uploadButtonClicked(View view) {
-        String name = ""; //nameEditText.getText().toString();
-        int age = 10; //Integer.parseInt(ageEditText.getText().toString());
-        NetworkCall.fileUpload(filePath, new FileSenderInfo(name, age));
-    }
-
-    private String getPath(Uri uri) {
-        String[] projection = { MediaStore.Audio.Media.DATA };
-        Cursor cursor = managedQuery(uri, projection, null, null, null);
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA);
-        cursor.moveToFirst();
-        return cursor.getString(column_index);
-    }
-
-    /*@Override
-    public void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public void onStop() {
-        EventBus.getDefault().unregister(this);
-        super.onStop();
-    }*/
-
-    /**
-     * Checks if the app has permission to write to device storage
-     *
-     * If the app does not has permission then the user will be prompted to grant permissions
-     *
-     * @param activity
-     */
-    public static void verifyStoragePermissions(Activity activity) {
-        // Check if we have write permission
-        int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
-        if (permission != PackageManager.PERMISSION_GRANTED) {
-            // We don't have permission so prompt the user
-            ActivityCompat.requestPermissions(
-                    activity,
-                    PERMISSIONS_STORAGE,
-                    REQUEST_EXTERNAL_STORAGE
-            );
-        }
-    }
-
-
     public void MediaRecorderReady(){
         mediaRecorder=new MediaRecorder();
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
@@ -440,7 +354,6 @@ public class DecisionActivity extends AppCompatActivity {
             return false;
         }
     };
-
 
     private void setNavigation(){
 
