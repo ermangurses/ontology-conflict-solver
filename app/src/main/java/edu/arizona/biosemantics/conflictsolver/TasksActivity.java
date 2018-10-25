@@ -89,7 +89,7 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
         // Set active the selected navigation icon in the new activity
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         Menu menu = navigation.getMenu();
-        MenuItem menuItem = menu.getItem(2);
+        MenuItem menuItem = menu.getItem(1);
         menuItem.setChecked(true);
         // Add the listener to the navigation
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -230,6 +230,31 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
         RequestHandler.getInstance(this).addToRequestQueue(stringRequest);
     }
 
+    // Navigate the user to the DecisionActivity
+    @Override
+    public void onClick(View v) {
+
+        mIndex = conflictIdArr.indexOf(v.getId());
+
+        termIdArr.get(mIndex);
+        termArr.get(mIndex);
+        usernameArr.get(mIndex);
+
+        //Toast.makeText( getApplicationContext(),"Conflict ID is "+ v.getId(), Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(TasksActivity.this, DecisionActivity.class);
+
+        // Send the data to Decision Activity
+        intent.putExtra("ConflictId", ( String.valueOf( v.getId() ) ) );
+        intent.putExtra("TermId", ( String.valueOf( termIdArr.get(mIndex) ) ) );
+        intent.putExtra("Term", ( String.valueOf(  termArr.get(mIndex) ) ) );
+        intent.putExtra("Username", ( String.valueOf(  usernameArr.get(mIndex) ) ) );
+        intent.putExtra("Sentence", ( String.valueOf(  sentenceArr.get(mIndex) ) ) );
+
+        startActivity(intent);
+        startedFlag = true;
+        finish();
+    }
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
@@ -239,11 +264,7 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
                     startActivity(new Intent(TasksActivity.this, HomeActivity.class));
                     finish();
                     return true;
-                case R.id.navigation_dashboard:
-                    startActivity(new Intent(TasksActivity.this, DecisionActivity.class));
-                    finish();
-                    return true;
-                case R.id.navigation_notifications:
+                case R.id.navigation_tasks:
                     return true;
             }
             return false;
@@ -271,28 +292,5 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
         return true;
     }
 
-    // Navigate the user to the DecisionActivity
-    @Override
-    public void onClick(View v) {
 
-        mIndex = conflictIdArr.indexOf(v.getId());
-
-        termIdArr.get(mIndex);
-        termArr.get(mIndex);
-        usernameArr.get(mIndex);
-
-        //Toast.makeText( getApplicationContext(),"Conflict ID is "+ v.getId(), Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(TasksActivity.this, DecisionActivity.class);
-
-        // Send the data to Decision Activity
-        intent.putExtra("ConflictId", ( String.valueOf( v.getId() ) ) );
-        intent.putExtra("TermId", ( String.valueOf( termIdArr.get(mIndex) ) ) );
-        intent.putExtra("Term", ( String.valueOf(  termArr.get(mIndex) ) ) );
-        intent.putExtra("Username", ( String.valueOf(  usernameArr.get(mIndex) ) ) );
-        intent.putExtra("Sentence", ( String.valueOf(  sentenceArr.get(mIndex) ) ) );
-
-        startActivity(intent);
-        startedFlag = true;
-        finish();
-    }
 }
