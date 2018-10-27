@@ -52,7 +52,6 @@ public class DecisionActivity extends AppCompatActivity {
     private String mChoice="";
     private String mConflictId;
     private String mExpertId;
-    private String file_type = "audio";
     private String mEditTextWrittenCommentContent;
     private int    mPosition;
     private EditText mEditTextWrittenComment;
@@ -60,8 +59,11 @@ public class DecisionActivity extends AppCompatActivity {
     private ProgressDialog mProgressDialog;
 
     // Voice recorder items
-    private String AudioSavePathInDevice = null;
-    private MediaRecorder mediaRecorder;
+    private String mAudioSavePathInDevice = null;
+    private MediaRecorder mMediaRecorder;
+    private String mFileType = "audio";
+    private String mTimeStamp ="none";
+    private Boolean mRecordFinished;
 
 
     //@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -83,9 +85,10 @@ public class DecisionActivity extends AppCompatActivity {
         mConflictId  = getIntent().getStringExtra("ConflictId");
         mExpertId    = String.valueOf(SharedPreferencesManager.getInstance(this).getExpertId());
 
+        mRecordFinished = false;
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage("Submiting the answer...");
-        AudioSavePathInDevice =
+        mAudioSavePathInDevice =
                 Environment.getExternalStorageDirectory().getAbsolutePath() + "/" +
                         "AudioRecording.3gp";
         // Call the getOptions method
@@ -112,8 +115,8 @@ public class DecisionActivity extends AppCompatActivity {
 
                     MediaRecorderReady();
                     try {
-                        mediaRecorder.prepare();
-                        mediaRecorder.start();
+                        mMediaRecorder.prepare();
+                        mMediaRecorder.start();
                     } catch (IllegalStateException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
@@ -159,8 +162,8 @@ public class DecisionActivity extends AppCompatActivity {
 
                 try {
 
-                    mediaRecorder.stop();
-
+                    mRecordFinished = true;
+                    mMediaRecorder.stop();
                 } catch (IllegalStateException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
@@ -175,7 +178,7 @@ public class DecisionActivity extends AppCompatActivity {
             @Override
             public void onLessThanSecond() {
 
-                mediaRecorder.reset();
+                mMediaRecorder.reset();
                 button.setVisibility(View.VISIBLE);
                 mEditTextWrittenComment.setHint("Type or Record Comment");
                 mEditTextWrittenComment.setCursorVisible(true);
@@ -218,8 +221,11 @@ public class DecisionActivity extends AppCompatActivity {
                     mChoice = String.valueOf(mTermOptions.getOptions().get(mPosition));
                     submitDecision();
 
-                    // Send the audio file to the server
-                    NetworkCall.fileUpload(AudioSavePathInDevice, new FileSenderInfo(file_type));
+                    // Check the audio is recorded
+                    if(mRecordFinished) {
+                        // Send the audio file to the server
+                        NetworkCall.fileUpload(mAudioSavePathInDevice, new FileSenderInfo(mFileType));
+                    }
 
                     Intent intent = new Intent(DecisionActivity.this, TasksActivity.class);
                     intent.putExtra("solvedFlag", true );
@@ -336,11 +342,11 @@ public class DecisionActivity extends AppCompatActivity {
     }
 
     public void MediaRecorderReady(){
-        mediaRecorder=new MediaRecorder();
-        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-        mediaRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
-        mediaRecorder.setOutputFile(AudioSavePathInDevice);
+        mMediaRecorder = new MediaRecorder();
+        mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        mMediaRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
+        mMediaRecorder.setOutputFile(mAudioSavePathInDevice);
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
