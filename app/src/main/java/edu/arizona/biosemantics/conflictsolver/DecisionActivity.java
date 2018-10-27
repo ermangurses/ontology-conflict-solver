@@ -64,7 +64,7 @@ public class DecisionActivity extends AppCompatActivity {
     private String mFileType = "audio";
     private String mTimeStamp ="none";
     private Boolean mRecordFinished;
-
+    private String mVoiceComment = "";
 
     //@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
@@ -299,7 +299,10 @@ public class DecisionActivity extends AppCompatActivity {
     private void submitDecision() {
 
         final String writtenComment = mEditTextWrittenComment.getText().toString().trim();
-        final String voiceComment = Constants.URL_AUDIO + mTimeStamp +".3gp";
+
+        if(mRecordFinished) {
+            mVoiceComment = Constants.URL_AUDIO + mTimeStamp + ".3gp";
+        }
 
         mProgressDialog.show();
 
@@ -339,7 +342,7 @@ public class DecisionActivity extends AppCompatActivity {
                 params.put("conflictId", mConflictId);
                 params.put("choice", mChoice);
                 params.put("writtenComment",writtenComment);
-                params.put("voiceComment",voiceComment);
+                params.put("voiceComment",mVoiceComment);
 
                 return params;
             }
