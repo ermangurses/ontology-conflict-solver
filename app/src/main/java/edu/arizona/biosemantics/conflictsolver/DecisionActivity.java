@@ -85,12 +85,15 @@ public class DecisionActivity extends AppCompatActivity {
         mConflictId  = getIntent().getStringExtra("ConflictId");
         mExpertId    = String.valueOf(SharedPreferencesManager.getInstance(this).getExpertId());
 
-        mRecordFinished = false;
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage("Submiting the answer...");
+
+        mTimeStamp = String.valueOf(System.currentTimeMillis());
+        mRecordFinished = false;
         mAudioSavePathInDevice =
                 Environment.getExternalStorageDirectory().getAbsolutePath() + "/" +
-                        "AudioRecording.3gp";
+                        mTimeStamp+".3gp";
+
         // Call the getOptions method
         getOptions();
 
