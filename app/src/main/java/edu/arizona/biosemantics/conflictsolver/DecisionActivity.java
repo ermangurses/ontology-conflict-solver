@@ -299,6 +299,7 @@ public class DecisionActivity extends AppCompatActivity {
     private void submitDecision() {
 
         final String writtenComment = mEditTextWrittenComment.getText().toString().trim();
+        final String voiceComment = Constants.URL_AUDIO + mTimeStamp +".3gp";
 
         mProgressDialog.show();
 
@@ -338,6 +339,8 @@ public class DecisionActivity extends AppCompatActivity {
                 params.put("conflictId", mConflictId);
                 params.put("choice", mChoice);
                 params.put("writtenComment",writtenComment);
+                params.put("voiceComment",voiceComment);
+
                 return params;
             }
         };
