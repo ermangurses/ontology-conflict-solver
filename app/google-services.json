@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "418570537034",
+    "firebase_url": "https://conflict-solver-notification.firebaseio.com",
+    "project_id": "conflict-solver-notification",
+    "storage_bucket": "conflict-solver-notification.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:418570537034:android:5b3c1c922ac5ac58",
+        "android_client_info": {
+          "package_name": "edu.arizona.biosemantics.conflictsolver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "418570537034-i8eka19l4lf8hg8nbr7uaf56p4a3ls9l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZJxf33tBjfD5aogo9Jefc-SjHqqlAJLY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
