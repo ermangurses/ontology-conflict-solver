@@ -9,4 +9,6 @@ public class Constants {
     public  static final String URL_GETOPTIONS      = BASE_URL + "DailyOperations/GetOptions.php";
     public  static final String URL_PROCESSDECISION = BASE_URL + "DailyOperations/ProcessDecision.php";
     public  static final String URL_AUDIO           = BASE_URL + "DailyOperations/FileUploadApi/Audio/";
+    public  static final String URL_REGISTERTOKEN   = BASE_URL + "DailyOperations/RegisterToken";
+
 }
