@@ -12,6 +12,8 @@ import okhttp3.RequestBody;
 
 public class FirebaseInstanceIDService extends FirebaseInstanceIdService {
 
+    String mExpertId;
+
     @Override
     public void onTokenRefresh(){
 
@@ -22,13 +24,16 @@ public class FirebaseInstanceIDService extends FirebaseInstanceIdService {
 
     private void registerToken(String token) {
 
+        mExpertId = String.valueOf(SharedPreferencesManager.getInstance(this).getExpertId());
+
         OkHttpClient client = new OkHttpClient();
         RequestBody body = new FormBody.Builder()
+                .add("expertId",mExpertId)
                 .add("Token",token)
                 .build();
 
         Request request = new Request.Builder()
-                .url("http://192.168.1.71/fcm/register.php")
+                .url(Constants.URL_REGISTERTOKEN)
                 .post(body)
                 .build();
 
