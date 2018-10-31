@@ -85,6 +85,7 @@ public class DecisionActivity extends AppCompatActivity {
         mConflictId  = getIntent().getStringExtra("ConflictId");
         mExpertId    = String.valueOf(SharedPreferencesManager.getInstance(this).getExpertId());
 
+
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage("Submiting the answer...");
 
