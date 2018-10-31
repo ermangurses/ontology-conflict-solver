@@ -13,15 +13,30 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import static android.Manifest.permission.RECORD_AUDIO;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 public class HomeActivity extends AppCompatActivity {
 
+    private static final int RequestPermissionCode = 1;
 
     private TextView welcoming;
     private String   welcomingString;
-    private static final int RequestPermissionCode = 1;
+    private String   mToken;
+    private String   mExpertId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +47,11 @@ public class HomeActivity extends AppCompatActivity {
             finish();
             startActivity(new Intent(this, LoginActivity.class));
         }
+
+        FirebaseMessaging.getInstance().subscribeToTopic("FirebaseTopic");
+        FirebaseInstanceId.getInstance().getToken();
+        registerToken();
+
         welcoming = (TextView) findViewById(R.id.welcoming);
         welcomingString = "Welcome  " + SharedPreferencesManager.getInstance(this).getUsername() + "!";
         welcoming.setText(welcomingString);
@@ -45,7 +65,6 @@ public class HomeActivity extends AppCompatActivity {
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-
         if(checkPermission()) {
 
         } else {
@@ -53,11 +72,56 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
+    private void registerToken() {
+
+        mExpertId = String.valueOf(SharedPreferencesManager.getInstance(this).getExpertId());
+        mToken = SharedPreferencesManager.getInstance(this).getToken();
+
+        // Inner Class for string request
+        StringRequest stringRequest = new StringRequest(com.android.volley.Request.Method.POST, Constants.URL_REGISTERTOKEN,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        try {
+
+                            JSONObject jsonObject = new JSONObject(response);
+                            Toast.makeText(getApplicationContext(),
+                                    jsonObject.getString("message"),
+                                    Toast.LENGTH_LONG).show();
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), error.getMessage(),
+                                Toast.LENGTH_LONG).show();
+                    }
+                }
+        ){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+
+                params.put("expertId", mExpertId);
+                params.put("token", mToken);
+                return params;
+            }
+        };
+        RequestHandler.getInstance(this).addToRequestQueue(stringRequest);
+    }
     public boolean checkPermission() {
+
         int result = ContextCompat.checkSelfPermission(getApplicationContext(),
                 WRITE_EXTERNAL_STORAGE);
+
         int result1 = ContextCompat.checkSelfPermission(getApplicationContext(),
                 RECORD_AUDIO);
+
         return result == PackageManager.PERMISSION_GRANTED &&
                 result1 == PackageManager.PERMISSION_GRANTED;
     }
