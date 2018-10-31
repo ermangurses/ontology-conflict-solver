@@ -14,6 +14,7 @@ public class SharedPreferencesManager {
     private static final String KEY_USER_EMAIL    = "email";
     private static final String KEY_USER_ID       = "expertId";
     private static final String POSITION          = "position";
+    private static final String TOKEN             = "token";
 
     private SharedPreferencesManager(Context context) {
 
@@ -86,6 +87,18 @@ public class SharedPreferencesManager {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt(POSITION, position);
         editor.apply();
+    }
+
+    public void setToken(String token){
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(TOKEN, token);
+        editor.apply();
+    }
+
+    public String getToken(){
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        return sharedPreferences.getString(TOKEN, "");
     }
 
     public String getUserEmail(){
