@@ -24,9 +24,9 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setAutoCancel(true)
-                .setContentTitle("FCM Test")
+                .setContentTitle("Conflict Solver")
                 .setContentText(message)
-                .setSmallIcon(R.drawable.rectangle)
+                .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentIntent(pendingIntent);
 
         NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
