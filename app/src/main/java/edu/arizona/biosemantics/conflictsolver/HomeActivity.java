@@ -50,7 +50,11 @@ public class HomeActivity extends AppCompatActivity {
 
         FirebaseMessaging.getInstance().subscribeToTopic("FirebaseTopic");
         FirebaseInstanceId.getInstance().getToken();
-        registerToken();
+
+        if(!isRegistered()){
+            registerToken();
+        }
+
 
         welcoming = (TextView) findViewById(R.id.welcoming);
         welcomingString = "Welcome  " + SharedPreferencesManager.getInstance(this).getUsername() + "!";
@@ -70,6 +74,49 @@ public class HomeActivity extends AppCompatActivity {
         } else {
             requestPermission();
         }
+    }
+
+    private boolean isRegistered() {
+
+        mExpertId = String.valueOf(SharedPreferencesManager.getInstance(this).getExpertId());
+        mToken = SharedPreferencesManager.getInstance(this).getToken();
+
+        // Inner Class for string request
+        StringRequest stringRequest = new StringRequest(com.android.volley.Request.Method.POST, Constants.URL_REGISTERTOKEN,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        try {
+
+                            JSONObject jsonObject = new JSONObject(response);
+                            Toast.makeText(getApplicationContext(),
+                                    jsonObject.getString("message"),
+                                    Toast.LENGTH_LONG).show();
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), error.getMessage(),
+                                Toast.LENGTH_LONG).show();
+                    }
+                }
+        ){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+
+                params.put("expertId", mExpertId);
+                params.put("token", mToken);
+                return params;
+            }
+        };
+        RequestHandler.getInstance(this).addToRequestQueue(stringRequest);
     }
 
     private void registerToken() {
@@ -114,6 +161,7 @@ public class HomeActivity extends AppCompatActivity {
         };
         RequestHandler.getInstance(this).addToRequestQueue(stringRequest);
     }
+
     public boolean checkPermission() {
 
         int result = ContextCompat.checkSelfPermission(getApplicationContext(),
