@@ -51,10 +51,8 @@ public class HomeActivity extends AppCompatActivity {
         FirebaseMessaging.getInstance().subscribeToTopic("FirebaseTopic");
         FirebaseInstanceId.getInstance().getToken();
 
-        if(!isRegistered()){
-            registerToken();
-        }
-
+        // Make sure we registed only one time when we come to HomeActivity
+        isExpertRegistered();
 
         welcoming = (TextView) findViewById(R.id.welcoming);
         welcomingString = "Welcome  " + SharedPreferencesManager.getInstance(this).getUsername() + "!";
@@ -69,20 +67,21 @@ public class HomeActivity extends AppCompatActivity {
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        if(checkPermission()) {
-
-        } else {
+        if(!checkPermission()) {
             requestPermission();
         }
     }
 
-    private boolean isRegistered() {
+    private void isExpertRegistered() {
+
+        String response = "NotNull";
+        boolean isExpertRegistered;
 
         mExpertId = String.valueOf(SharedPreferencesManager.getInstance(this).getExpertId());
         mToken = SharedPreferencesManager.getInstance(this).getToken();
 
         // Inner Class for string request
-        StringRequest stringRequest = new StringRequest(com.android.volley.Request.Method.POST, Constants.URL_REGISTERTOKEN,
+        StringRequest stringRequest = new StringRequest(com.android.volley.Request.Method.POST, Constants.URL_ISREGISTERED,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -90,9 +89,12 @@ public class HomeActivity extends AppCompatActivity {
                         try {
 
                             JSONObject jsonObject = new JSONObject(response);
-                            Toast.makeText(getApplicationContext(),
-                                    jsonObject.getString("message"),
-                                    Toast.LENGTH_LONG).show();
+                            response = jsonObject.getString("message");
+
+                            // Check the Expert has token in tha "Expert" table
+                            if(response.equals("Null")){
+                                registerToken();
+                            }
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -112,11 +114,11 @@ public class HomeActivity extends AppCompatActivity {
                 Map<String, String> params = new HashMap<>();
 
                 params.put("expertId", mExpertId);
-                params.put("token", mToken);
                 return params;
             }
         };
         RequestHandler.getInstance(this).addToRequestQueue(stringRequest);
+
     }
 
     private void registerToken() {
@@ -164,21 +166,20 @@ public class HomeActivity extends AppCompatActivity {
 
     public boolean checkPermission() {
 
-        int result = ContextCompat.checkSelfPermission(getApplicationContext(),
+        int WRITE_EXTERNAL_STORAGE_Result = ContextCompat.checkSelfPermission(getApplicationContext(),
                 WRITE_EXTERNAL_STORAGE);
 
-        int result1 = ContextCompat.checkSelfPermission(getApplicationContext(),
+        int RECORD_AUDIO_Result = ContextCompat.checkSelfPermission(getApplicationContext(),
                 RECORD_AUDIO);
 
-        return result == PackageManager.PERMISSION_GRANTED &&
-                result1 == PackageManager.PERMISSION_GRANTED;
+        return WRITE_EXTERNAL_STORAGE_Result == PackageManager.PERMISSION_GRANTED &&
+                RECORD_AUDIO_Result == PackageManager.PERMISSION_GRANTED;
     }
 
     private void requestPermission() {
         ActivityCompat.requestPermissions(HomeActivity.this, new
                 String[]{WRITE_EXTERNAL_STORAGE, RECORD_AUDIO}, RequestPermissionCode);
     }
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
@@ -201,6 +202,7 @@ public class HomeActivity extends AppCompatActivity {
                 break;
         }
     }
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
