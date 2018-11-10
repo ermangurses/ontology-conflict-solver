@@ -10,5 +10,7 @@ public class Constants {
     public  static final String URL_PROCESSDECISION = BASE_URL + "DailyOperations/ProcessDecision.php";
     public  static final String URL_AUDIO           = BASE_URL + "DailyOperations/FileUploadApi/Audio/";
     public  static final String URL_REGISTERTOKEN   = BASE_URL + "DailyOperations/RegisterToken.php";
+    public  static final String URL_ISREGISTERED    = BASE_URL + "DailyOperations/IsRegistered.php";
+
 
 }
