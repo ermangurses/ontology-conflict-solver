@@ -16,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -25,6 +26,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 /**
@@ -43,6 +46,7 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
     private static Vector<Integer>  isSolvedArr   = new Vector<Integer>();
     private static boolean          startedFlag   = false;
     private static int mIndex;
+    private String mExpertId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +58,7 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
             startActivity(new Intent(this, LoginActivity.class));
         }
 
+        mExpertId    = String.valueOf(SharedPreferencesManager.getInstance(this).getExpertId());
         trackConflict();
 
         // Make sure getTasks() is run only once
@@ -161,7 +166,7 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
     private void getTasks(){
 
         StringRequest stringRequest = new StringRequest(
-                Request.Method.GET,                     // Get Method
+                Request.Method.POST,                    // Post Method
                 Constants.URL_GETTASKS,                 // The URL
                 new Response.Listener<String>() {
                     @Override
@@ -179,37 +184,42 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
                             // Get the response from server
                             JSONObject root = new JSONObject(response);
 
-                            // Place the response to the JSONArray
-                            JSONArray task_data = root.getJSONArray("task_data");
+                            // Get status of the response
+                            String status = root.getString("status");
 
-                            for (int i = 0; i < task_data.length(); ++i) {
+                            // Check the response is Null or Not Null
+                            if(status.equals("NotNull")){
 
-                                // Get single JSON object from array
-                                JSONObject jsonObject = task_data.getJSONObject(i);
+                                // Place the response to the JSONArray
+                                JSONArray task_data = root.getJSONArray("task_data");
 
-                                // Get the items from the object
-                                termId     = jsonObject.getString("termId");
-                                term       = jsonObject.getString("term");
-                                conflictId = jsonObject.getString("conflictId");
-                                username   = jsonObject.getString("username");
-                                sentence   = jsonObject.getString("sentence");
-                                isSolved   = jsonObject.getString("isSolved");
+                                for (int i = 0; i < task_data.length(); ++i) {
 
+                                    // Get single JSON object from array
+                                    JSONObject jsonObject = task_data.getJSONObject(i);
+                                    // Get the items from the object
+                                    termId = jsonObject.getString("termId");
+                                    term = jsonObject.getString("term");
+                                    conflictId = jsonObject.getString("conflictId");
+                                    username = jsonObject.getString("username");
+                                    sentence = jsonObject.getString("sentence");
+                                    isSolved = jsonObject.getString("isSolved");
 
-                                // Put the items to the arrays
-                                termIdArr.addElement(Integer.parseInt(termId));
-                                termArr.addElement(term);
+                                    // Put the items to the arrays
+                                    termIdArr.addElement(Integer.parseInt(termId));
+                                    termArr.addElement(term);
+                                    conflictIdArr.addElement(Integer.parseInt(conflictId));
+                                    usernameArr.addElement(username);
+                                    sentenceArr.addElement(sentence);
+                                    isSolvedArr.addElement(Integer.parseInt(isSolved));
+                                }
+                                // Call setLayout() after the data in the arrays
+                                setLayout();
+                            } else {
 
-                                conflictIdArr.addElement(Integer.parseInt(conflictId));
-                                usernameArr.addElement(username);
-                                sentenceArr.addElement(sentence);
-                                isSolvedArr.addElement(Integer.parseInt(isSolved));
+                                Toast.makeText(getApplicationContext(), "No Tasks Assigned Yet", Toast.LENGTH_LONG).show();
 
                             }
-
-                            // Call setLayout() after the data in the arrays
-                            setLayout();
-
                         }
                         catch (JSONException e) {
                             // TODO Auto-generated catch block
@@ -226,7 +236,15 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
                                 Toast.LENGTH_LONG).show();
                     }
                 }
-        );
+        ){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+
+                params.put("expertId", mExpertId);
+                return params;
+            }
+        };
         RequestHandler.getInstance(this).addToRequestQueue(stringRequest);
     }
 
