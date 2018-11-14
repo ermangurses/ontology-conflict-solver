@@ -213,16 +213,17 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
                                     sentenceArr.addElement(sentence);
                                     isSolvedArr.addElement(Integer.parseInt(isSolved));
                                 }
-                                // Call setLayout() after the data in the arrays
+                                // Call setLayout() after the arrays are populated
                                 setLayout();
                             } else {
 
-                                Toast.makeText(getApplicationContext(), "No Tasks Assigned Yet", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "The tasks have not assigned yet", Toast.LENGTH_LONG).show();
 
                             }
                         }
                         catch (JSONException e) {
                             // TODO Auto-generated catch block
+
                             e.printStackTrace();
                         }
                     }
@@ -258,7 +259,6 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
         termArr.get(mIndex);
         usernameArr.get(mIndex);
 
-        //Toast.makeText( getApplicationContext(),"Conflict ID is "+ v.getId(), Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(TasksActivity.this, DecisionActivity.class);
 
         // Send the data to Decision Activity
