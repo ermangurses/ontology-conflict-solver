@@ -151,6 +151,19 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
+    // Make sure mark the flag true before exit the activity
+    protected void onStop() {
+        super.onStop();
+        startedFlag = true;
+    }
+
+    // Make sure mark the flag true before exit the activity
+    protected void onPause() {
+        super.onPause();
+        startedFlag = true;
+    }
+
+
     // Fetch tasks from database
     private void getTasks() {
 
