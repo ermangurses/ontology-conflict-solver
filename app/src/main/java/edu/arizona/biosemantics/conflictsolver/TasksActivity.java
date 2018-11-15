@@ -45,7 +45,7 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
     private static Vector<String>   sentenceArr   = new Vector<String>();
     private static Vector<Integer>  isSolvedArr   = new Vector<Integer>();
     private static boolean          startedFlag   = false;
-    private static int mIndex;
+    private static int index;
     private String mExpertId;
 
     @Override
@@ -63,33 +63,29 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
 
         // Make sure getTasks() is run only once
         // and setLayout is called when the user return to the TaskActivity
-        if (!startedFlag) {
-
+        if(!startedFlag) {
             getTasks();
-
-        }else{
-
+        } else {
             setLayout();
-
         }
 
         setNavigation();
     }
-    private void trackConflict(){
+    private void trackConflict() {
 
         boolean solvedFlag = false;
         Bundle extras = getIntent().getExtras();
 
-        if(extras!=null){
+        if(extras != null){
             solvedFlag = extras.getBoolean("solvedFlag");
         }
 
         if(solvedFlag){
-            isSolvedArr.set(mIndex, 1);
+            isSolvedArr.set(index, 1);
         }
     }
 
-    private void setNavigation(){
+    private void setNavigation() {
 
         // Set active the selected navigation icon in the new activity
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
@@ -101,7 +97,8 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
-    private void setLayout(){
+    // Set the layout using on the inflated data
+    private void setLayout() {
 
         // Take relativeLayoutXML from interface using by id
         RelativeLayout relativeLayoutXML =(RelativeLayout)findViewById(R.id.relativeLayoutXML);
@@ -111,9 +108,7 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
                 RelativeLayout.LayoutParams.MATCH_PARENT,
                 RelativeLayout.LayoutParams.WRAP_CONTENT));
 
-        ////////////////////////////////////////////////////////////////////
-        ////////Adding linearLayoutProgVertical layout to scrollView////////
-        ////////////////////////////////////////////////////////////////////
+        // Adding linearLayoutProgVertical layout to scrollView
         LinearLayout linearLayoutProgVertical = new LinearLayout(this);
         linearLayoutProgVertical.setLayoutParams(new RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
@@ -121,25 +116,20 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
         linearLayoutProgVertical.setOrientation(LinearLayout.VERTICAL);
         scrollView.addView(linearLayoutProgVertical);
 
-
         for (int i = 0; i < usernameArr.size(); i++) {
 
             Button button = new Button(this);
-            String srt ="A conflict for " + "<em>" + ( termArr.get(i)) + "</em>" + " from " + usernameArr.get(i) +" "+ conflictIdArr.get(i)+" "+termIdArr.get(i)+" "+isSolvedArr.get(i);
+            //String string ="A conflict for " + "<em>" + ( termArr.get(i)) + "</em>" + " from " + usernameArr.get(i) +" "+ conflictIdArr.get(i)+" "+termIdArr.get(i)+" "+isSolvedArr.get(i);
+            String string ="A conflict for " + "<em>" + ( termArr.get(i)) + "</em>" + " from " + usernameArr.get(i);
 
-            button.setText(Html.fromHtml(srt));
+            button.setText(Html.fromHtml(string));
 
             // Color buttons GREEN if it is solved
             // otherwise RED
             if(isSolvedArr.get(i) == 1){
-
                 button.setTextColor(0xFF00AA55);
-
             } else {
-
-
                 button.setTextColor(0xFFCC0000);
-
             }
 
             button.setLeft(10);
@@ -149,8 +139,6 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
 
             button.setOnClickListener(this);
             linearLayoutProgVertical.addView(button);
-
-
         }
         relativeLayoutXML.addView(scrollView);
     }
@@ -163,7 +151,8 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    private void getTasks(){
+    // Fetch tasks from database
+    private void getTasks() {
 
         StringRequest stringRequest = new StringRequest(
                 Request.Method.POST,                    // Post Method
@@ -198,12 +187,12 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
                                     // Get single JSON object from array
                                     JSONObject jsonObject = task_data.getJSONObject(i);
                                     // Get the items from the object
-                                    termId = jsonObject.getString("termId");
-                                    term = jsonObject.getString("term");
+                                    termId     = jsonObject.getString("termId");
+                                    term       = jsonObject.getString("term");
                                     conflictId = jsonObject.getString("conflictId");
-                                    username = jsonObject.getString("username");
-                                    sentence = jsonObject.getString("sentence");
-                                    isSolved = jsonObject.getString("isSolved");
+                                    username   = jsonObject.getString("username");
+                                    sentence   = jsonObject.getString("sentence");
+                                    isSolved   = jsonObject.getString("isSolved");
 
                                     // Put the items to the arrays
                                     termIdArr.addElement(Integer.parseInt(termId));
@@ -216,9 +205,7 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
                                 // Call setLayout() after the arrays are populated
                                 setLayout();
                             } else {
-
                                 Toast.makeText(getApplicationContext(), "The tasks have not assigned yet", Toast.LENGTH_LONG).show();
-
                             }
                         }
                         catch (JSONException e) {
@@ -253,20 +240,20 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
 
-        mIndex = conflictIdArr.indexOf(v.getId());
+        index = conflictIdArr.indexOf(v.getId());
 
-        termIdArr.get(mIndex);
-        termArr.get(mIndex);
-        usernameArr.get(mIndex);
+        termIdArr.get(index);
+        termArr.get(index);
+        usernameArr.get(index);
 
         Intent intent = new Intent(TasksActivity.this, DecisionActivity.class);
 
         // Send the data to Decision Activity
         intent.putExtra("ConflictId", ( String.valueOf( v.getId() ) ) );
-        intent.putExtra("TermId", ( String.valueOf( termIdArr.get(mIndex) ) ) );
-        intent.putExtra("Term", ( String.valueOf(  termArr.get(mIndex) ) ) );
-        intent.putExtra("Username", ( String.valueOf(  usernameArr.get(mIndex) ) ) );
-        intent.putExtra("Sentence", ( String.valueOf(  sentenceArr.get(mIndex) ) ) );
+        intent.putExtra("TermId", ( String.valueOf( termIdArr.get(index) ) ) );
+        intent.putExtra("Term", ( String.valueOf(  termArr.get(index) ) ) );
+        intent.putExtra("Username", ( String.valueOf(  usernameArr.get(index) ) ) );
+        intent.putExtra("Sentence", ( String.valueOf(  sentenceArr.get(index) ) ) );
 
         startActivity(intent);
         startedFlag = true;
@@ -309,6 +296,4 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
         }
         return true;
     }
-
-
 }
