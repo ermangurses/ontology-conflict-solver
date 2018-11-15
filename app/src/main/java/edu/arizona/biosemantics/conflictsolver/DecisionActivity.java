@@ -108,9 +108,9 @@ public class DecisionActivity extends AppCompatActivity {
         final Button button = findViewById(R.id.submit);
         setButtonListener (button);
 
-        RecordView recordView = (RecordView) findViewById(R.id.record_view);
+        RecordView recordView     = (RecordView) findViewById(R.id.record_view);
         RecordButton recordButton = (RecordButton) findViewById(R.id.record_button);
-        mEditTextWrittenComment = (EditText) findViewById(R.id.editText);
+        mEditTextWrittenComment   = (EditText) findViewById(R.id.editText);
 
         recordButton.setRecordView(recordView);
         recordView.setOnRecordListener(new OnRecordListener() {
@@ -176,18 +176,15 @@ public class DecisionActivity extends AppCompatActivity {
                 mEditTextWrittenComment.setHint("Type or Record Comment");
                 mEditTextWrittenComment.setCursorVisible(true);
                 mEditTextWrittenComment.setText(mEditTextWrittenCommentContent);
-
             }
 
             @Override
             public void onLessThanSecond() {
-
                 mMediaRecorder.reset();
                 button.setVisibility(View.VISIBLE);
                 mEditTextWrittenComment.setHint("Type or Record Comment");
                 mEditTextWrittenComment.setCursorVisible(true);
                 mEditTextWrittenComment.setText(mEditTextWrittenCommentContent);
-
             }
         });
 
