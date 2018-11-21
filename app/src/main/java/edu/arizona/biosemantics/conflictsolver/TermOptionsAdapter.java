@@ -51,7 +51,7 @@ import java.util.ArrayList;
         Log.d(TAG,"onBindViewHolder: called");
         Glide.with(mContext)
                 .load(mImages.get(position))
-                .placeholder(R.drawable.none).into(holder.image);
+                .placeholder(R.drawable.noimage).into(holder.image);
 
          holder.imageName.setText(mImageNames.get(position));
          holder.definition.setText(mDefinitions.get(position));
