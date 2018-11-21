@@ -120,7 +120,7 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
 
             Button button = new Button(this);
             //String string ="A conflict for " + "<em>" + ( termArr.get(i)) + "</em>" + " from " + usernameArr.get(i) +" "+ conflictIdArr.get(i)+" "+termIdArr.get(i)+" "+isSolvedArr.get(i);
-            String string ="A conflict for " + "<em>" + ( termArr.get(i)) + "</em>" + " from " + usernameArr.get(i);
+            String string = ( termArr.get(i)) + "</em>" + " from " + usernameArr.get(i);
 
             button.setText(Html.fromHtml(string));
 
