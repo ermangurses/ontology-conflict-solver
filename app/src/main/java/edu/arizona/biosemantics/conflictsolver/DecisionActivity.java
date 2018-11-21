@@ -196,7 +196,6 @@ public class DecisionActivity extends AppCompatActivity {
         // Set the sentence for the confusing term
         final TextView textviewSentence = (TextView) findViewById(R.id.sentence);
         textviewSentence.setText(mTermOptions.getSentence());
-
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
         // Send data to the adapter
