@@ -30,7 +30,7 @@ import java.util.ArrayList;
 
     public TermOptionsAdapter(Context context, ArrayList<String> images, ArrayList<String> imageNames, ArrayList<String> definitions){
         mImageNames = imageNames;
-        mImageNames.add("None");
+        mImageNames.add("Not above, I enter my own");
         mDefinitions = definitions;
         mDefinitions.add("");
         mImages = images;
