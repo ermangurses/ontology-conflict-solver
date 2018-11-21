@@ -56,7 +56,6 @@
             android:adjustViewBounds="true"
             android:fadingEdge="none"
             android:scaleType="fitStart"
-            android:text="You have unsolved tasks."
             android:textColor="@android:color/holo_blue_dark"
             android:textSize="20sp"
             android:textStyle="bold|italic"
