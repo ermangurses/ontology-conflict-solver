@@ -83,6 +83,9 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
 
         if(solvedFlag){
             isSolvedArr.set(index, 1);
+            int val = countArr.get(index);
+            val++;
+            countArr.set(index,val);
         }
     }
 
@@ -120,7 +123,7 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
         for (int i = 0; i < usernameArr.size(); i++) {
 
             Button button = new Button(this);
-            String string = ( termArr.get(i)) + "</em>" + " from " + usernameArr.get(i) + " (" + countArr.get(i) + ") ";
+            String string = ( termArr.get(i)) + "</em>" + " from " + usernameArr.get(i) + " (" + countArr.get(i) + ")";
 
             button.setText(Html.fromHtml(string));
 
