@@ -12,9 +12,9 @@
         android:layout_centerVertical="false"
         android:layout_marginLeft="0dp"
         android:text="Canada"
-        android:textAlignment="center"
+        android:textAlignment="textStart"
         android:textColor="#000"
-        android:textSize="17sp" />
+        android:textSize="18sp" />
 
     <ImageView
         android:id="@+id/image"
@@ -47,6 +47,6 @@
         android:text="Text"
         android:textAlignment="viewStart"
         android:textColor="#000"
-        android:textSize="12sp" />
+        android:textSize="14sp" />
 
 </RelativeLayout>
