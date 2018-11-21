@@ -44,6 +44,7 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
     private static Vector<String>   usernameArr   = new Vector<String>();
     private static Vector<String>   sentenceArr   = new Vector<String>();
     private static Vector<Integer>  isSolvedArr   = new Vector<Integer>();
+    private static Vector<Integer>  countArr      = new Vector<Integer>();
     private static boolean          startedFlag   = false;
     private static int index;
     private String mExpertId;
@@ -119,8 +120,7 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
         for (int i = 0; i < usernameArr.size(); i++) {
 
             Button button = new Button(this);
-            //String string ="A conflict for " + "<em>" + ( termArr.get(i)) + "</em>" + " from " + usernameArr.get(i) +" "+ conflictIdArr.get(i)+" "+termIdArr.get(i)+" "+isSolvedArr.get(i);
-            String string = ( termArr.get(i)) + "</em>" + " from " + usernameArr.get(i);
+            String string = ( termArr.get(i)) + "</em>" + " from " + usernameArr.get(i) + " (" + countArr.get(i) + ") ";
 
             button.setText(Html.fromHtml(string));
 
@@ -181,6 +181,7 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
                         String username;
                         String sentence;
                         String isSolved;
+                        String count;
 
                         try{
                             // Get the response from server
@@ -206,6 +207,7 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
                                     username   = jsonObject.getString("username");
                                     sentence   = jsonObject.getString("sentence");
                                     isSolved   = jsonObject.getString("isSolved");
+                                    count      = jsonObject.getString("count");
 
                                     // Put the items to the arrays
                                     termIdArr.addElement(Integer.parseInt(termId));
@@ -214,6 +216,7 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
                                     usernameArr.addElement(username);
                                     sentenceArr.addElement(sentence);
                                     isSolvedArr.addElement(Integer.parseInt(isSolved));
+                                    countArr.addElement(Integer.parseInt(count));
                                 }
                                 // Call setLayout() after the arrays are populated
                                 setLayout();
