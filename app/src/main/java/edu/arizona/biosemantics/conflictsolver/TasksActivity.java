@@ -136,6 +136,7 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
                 button.setTextColor(0xFFCC0000);
             }
 
+            button.setBackgroundColor(0xFFEFFFFB);
             button.setLeft(10);
 
             // Set the button Id as the same conflict Id
