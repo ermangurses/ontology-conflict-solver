@@ -35,8 +35,12 @@ public class HomeActivity extends AppCompatActivity {
 
     private TextView welcoming;
     private String   welcomingString;
+    private String   statistics;
     private String   mToken;
     private String   mExpertId;
+    private TextView textView;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +61,7 @@ public class HomeActivity extends AppCompatActivity {
         welcoming = (TextView) findViewById(R.id.welcoming);
         welcomingString = "Welcome  " + SharedPreferencesManager.getInstance(this).getUsername() + "!";
         welcoming.setText(welcomingString);
+        textView = (TextView) findViewById(R.id.textView1);
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
 
@@ -70,6 +75,8 @@ public class HomeActivity extends AppCompatActivity {
         if(!checkPermission()) {
             requestPermission();
         }
+
+        getCountUnsolvedTasks();
     }
 
     private void isExpertRegistered() {
@@ -158,6 +165,45 @@ public class HomeActivity extends AppCompatActivity {
 
                 params.put("expertId", mExpertId);
                 params.put("token", mToken);
+                return params;
+            }
+        };
+        RequestHandler.getInstance(this).addToRequestQueue(stringRequest);
+    }
+
+    private void getCountUnsolvedTasks() {
+
+        // Inner Class for string request
+        StringRequest stringRequest = new StringRequest(com.android.volley.Request.Method.POST, Constants.URL_GETCOUNT,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        try {
+
+                            JSONObject jsonObject = new JSONObject(response);
+
+                            statistics = "You have "+ jsonObject.getString("count")+" unsolved tasks";
+                            textView.setText(statistics);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), error.getMessage(),
+                                Toast.LENGTH_LONG).show();
+                    }
+                }
+        ){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+
+                params.put("expertId", mExpertId);
                 return params;
             }
         };
