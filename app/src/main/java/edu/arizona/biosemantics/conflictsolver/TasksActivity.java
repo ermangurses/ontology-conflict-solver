@@ -131,6 +131,7 @@ public class TasksActivity extends AppCompatActivity implements View.OnClickList
             // otherwise RED
             if(isSolvedArr.get(i) == 1){
                 button.setTextColor(0xFF00AA55);
+                button.setEnabled(false);
             } else {
                 button.setTextColor(0xFFCC0000);
             }
