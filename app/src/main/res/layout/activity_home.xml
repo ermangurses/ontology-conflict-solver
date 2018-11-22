@@ -69,7 +69,7 @@
             android:adjustViewBounds="true"
             android:fadingEdge="none"
             android:scaleType="fitStart"
-            android:text="To see them, Please click Tasks button below"
+            android:text="To see them, please click Tasks button below"
             android:textColor="@android:color/holo_blue_dark"
             android:textSize="20sp"
             android:textStyle="bold|italic"
